@@ -1,0 +1,10 @@
+blacklist cfg80211
+blacklist rfkill
+blacklist joydev
+blacklist evdev
+blacklist bcm2835_gpiomem
+blacklist uio_pdrv_genirq
+blacklist uio
+blacklist fixed
+blacklist i2c_dev
+blacklist ipv6

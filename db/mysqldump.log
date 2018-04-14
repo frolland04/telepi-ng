@@ -1,0 +1,325 @@
+-- MySQL dump 10.13  Distrib 5.5.54, for debian-linux-gnu (armv7l)
+--
+-- Host: localhost    Database: D_TELEINFO
+-- ------------------------------------------------------
+-- Server version	5.5.54-0+deb8u1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `D_TELEINFO`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `D_TELEINFO` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `D_TELEINFO`;
+
+--
+-- Table structure for table `T_COUNTERS`
+--
+
+DROP TABLE IF EXISTS `T_COUNTERS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_COUNTERS` (
+  `Id` int(11) NOT NULL DEFAULT '0',
+  `RecvMsgNbTotal` bigint(20) DEFAULT NULL,
+  `RecvMsgNbOk` bigint(20) DEFAULT NULL,
+  `RecvMsgNbBad` bigint(20) DEFAULT NULL,
+  `RecvMsgDataLineNbTotal` bigint(20) DEFAULT NULL,
+  `RecvMsgDataLineNbOk` bigint(20) DEFAULT NULL,
+  `RecvMsgDataLineNbBad` bigint(20) DEFAULT NULL,
+  `RecvMsgDataLineNbUnsupp` bigint(20) DEFAULT NULL,
+  `RecvMsgLastTs` datetime DEFAULT NULL,
+  `CleanHistoRunNb` bigint(20) DEFAULT NULL,
+  `CleanHistoLastRunTs` datetime DEFAULT NULL,
+  `CleanHistoLastRunDelNb` bigint(20) DEFAULT NULL,
+  `CleanHistoLastRunHasNb` bigint(20) DEFAULT NULL,
+  `AutoMinMaxHistoRunNb` bigint(20) DEFAULT NULL,
+  `AutoMinMaxHistoLastRunTs` datetime DEFAULT NULL,
+  `AutoMinMaxHistoInsNbTotal` bigint(20) DEFAULT NULL,
+  `AutoMinMaxHistoDelNbTotal` bigint(20) DEFAULT NULL,
+  `AutoMinMaxHistoUpdMinNbTotal` bigint(20) DEFAULT NULL,
+  `AutoMinMaxHistoUpdMaxNbTotal` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=MEMORY DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `T_DBG_ENTRIES`
+--
+
+DROP TABLE IF EXISTS `T_DBG_ENTRIES`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_DBG_ENTRIES` (
+  `Id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `DbgMessage` varchar(60) DEFAULT NULL,
+  `DbgContext` varchar(60) DEFAULT NULL,
+  `DbgTs` datetime DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=MEMORY AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `T_TELEINFO_HISTO`
+--
+
+DROP TABLE IF EXISTS `T_TELEINFO_HISTO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_TELEINFO_HISTO` (
+  `PTEC` varchar(2) DEFAULT NULL,
+  `PAPP` int(11) DEFAULT NULL,
+  `IINST` int(11) DEFAULT NULL,
+  `HC` int(11) DEFAULT NULL,
+  `HP` int(11) DEFAULT NULL,
+  `ADCO` bigint(20) DEFAULT NULL,
+  `ISOUSC` int(11) DEFAULT NULL,
+  `OPTARIF` varchar(2) DEFAULT NULL,
+  `HHPHC` varchar(2) DEFAULT NULL,
+  `IMAX` int(11) DEFAULT NULL,
+  `ETAT` int(11) DEFAULT NULL,
+  `TEMPERATURE` float DEFAULT NULL,
+  `RH` float DEFAULT NULL,
+  `TS` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`TS`)
+) ENGINE=MEMORY DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`teleinfo`@`localhost`*/ /*!50003 TRIGGER AutoMinMaxInsertHisto AFTER INSERT
+
+ON T_TELEINFO_HISTO FOR EACH ROW
+
+BEGIN
+
+   DECLARE OLD_PAPP_MIN INTEGER ;
+
+   DECLARE OLD_PAPP_MAX INTEGER ;
+  
+   DECLARE TS_DATE DATE ;
+
+   DECLARE TS_TIME TIME ;
+
+   DECLARE DeletedNb INTEGER ;
+
+   DECLARE InsertedNb INTEGER ;
+
+   SET @TS_DATE = DATE( NEW.TS ) ;
+
+   SET @TS_TIME = TIME( NEW.TS ) ;
+
+   INSERT T_TELEINFO_MINMAX SET TS = @TS_DATE, PAPP_MIN = 99999, IINST_MIN = 99999, PAPP_MAX = 0, IINST_MAX = 0 ON DUPLICATE KEY UPDATE Id = Id ; 
+
+   SET @InsertedNb = ROW_COUNT() ;
+
+   UPDATE T_COUNTERS SET T_COUNTERS.AutoMinMaxHistoInsNbTotal = T_COUNTERS.AutoMinMaxHistoInsNbTotal + @InsertedNb ;
+  
+   SET @OLD_PAPP_MIN = ( SELECT PAPP_MIN FROM T_TELEINFO_MINMAX WHERE TS = @TS_DATE ) ;
+
+   SET @OLD_PAPP_MAX = ( SELECT PAPP_MAX FROM T_TELEINFO_MINMAX WHERE TS = @TS_DATE ) ;
+	
+   IF NEW.PAPP > @OLD_PAPP_MAX
+
+   THEN
+
+      UPDATE T_TELEINFO_MINMAX SET T_TELEINFO_MINMAX.IINST_MAX = NEW.IINST, T_TELEINFO_MINMAX.PAPP_MAX = NEW.PAPP, T_TELEINFO_MINMAX.TS_MAX = @TS_TIME, T_TELEINFO_MINMAX.TEMP_MAX = NEW.TEMPERATURE, T_TELEINFO_MINMAX.RH_MAX = NEW.RH WHERE TS = @TS_DATE ;
+
+      UPDATE T_COUNTERS SET T_COUNTERS.AutoMinMaxHistoUpdMaxNbTotal = T_COUNTERS.AutoMinMaxHistoUpdMaxNbTotal + 1 ;
+
+   END IF ;
+
+   IF NEW.PAPP < @OLD_PAPP_MIN
+
+   THEN
+
+      UPDATE T_TELEINFO_MINMAX SET T_TELEINFO_MINMAX.IINST_MIN = NEW.IINST, T_TELEINFO_MINMAX.PAPP_MIN = NEW.PAPP, T_TELEINFO_MINMAX.TS_MIN = @TS_TIME, T_TELEINFO_MINMAX.TEMP_MIN = NEW.TEMPERATURE, T_TELEINFO_MINMAX.RH_MIN = NEW.RH WHERE TS = @TS_DATE ;
+
+      UPDATE T_COUNTERS SET T_COUNTERS.AutoMinMaxHistoUpdMinNbTotal = T_COUNTERS.AutoMinMaxHistoUpdMinNbTotal + 1 ;
+
+   END IF ;
+
+   UPDATE T_COUNTERS SET T_COUNTERS.AutoMinMaxHistoRunNb = T_COUNTERS.AutoMinMaxHistoRunNb + 1, T_COUNTERS.AutoMinMaxHistoLastRunTs = NOW() ;
+
+   DELETE FROM T_TELEINFO_MINMAX WHERE TS < DATE_SUB( NOW(), INTERVAL 8 DAY ) ;
+
+   SET @DeletedNb = ROW_COUNT() ;
+
+   UPDATE T_COUNTERS SET T_COUNTERS.AutoMinMaxHistoDelNbTotal = T_COUNTERS.AutoMinMaxHistoDelNbTotal + @DeletedNb ;
+
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `T_TELEINFO_INST`
+--
+
+DROP TABLE IF EXISTS `T_TELEINFO_INST`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_TELEINFO_INST` (
+  `Id` int(11) NOT NULL DEFAULT '0',
+  `PTEC` varchar(2) DEFAULT NULL,
+  `PAPP` int(11) DEFAULT NULL,
+  `IINST` int(11) DEFAULT NULL,
+  `HC` int(11) DEFAULT NULL,
+  `HP` int(11) DEFAULT NULL,
+  `ADCO` bigint(20) DEFAULT NULL,
+  `ISOUSC` int(11) DEFAULT NULL,
+  `OPTARIF` varchar(2) DEFAULT NULL,
+  `HHPHC` varchar(2) DEFAULT NULL,
+  `IMAX` int(11) DEFAULT NULL,
+  `ETAT` int(11) DEFAULT NULL,
+  `TEMPERATURE` float DEFAULT NULL,
+  `RH` float DEFAULT NULL,
+  `TS` datetime DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=MEMORY DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `T_TELEINFO_MINMAX`
+--
+
+DROP TABLE IF EXISTS `T_TELEINFO_MINMAX`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `T_TELEINFO_MINMAX` (
+  `Id` int(11) NOT NULL DEFAULT '0',
+  `TS` date NOT NULL,
+  `PAPP_MIN` int(11) DEFAULT NULL,
+  `IINST_MIN` int(11) DEFAULT NULL,
+  `TEMP_MIN` float DEFAULT NULL,
+  `RH_MIN` float DEFAULT NULL,
+  `TS_MIN` time DEFAULT NULL,
+  `PAPP_MAX` int(11) DEFAULT NULL,
+  `IINST_MAX` int(11) DEFAULT NULL,
+  `TEMP_MAX` float DEFAULT NULL,
+  `RH_MAX` float DEFAULT NULL,
+  `TS_MAX` time DEFAULT NULL,
+  PRIMARY KEY (`TS`)
+) ENGINE=MEMORY DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Temporary table structure for view `V_TELEINFO_MINAVGMAX`
+--
+
+DROP TABLE IF EXISTS `V_TELEINFO_MINAVGMAX`;
+/*!50001 DROP VIEW IF EXISTS `V_TELEINFO_MINAVGMAX`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `V_TELEINFO_MINAVGMAX` (
+  `Puiss. MIN` tinyint NOT NULL,
+  `Intens. MIN` tinyint NOT NULL,
+  `Temp. MIN` tinyint NOT NULL,
+  `RH. MIN` tinyint NOT NULL,
+  `Puiss. MOY` tinyint NOT NULL,
+  `Intens. MOY` tinyint NOT NULL,
+  `Temp. MOY` tinyint NOT NULL,
+  `RH. MOY` tinyint NOT NULL,
+  `Puiss. MAX` tinyint NOT NULL,
+  `Intens. MAX` tinyint NOT NULL,
+  `Temp. MAX` tinyint NOT NULL,
+  `RH. MAX` tinyint NOT NULL,
+  `TS` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping events for database 'D_TELEINFO'
+--
+/*!50106 SET @save_time_zone= @@TIME_ZONE */ ;
+/*!50106 DROP EVENT IF EXISTS `CleanOldHisto` */;
+DELIMITER ;;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;;
+/*!50003 SET character_set_client  = utf8 */ ;;
+/*!50003 SET character_set_results = utf8 */ ;;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;;
+/*!50003 SET sql_mode              = '' */ ;;
+/*!50003 SET @saved_time_zone      = @@time_zone */ ;;
+/*!50003 SET time_zone             = 'SYSTEM' */ ;;
+/*!50106 CREATE*/ /*!50117 DEFINER=`teleinfo`@`localhost`*/ /*!50106 EVENT `CleanOldHisto` ON SCHEDULE EVERY 1 HOUR STARTS '2017-05-21 19:03:32' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'cleaning up histo past 8 DAYS.' DO BEGIN
+ 
+    DECLARE DeletedNb INTEGER ;
+    
+    DECLARE HasNb INTEGER ;
+
+    SET @HasNb = ( SELECT COUNT(*) FROM T_TELEINFO_HISTO ) ;	
+    
+    DELETE FROM T_TELEINFO_HISTO
+
+    WHERE T_TELEINFO_HISTO.TS < DATE_SUB(NOW(), INTERVAL 8 DAY) ;
+
+    SET @DeletedNb = ROW_COUNT() ;    
+
+    UPDATE T_COUNTERS SET T_COUNTERS.CleanHistoLastRunTs = NOW(), T_COUNTERS.CleanHistoRunNb = T_COUNTERS.CleanHistoRunNb + 1, T_COUNTERS.CleanHistoLastRunDelNb = @DeletedNb, T_COUNTERS.CleanHistoLastRunHasNb = @HasNb ;
+
+  END */ ;;
+/*!50003 SET time_zone             = @saved_time_zone */ ;;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;;
+/*!50003 SET character_set_results = @saved_cs_results */ ;;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;;
+DELIMITER ;
+/*!50106 SET TIME_ZONE= @save_time_zone */ ;
+
+--
+-- Current Database: `D_TELEINFO`
+--
+
+USE `D_TELEINFO`;
+
+--
+-- Final view structure for view `V_TELEINFO_MINAVGMAX`
+--
+
+/*!50001 DROP TABLE IF EXISTS `V_TELEINFO_MINAVGMAX`*/;
+/*!50001 DROP VIEW IF EXISTS `V_TELEINFO_MINAVGMAX`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`teleinfo`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `V_TELEINFO_MINAVGMAX` AS select min(`T_TELEINFO_HISTO`.`PAPP`) AS `Puiss. MIN`,min(`T_TELEINFO_HISTO`.`IINST`) AS `Intens. MIN`,min(`T_TELEINFO_HISTO`.`TEMPERATURE`) AS `Temp. MIN`,min(`T_TELEINFO_HISTO`.`RH`) AS `RH. MIN`,round(avg(`T_TELEINFO_HISTO`.`PAPP`),0) AS `Puiss. MOY`,round(avg(`T_TELEINFO_HISTO`.`IINST`),0) AS `Intens. MOY`,round(avg(`T_TELEINFO_HISTO`.`TEMPERATURE`),0) AS `Temp. MOY`,round(avg(`T_TELEINFO_HISTO`.`RH`),0) AS `RH. MOY`,max(`T_TELEINFO_HISTO`.`PAPP`) AS `Puiss. MAX`,max(`T_TELEINFO_HISTO`.`IINST`) AS `Intens. MAX`,max(`T_TELEINFO_HISTO`.`TEMPERATURE`) AS `Temp. MAX`,max(`T_TELEINFO_HISTO`.`RH`) AS `RH. MAX`,cast(`T_TELEINFO_HISTO`.`TS` as date) AS `TS` from `T_TELEINFO_HISTO` group by cast(`T_TELEINFO_HISTO`.`TS` as date) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-05-21 20:00:28

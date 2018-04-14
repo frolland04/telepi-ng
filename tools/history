@@ -1,0 +1,766 @@
+    1  uname -a
+    2  ifconfig
+    3  df
+    4  apt-get update
+    5  sudo apt-get update
+    6  sudo apt-get upgrade
+    7  sudo raspi-config 
+    8  sudo shutdown -r now
+    9  uname -a
+   10  free
+   11  sudo apt-get update
+   12  apt-get install rpi-update
+   13  sudo apt-get install rpi-update
+   14  sudo rpi-update 
+   15  sudo shutdown -r now
+   16  uname -a
+   17  free
+   18  pwd
+   19  mkdir teleinfo
+   20  cd teleinfo/
+   21  lr
+   22  ls
+   23  lr
+   24  ls
+   25  lsmod
+   26  cd /boot
+   27  ls
+   28  ls overlays/
+   29  ls
+   30  cp cmdline.txt cmdline.txt.ORIGINAL
+   31  sudo cp cmdline.txt cmdline.txt.ORIGINAL
+   32  sudo cp config.txt config.txt.ORIGINAL
+   33  lr
+   34  ls
+   35  nano cmdline.txt
+   36  sudo nano cmdline.txt
+   37  ls
+   38  sudo nano config.txt
+   39  ls
+   40  sudo shutdown -r now
+   41  lsmod
+   42  sudo su -
+   43  grep service teleinfo/bck.d/.bash_history.bck-2017.03.07-21.55 
+   44  sudo systemctl disable dphys-swapfile.service
+   45  sudo dphys-swapfile 
+   46  sudo dphys-swapfile uninstall
+   47  sudo swapoff
+   48  sudo swapoff -a
+   49  cat teleinfo/bck.d/.bashrc.bck-2017.04.01-10.00 
+   50  nano .bashrc
+   51  sudo shutdown -r now
+   52  cd /boot
+   53  lsmod
+   54  ls
+   55  cat cmdline.txt
+   56  cat config.txt
+   57  ls
+   58  sudo cp config.txt config.txt.bck-2017.04.01-23.25
+   59  sudo cp cmdline.txt cmdline.txt.bck-2017.04.01-23.25
+   60  ls
+   61  cat /etc/fstab 
+   62  cp /etc/fstab /etc/fstab.ORIGINAL
+   63  sudo cp /etc/fstab /etc/fstab.ORIGINAL
+   64  cat ~/teleinfo/bck.d/fstab.bck-2017.04.01-09.56 
+   65  sudo cp  ~/teleinfo/bck.d/fstab.bck-2017.04.01-09.56 /etc/fstab
+   66  cat /etc/fstab 
+   67  cat ~/teleinfo/bck.d/rc.local.bck-2017.03.29-18.41 
+   68  sudo nano /etc/rc.local 
+   69  cat /etc/rc.local
+   70  lr
+   71  free
+   72  mount
+   73  mount | grep tmpfs
+   74  cat /etc/fstab
+   75  ls /run
+   76  cat /etc/fstab
+   77  sudo shutdown -r now
+   78  ls /dev
+   79  cat teleinfo/bck.d/cmdline.txt.bck.2016.0
+   80  cat teleinfo/bck.d/cmdline.txt.bck.2016.06.26-21.24 
+   81  sudo raspi-config 
+   82  lsmod
+   83  ls /dev
+   84  cat /boot/config.txt
+   85  cd /boot
+   86  ls
+   87  cat cmdline.txt
+   88  sudo cp config.txt config.txt.bck-2017.04.01-23.40
+   89  lr
+   90  ls
+   91  cat config.txt
+   92  cat /dev/ttyAMA0 
+   93  ls
+   94  sudo apt-get install apache2
+   95  ps -elf
+   96  ls /var/log/
+   97  sudo apt-get install mysql python-mysql
+   98  cd
+   99  grep install teleinfo/bck.d/.bash_history.bck-2017.04.01-09.55 
+  100  sudo apt-get install  mysql-server  python-mysqldb python-serial
+  101  cd teleinfo/
+  102  ll
+  103  mysql -uroot -ppi
+  104  ls
+  105  cat D_TELEINFO-CREATE.sql
+  106  mysql -uroot -ppi < D_TELEINFO-CREATE.sql 
+  107  cat bck.d/.mysql_history.bck-2017.04.01-09.55 
+  108  cat bck.d/.mysql_history.bck-2017.04.01-09.55  | grep USER
+  109  cat bck.d/.mysql_history.bck-2017.04.01-09.55  | grep user
+  110  mysql -uroot -ppi
+  111  cat bck.d/.mysql_history.bck-2017.04.01-09.55  | grep grant
+  112  cat bck.d/.mysql_history.bck-2017.04.01-09.55  | grep priv
+  113  cat bck.d/.mysql_history.bck-2017.04.01-09.55  | grep PRIV
+  114  mysql -uroot -ppi
+  115  mysql -uteleinfo -pti
+  116  lr
+  117  cd ..
+  118  ls
+  119  lr
+  120  sudo cp teleinfo/mysql-conf.d-binding.cnf /etc/mysql/conf.d/binding.cnf
+  121  sudo cp teleinfo/mysql-conf.d-event_scheduler.cnf /etc/mysql/conf.d/event_scheduler.cnf
+  122  sudo cp teleinfo/mysql-conf.d-heap_table_size.cnf /etc/mysql/conf.d/heap_table_size.cnf
+  123  ls
+  124  pwd
+  125  ls
+  126  cd teleinfo/
+  127  ls
+  128  lr
+  129  mysql -uteleinfo -pti < D_TELEINFO-RESET.sql
+  130  cp teleinfo.cgi /usr/lib/cgi-bin/
+  131  sudo cp teleinfo.cgi /usr/lib/cgi-bin/
+  132  ls -al /usr/lib/cgi-bin/teleinfo.cgi 
+  133  sudo chmod +x /usr/lib/cgi-bin/teleinfo.cgi
+  134  ls
+  135  cd /etc/apache2/
+  136  ls
+  137  ls mods-enabled/
+  138  ls mods-available/
+  139  cat mods-available/cgi
+  140  cat mods-available/cgi.load 
+  141  a2enmod 
+  142  sudo a2enmod cgi
+  143  sudo a2enconf 
+  144  ls
+  145  ls mods-enabled
+  146  ls apache2.conf  conf-available  conf-enabled  envvars  magic  mods-available  mods-enabled  ports.conf  sites-available  sites-enabled
+  147  ls mods-available/
+  148  sudo shutdown -r now
+  149  cd teleinfo/
+  150  ls
+  151  mysql -uteleinfo -pti < D_TELEINFO-RESET.sql
+  152  lsmod
+  153  ls
+  154  sudo shutdown -h now
+  155  lsmod
+  156  cd teleinfo/
+  157  ls
+  158  lr
+  159  cat systemd-teleinfo.service
+  160  nano systemd-teleinfo.service
+  161  lr
+  162  cat teleinfo.sh
+  163  nano teleinfo.sh
+  164  ls
+  165  lr
+  166  cat teleinfo.py 
+  167  lr
+  168  cat bck.d/.bash_history.bck-2017.04.01-09.55 
+  169  grep system bck.d/.bash_history.bck-2017.04.01-09.55 
+  170  cat systemd-teleinfo.service 
+  171  sudo cp systemd-teleinfo.service /lib/systemd/system/
+  172  sudo mv /lib/systemd/system/systemd-teleinfo.service /lib/systemd/system/teleinfo.service
+  173  sudo chmod 644 /lib/systemd/system/teleinfo.service 
+  174  sudo systemctl enable teleinfo.service
+  175  sudo systemctl start teleinfo.service
+  176  sudo systemctl status teleinfo.service
+  177  cd /home/pi/teleinfo/
+  178  lr
+  179  chmod +x teleinfo.sh teleinfo.py teleinfo.cgi
+  180  lr
+  181  sudo systemctl status teleinfo.service
+  182  sudo systemctl start teleinfo.service
+  183  sudo systemctl status teleinfo.service
+  184  mysql -uteleinfo -pti
+  185  sudo shutdown -r now
+  186  vcgencmd 
+  187  vcgencmd measure_temp
+  188  exit
+  189  vcgencmd measure_temp
+  190  vcgencmd help
+  191  man vcgencmd
+  192  vcgencmd commands
+  193  vcgencmd pm_get_status
+  194  vcgencmd pm_show_stats
+  195  vcgencmd version
+  196  vcgencmd get_lcd_info
+  197  vcgencmd get_mem
+  198  vcgencmd measure_volts
+  199  vcgencmd measure_clock
+  200  vcgencmd get_config
+  201  vcgencmd get_config int
+  202  vcgencmd display_power
+  203  vcgencmd sus_status
+  204  vcgencmd get_mem arm
+  205  vcgencmd get_mem gpu
+  206  cat /boot/config.txt
+  207  vcgencmd get_mem gpu
+  208  vcgencmd measure_volts
+  209  nano ~/.bashrc
+  210  . ~/.bashrc
+  211  nano ~/.bashrc
+  212  . ~/.bashrc
+  213  nano ~/.bashrc
+  214  . ~/.bashrc
+  215  exit
+  216  nano ~/.bashrc 
+  217  mii-tool 
+  218  which mii-tool 
+  219  ls -al /sbin/mii-tool
+  220  sudo chmod +s /sbin/mii-tool
+  221  ls -al /sbin/mii-tool
+  222  mii-tool 
+  223  nano ~/.bashrc 
+  224  lr
+  225  cp .bashrc teleinfo/bck.d/.bashrc.bck-2017.04.04-21.46
+  226  lsmod
+  227  systemctl --all
+  228  sudo systemctl disable swap.target
+  229  sudo systemctl disable dev-ttyprintk.device
+  230  sudo systemctl disable regenerate_ssh_host_keys.service
+  231  sudo systemctl disable 
+  232  systemctl --all | grep sound
+  233  systemctl --all | grep swap
+  234  sudo reboo
+  235  uptime
+  236  sudo shutdown -h now
+  237  mysql -uteleinfo -pti
+  238  top
+  239  exit
+  240  sudo systemctl stop teleinfo.service
+  241  ps -elf
+  242  ls
+  243  cd teleinfo/
+  244  lr
+  245  cp teleinfo.py teleinfo.py.bck-2017.04.09-19.36
+  246  lr
+  247  nano teleinfo.py
+  248  ./teleinfo.py
+  249  nano teleinfo.py
+  250  ./teleinfo.py
+  251  lr
+  252  cp teleinfo.py teleinfo.py.bck-2017.04.09-19.47
+  253  lr
+  254  mysql -uteleinfo -pti
+  255  ls
+  256  lr
+  257  grep mysqldump bck.d/history.bck-2016.06.26-21.22 
+  258  grep mysqldump bck.d/history.bck-2016.01.26-21.22 
+  259  grep mysqldump bck.d/.bash_history.bck-2017.04.01-09.55 
+  260  lr
+  261  cp mysqldump.log mysqldump.log.bck-2017.04.09-19.53
+  262  mysqldump --events=TRUE --no-data --databases D_TELEINFO -uroot -ppi >mysqldump.log
+  263  lr
+  264  cat mysqldump.log
+  265  ls
+  266  lr
+  267  cp D_TELEINFO-CREATE.sql D_TELEINFO-CREATE.sql.bck-2017.04.09-19.55
+  268  nano D_TELEINFO-CREATE.sql
+  269  lr
+  270  cp mysqldump.log mysqldump.log.bck-2017.04.09-19.56
+  271  cp D_TELEINFO-CREATE.sql D_TELEINFO-CREATE.sql.bck-2017.04.09-19.56
+  272  less D_TELEINFO-CREATE.sql
+  273  lr
+  274  ls *bck*
+  275  ls
+  276  ll
+  277  ls *.bck-*
+  278  mv *.bck-* bck.d/
+  279  lr
+  280  sudo systemctl start teleinfo.service
+  281  sudo shutdown -r now
+  282  cd teleinfo/
+  283  ll
+  284  lr
+  285  mysql -uteleinfo -pti
+  286  cat ~/.bashrc
+  287  vcgencmd get_mem cpu
+  288  vcgencmd get_mem vg
+  289  vcgencmd get_mem io
+  290  vcgencmd get_mem arm
+  291  vcgencmd get_mem arm | sed s/arm/cpu
+  292  vcgencmd get_mem arm | sed s/arm/cpu/g
+  293  nano ~/.bashrc 
+  294  mii-tool 
+  295  ethtool
+  296  sudo ethtool
+  297  sudo apt-get update
+  298  sudo apt-get install ethtool
+  299  sudo apt-get install git svn build-essentials python-dev python-smbus i2c-tools  
+  300  sudo apt-get install git svn build-essential python-dev python-smbus i2c-tools  
+  301  sudo apt-get install git subversion build-essential python-dev python-smbus i2c-tools  
+  302  ethtool
+  303  ethtool eth0
+  304  ethtool eth0 | grep -E "Speed|Duplex|Auto"
+  305  which ethtool
+  306  ls -al /sbin/ethtool
+  307  ls -al /sbin/ping
+  308  ls -al /bin/ping
+  309  ls -al /sbin/mii-tool 
+  310  sudo chmod +s /sbin/ethtool
+  311  ethtool eth0 | grep -E "Speed|Duplex|Auto"
+  312  ethtool eth0 | grep -E "Speed|Duplex|Auto-negotiation"
+  313  ethtool eth0 
+  314  man ethtool
+  315  ethtool -i eth0 -P 
+  316  ethtool -i eth0 -p
+  317  ethtool -i eth0
+  318  man ethtool
+  319  ethtool -P eth0
+  320  ifconfig
+  321  nano ~/.bashrc
+  322  . ~/.bashrc
+  323  nano ~/.bashrc
+  324  . ~/.bashrc
+  325  ethtool eth0 | grep -E "Speed|Duplex|Auto-negotiation" | cut -b 8-
+  326  ethtool eth0 | grep -E "Speed|Duplex|Auto-negotiation" | cut -d " " -b 8-
+  327  ethtool eth0 | grep -E "Speed|Duplex|Auto-negotiation" | cut -b 8-
+  328  ethtool eth0 | grep -E "Speed|Duplex|Auto-negotiation" | cut -b 2-
+  329  nano ~/.bashrc
+  330  . ~/.bashrc
+  331  cat .bashrc
+  332  ethtool -i eth0 | grep -E "driver:|version:|firmware-version:|bus-info:"
+  333  ethtool -i eth0 | grep -E "driver:|version:|firmware-version:|bus-info:" | cut -b 1-
+  334  nano ~/.bashrc
+  335  ifconfig 
+  336  ifconfig  eth0
+  337  ifconfig eth0 | grep -E "Link|inet|MTU|RX"
+  338  man grep
+  339  ifconfig eth0 | grep --color=never -E "Link|inet|MTU|RX"
+  340  ifconfig eth0 | grep --color=never -E "Link|inet|MTU|bytes"
+  341  nano ~/.bashrc 
+  342  . ~/.bashrc
+  343  lsmod
+  344  hwclock 
+  345  sudo hwclock 
+  346  sudo hwclock -D
+  347  dmesg
+  348  lsmod
+  349  ls
+  350  ll
+  351  date
+  352  history | grep cgi
+  353  cd /usr/lib/cgi-bin/
+  354  ll
+  355  cat teleinfo.cgi
+  356  ls
+  357  cp teleinfo.cgi teleinfo.cgi.bck
+  358  sudo cp teleinfo.cgi teleinfo.cgi.bck
+  359  ll
+  360  nano teleinfo.cgi
+  361  ls /proc
+  362  cat /proc/zoneinfo 
+  363  ls /proc
+  364  ls /proc/sys
+  365  ls /proc/driver/
+  366  ls /proc/misc
+  367  ls /proc/device
+  368  ls /proc/devices
+  369  ls /proc/device-tree
+  370  ls /proc/device-tree/clocks/
+  371  ls /proc/device-tree/serial-number 
+  372  cat /proc/device-tree/serial-number
+  373  cat /proc/device-tree/model 
+  374  cat /proc/device-tree/compatible 
+  375  cat /proc/device-tree/leds/name
+  376  nano ~/.bashrc
+  377  . ~/.bashrc
+  378  nano ~/.bashrc
+  379  . ~/.bashrc
+  380  nano ~/.bashrc
+  381  . ~/.bashrc
+  382  cd
+  383  ms
+  384  ls
+  385  cp .bashrc teleinfo/bck.d/.bashrc.bck-2017.04.22-18.10
+  386  cp .bash_history  teleinfo/bck.d/.bash_history.bck-2017.04.22-18.10
+  387  cd teleinfo/bck.d/
+  388  ll
+  389  lr
+  390  ls
+  391  python
+  392  ls
+  393  cd /usr/lib/cgi-bin/
+  394  ll
+  395  nano teleinfo.cgi
+  396  sudo nano teleinfo.cgi
+  397  ./teleinfo.cgi
+  398  python
+  399  sudo nano teleinfo.cgi
+  400  lr
+  401  ./teleinfo.cgi
+  402  sudo nano teleinfo.cgi
+  403  sudp cp teleinfo.cgi.bck teleinfo.cgi
+  404  lr
+  405  sudo cp teleinfo.cgi.bck teleinfo.cgi
+  406  lr
+  407  ls
+  408  less ~/.bash
+  409  less ~/.bashrc 
+  410  lr
+  411  histpry
+  412  history
+  413  exit
+  414  ls
+  415  mkdir tests
+  416  cd tests/
+  417  nano popen.py
+  418  ls
+  419  cat ../teleinfo/teleinfo.
+  420  cat ../teleinfo/teleinfo.py 
+  421  nano popen_test.py
+  422  chmod +x popen_test.py 
+  423  ./popen_test.py 
+  424  nano popen_test.py
+  425  ./popen_test.py 
+  426  nano popen_test.py
+  427  ./popen_test.py 
+  428  nano popen_test.py
+  429  ./popen_test.py 
+  430  nano popen_test.py
+  431  ./popen_test.py 
+  432  nano popen_test.py
+  433  ./popen_test.py 
+  434  nano popen_test.py
+  435  ./popen_test.py 
+  436  cat popen_test.py 
+  437  cd /usr/lib/cgi-bin/
+  438  nano teleinfo.cgi
+  439  sudo nano teleinfo.cgi
+  440  date
+  441  env
+  442  cat teleinfo.cgi
+  443  env
+  444  date
+  445  man date
+  446  ls
+  447  cp teleinfo.cgi ~/teleinfo/
+  448  exit
+  449  lr
+  450  cat teleinfo/teleinfo.py 
+  451  cd te
+  452  cd teleinfo/
+  453  ll
+  454  cp teleinfo.py teleinfo.py.bck-2017.05.03-21.27
+  455  lr
+  456  mysql -uteleinfo -pti
+  457  sudo systemctl status teleinfo.service
+  458  sudo systemctl stop teleinfo.service
+  459  cat teleinfo.py
+  460  ./teleinfo.py
+  461  sudo systemctl start teleinfo.service
+  462  lr
+  463  cp teleinfo.py teleinfo.py-2017.05.03-22.15
+  464  lr
+  465  mv teleinfo.py-2017.05.03-22.15 teleinfo.py.bck-2017.05.03-22.15
+  466  lr
+  467  sudo systemctl status teleinfo.service
+  468  exit
+  469  lr
+  470  ls tests/
+  471  cat tests/popen_test.py 
+  472  cd teleinfo/
+  473  lr
+  474  cat teleinfo.
+  475  cat teleinfo.py
+  476  lr
+  477  cat teleinfo.sh 
+  478  cat start_teleinfo.sh 
+  479  lr
+  480  cat systemd-teleinfo.service 
+  481  lr
+  482  rm start_teleinfo.sh 
+  483  cat teleinfo.
+  484  cat teleinfo.sh 
+  485  cat D_TELEINFO-RESET.sql
+  486  lr
+  487  cat evtCleanOldHisto-RESET.sql
+  488  lr
+  489  cat evtCleanOldHisto-CREATE.sql 
+  490  lr
+  491  cat tggMinMaxHisto-CREATE.sql
+  492  lr
+  493  mv D_TELEINFO-CREATE.sql D_TELEINFO.sql
+  494  lr
+  495  mv tggMinMaxHisto-CREATE.sql tggMinMaxHisto.sql
+  496  ls
+  497  lr
+  498  mv evtCleanOldHisto-CREATE.sql evtCleanOldHisto.sql
+  499  lr
+  500  mkdir os-setup
+  501  mkdir db-setup
+  502  lr
+  503  mkdir tests
+  504  mkdir tools
+  505  mkdir docs
+  506  lr
+  507  mv tablesize.sql tools
+  508  mv mysql-conf.d-binding.cnf os-setup/
+  509  mv tggMinMaxHisto.sql db-setup/
+  510  mv D_TELEINFO-RESET.sql evtCleanOldHisto.sql db-setup/
+  511  lr
+  512  ls
+  513  ll
+  514  lr
+  515  mv mysql-conf.d-event_scheduler.cnf mysql-conf.d-heap_table_size.cnf systemd-teleinfo.service os-setup/
+  516  lr
+  517  mv mysqldump.log db-setup
+  518  ls
+  519  ll
+  520  mv D_TELEINFO.sql evtCleanOldHisto-RESET.sql db-setup
+  521  lr
+  522  mv teleinfo.py.bck-2017.05.03-21.27 teleinfo.py.bck-2017.05.03-22.15 bck.d/
+  523  lr
+  524  cd bck.d/
+  525  ll
+  526  cat teleinfo.py.sql.bck-2017.03.29-22.28
+  527  mv teleinfo.py.sql.bck-2017.03.29-22.28 teleinfo.py.bck-2017.03.29-22.28
+  528  lr
+  529  find -name "*sql*"
+  530  find -name "*sql*" -exec mv {} ../db-setup/ \;
+  531  lr
+  532  ls
+  533  find -name "*cmdline*"
+  534  find -name "*cmdline*" -exec mv {} ../os-setup/ \;
+  535  ll
+  536  ls
+  537  find -name "*config*" -exec mv {} ../os-setup/ \;
+  538  ll
+  539  ls
+  540  mv systemd-teleinfo.service.bck-2017.03.29-19.19 ../os-setup/
+  541  lr
+  542  ls
+  543  mv rc.local.bck-2017.03.29-18.41 ../os-setup/
+  544  l
+  545  ll
+  546  mv fstab.bck-2017.04.01-09.56 ../os-setup/
+  547  ll
+  548  cat start_teleinfo.sh.bck-2017.03.29-17.40
+  549  ls
+  550  mv start_teleinfo.sh.bck-2017.03.29-17.40 teleinfo.sh.bck-2017.03.29-17.40
+  551  mv start_teleinfo.sh.bck-2017.03.29-18.15 teleinfo.sh.bck-2017.03.29-18.15
+  552  ll
+  553  ls
+  554  ll
+  555  ls
+  556  la
+  557  find -name "*bash*"
+  558  find -name "*bash*" -exec mv {} ../tools \;
+  559  ll
+  560  ls
+  561  cd ..
+  562  ll
+  563  ls bck.d/
+  564  cd bck.d/
+  565  mv history.bck-2016.0* ../tools
+  566  ll
+  567  ls
+  568  cd 
+  569  cd te
+  570  cd teleinfo/
+  571  ls
+  572  ll
+  573  cd db-setup/
+  574  ll
+  575  lr
+  576  mkdir bck.d
+  577  ls
+  578  find -name "*bck"
+  579  find -name "*bck*"
+  580  find -type f -name "*bck*"
+  581  find -type f -name "*bck*" -exec mv {} bck.d/ \;
+  582  ls
+  583  ll
+  584  cd ..
+  585  ls
+  586  cd os-setup/
+  587  ll
+  588  mkdir bck.d
+  589  ls
+  590  systemd status teleinfo.service
+  591  systemctl status teleinfo.service
+  592  ls
+  593  ll
+  594  mv systemd-teleinfo.service.bck-2017.03.29-19.19 lib-systemd-system-teleinfo.service.bck-2017.03.29-19.19
+  595  mv systemd-teleinfo.service lib-systemd-system-teleinfo.service.bck-2017.04.02-12.02
+  596  ll
+  597  mv rc.local.bck-2017.03.29-18.41 etc-rc.local.bck-2017.03.29-18.41
+  598  ll
+  599  mv fstab.bck-2017.04.01-09.56 etc-fstab.bck-2017.04.01-09.56
+  600  ll
+  601  ls /etc/mysql/
+  602  ls /etc/mysql/conf.d/
+  603  mv mysql-conf.d-binding.cnf etc-mysql-conf.d-binding.cnf.bck-2017.03.12-20.44
+  604  mv mysql-conf.d-event_scheduler.cnf etc-mysql-conf.d-event_scheduler.cnf-2017.03.22-21.32
+  605  mv mysql-conf.d-heap_table_size.cnf etc-mysql-conf.d-heap_table_size.cnf-2017.03.28-23.30
+  606  ll
+  607  find -type f -maxdepth 1
+  608  find -type f -maxdepth 1 -name "config*"
+  609  find -maxdepth 1 -type f -name "config*" 
+  610  find -maxdepth 1 -type f -name "config*" -exec mv {} boot-{} \;
+  611  ll
+  612  mv cmdline.txt.bck.2016.01.17-21.45 boot-cmdline.txt.bck.2016.01.17-21.45
+  613  mv cmdline.txt.bck.2016.01.17-22.47 boot-cmdline.txt.bck.2016.01.17-22.47
+  614  mv cmdline.txt.bck.2016.06.26-21.24 boot-cmdline.txt.bck.2016.06.26-21.24
+  615  ll
+  616  mv config.txt.bck.2016.01.17-21.45 boot-config.txt.bck.2016.01.17-21.45
+  617  ll
+  618  mv config.txt.bck.2016.01.17-22.47 boot-config.txt.bck.2016.01.17-22.47
+  619  ll
+  620  mv config.txt.bck.2016.06.26-21.24 boot-config.txt.bck.2016.06.26-21.24
+  621  ll
+  622  mv * bck.d/
+  623  ll
+  624  ls bck.d/
+  625  cd ..
+  626  ls
+  627  ls db-setup/
+  628  ls tests/
+  629  ls tools/
+  630  ll
+  631  ll tools
+  632  ls tools
+  633  lla tols
+  634  ls -la tools
+  635  lr
+  636  ls -altrl
+  637  ls -altr
+  638  lr
+  639  find
+  640  ll
+  641  cd tools
+  642  ll
+  643  touch bckdate.sh
+  644  chmod bckdate.sh 
+  645  chmod +x bckdate.sh 
+  646  ll
+  647  man date
+  648  date +Y
+  649  date +%Y
+  650  date +%Y-%m
+  651  date +%Y-%M
+  652  date +%Y-%m-%M
+  653  date +%Y-%m-%d
+  654  date +%Y.%m.%d
+  655  date +%Y.%m.%d-%H.%M
+  656  date +%Y.%m.%d-%H.%M.%s
+  657  date +%Y.%m.%d-%H.%M.%S
+  658  nano bckdate.sh
+  659  ./bckdate.sh 
+  660  nano bckdate.sh
+  661  ./bckdate.sh 
+  662  nano bckdate.sh
+  663  ./bckdate.sh 
+  664  nano bckdate.sh
+  665  ./bckdate.sh 
+  666  nano bckdate.sh
+  667  ./bckdate.sh 
+  668  nano bckdate.sh
+  669  ./bckdate.sh 
+  670  ./bckdate.sh toto
+  671  nano bckdate.sh
+  672  ./bckdate.sh toto
+  673  ./bckdate.sh backdata
+  674  ./bckdate.sh backdate.sh
+  675  ./bckdate.sh bckdate.sh
+  676  ./bckdate.sh ~/teleinfo/tools/bckdate.sh
+  677  ./bckdate.sh ~/teleinfo/tosols/bckdate.sh
+  678  nano bckdate.sh
+  679  ./bckdate.sh ~/teleinfo/tosols/bckdate.sh
+  680  ./bckdate.sh ~/teleinfo/tools/bckdate.sh
+  681  dirname ~/teleinfo/tools/bckdate.sh
+  682  basename ~/teleinfo/tools/bckdate.sh
+  683  man dirname
+  684  nano bckdate.sh
+  685  ./bckdate.sh ~/teleinfo/tools/bckdate.sh
+  686  nano bckdate.sh
+  687  ./bckdate.sh ~/teleinfo/tools/bckdate.sh
+  688  nano bckdate.sh
+  689  ./bckdate.sh ~/teleinfo/tools/bckdate.sh
+  690  nano bckdate.sh
+  691  ./bckdate.sh ~/teleinfo/tools/bckdate.sh
+  692  nano bckdate.sh
+  693  ./bckdate.sh ~/teleinfo/tools/bckdate.sh
+  694  nano bckdate.sh
+  695  ./bckdate.sh ~/teleinfo/tools/bckdate.sh
+  696  ./bckdate.sh ~/teleinfo/tools/bckdate.sh .
+  697  ls
+  698  mkdir bck.d
+  699  ./bckdate.sh ~/teleinfo/tools/bckdate.sh ./bck.d/
+  700  nano bckdate.sh
+  701  ./bckdate.sh ~/teleinfo/tools/bckdate.sh ./bck.d
+  702  nano bckdate.sh
+  703  ./bckdate.sh ~/teleinfo/tools/bckdate.sh ./bck.d
+  704  ls
+  705  ls bck.d/
+  706  ll bck.d/
+  707  cat home-pi-teleinfo-tools-bckdate.sh.bck-2017.05.04-21.50.02
+  708  cat bck.d/home-pi-teleinfo-tools-bckdate.sh.bck-2017.05.04-21.50.02
+  709  nano bckdate.sh
+  710  ./bckdate.sh
+  711  nano bckdate.sh
+  712  ./bckdate.sh
+  713  nano bckdate.sh
+  714  ./bckdate.sh
+  715  nano bckdate.sh
+  716  ./bckdate.sh
+  717  nano bckdate.sh
+  718  ./bckdate.sh
+  719  ./bckdate.sh bckdate.sh bck.d
+  720  ./bckdate.sh ~/teleinfo/tools/bckdate.sh ./bck.d
+  721  man dirname
+  722  man find
+  723  ls
+  724  man readlink
+  725  readlink bckdate.sh 
+  726  readlink -f bckdate.sh 
+  727  nano bckdate.sh
+  728  ./bckdate.sh bckdate.sh bck.d
+  729  nano bckdate.sh
+  730  ll
+  731  ls bck
+  732  ls bck.d/
+  733  rm bck.d/*
+  734  ll
+  735  ./bckdate.sh bckdate.sh bck.d
+  736  ll
+  737  cd ..
+  738  ll
+  739  tools/bckdate.sh /etc/fstab os-setup/bck.d/
+  740  ls os-setup/bck.d/
+  741  tools/bckdate.sh /etc/modules os-setup/bck.d/
+  742  tools/bckdate.sh /etc/modprobe.d/unusedstuff.conf os-setup/bck.d/
+  743  cat /etc/modprobe.d/ipv6.conf 
+  744  lsmod
+  745  cat os-setup/bck.d//etc-modprobe.d-unusedstuff.conf.bck-2017.05.04-22.09.28
+  746  ll
+  747  cd tools
+  748  ll
+  749  nano bckdate.sh
+  750  bckdate.sh bckdate.sh bck.d
+  751  ./bckdate.sh bckdate.sh bck.d
+  752  ll
+  753  cd bck.d/
+  754  ll
+  755  mv home-pi-teleinfo-tools-bckdate.sh.bck-2017.05.04-21.59.53 home-pi-teleinfo-tools-bckdate.sh.bck-2017.05.04-21.59
+  756  ll
+  757  diff home-pi-teleinfo-tools-bckdate.sh.bck-2017.05.04-21.59 home-pi-teleinfo-tools-bckdate.sh.bck-2017.05.04-22.11
+  758  ll
+  759  cd ..
+  760  ll
+  761  ls ../..
+  762  ls -altr../..
+  763  ls -altr ../..
+  764  cat history.bck-2016.01.28-19.34
+  765  ll
+  766  history > history

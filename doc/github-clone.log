@@ -1,0 +1,8 @@
+git clone https://github.com/adafruit/Adafruit-BMP085-Library.git
+git clone https://github.com/adafruit/Adafruit_Python_BME280.git
+git clone https://github.com/adafruit/Adafruit_Python_BMP.git
+git clone https://github.com/adafruit/Adafruit_Python_DHT.git
+git clone https://github.com/adafruit/Adafruit_Python_GPIO.git
+git clone https://github.com/BoschSensortec/BME280_driver.git
+git clone https://github.com/BoschSensortec/BMP180_driver.git
+git clone https://github.com/BoschSensortec/BMP280_driver.git

@@ -1,0 +1,285 @@
+uname -a
+ifconfig
+df
+apt-get update
+sudo apt-get update
+sudo apt-get upgrade
+sudo raspi-config 
+sudo shutdown -r now
+uname -a
+free
+sudo apt-get update
+apt-get install rpi-update
+sudo apt-get install rpi-update
+sudo rpi-update 
+sudo shutdown -r now
+uname -a
+free
+pwd
+mkdir teleinfo
+cd teleinfo/
+lr
+ls
+lr
+ls
+lsmod
+cd /boot
+ls
+ls overlays/
+ls
+cp cmdline.txt cmdline.txt.ORIGINAL
+sudo cp cmdline.txt cmdline.txt.ORIGINAL
+sudo cp config.txt config.txt.ORIGINAL
+lr
+ls
+nano cmdline.txt
+sudo nano cmdline.txt
+ls
+sudo nano config.txt
+ls
+sudo shutdown -r now
+lsmod
+sudo su -
+grep service teleinfo/bck.d/.bash_history.bck-2017.03.07-21.55 
+sudo systemctl disable dphys-swapfile.service
+sudo dphys-swapfile 
+sudo dphys-swapfile uninstall
+sudo swapoff
+sudo swapoff -a
+cat teleinfo/bck.d/.bashrc.bck-2017.04.01-10.00 
+nano .bashrc
+sudo shutdown -r now
+cd /boot
+lsmod
+ls
+cat cmdline.txt
+cat config.txt
+ls
+sudo cp config.txt config.txt.bck-2017.04.01-23.25
+sudo cp cmdline.txt cmdline.txt.bck-2017.04.01-23.25
+ls
+cat /etc/fstab 
+cp /etc/fstab /etc/fstab.ORIGINAL
+sudo cp /etc/fstab /etc/fstab.ORIGINAL
+cat ~/teleinfo/bck.d/fstab.bck-2017.04.01-09.56 
+sudo cp  ~/teleinfo/bck.d/fstab.bck-2017.04.01-09.56 /etc/fstab
+cat /etc/fstab 
+cat ~/teleinfo/bck.d/rc.local.bck-2017.03.29-18.41 
+sudo nano /etc/rc.local 
+cat /etc/rc.local
+lr
+free
+mount
+mount | grep tmpfs
+cat /etc/fstab
+ls /run
+cat /etc/fstab
+sudo shutdown -r now
+ls /dev
+cat teleinfo/bck.d/cmdline.txt.bck.2016.0
+cat teleinfo/bck.d/cmdline.txt.bck.2016.06.26-21.24 
+sudo raspi-config 
+lsmod
+ls /dev
+cat /boot/config.txt
+cd /boot
+ls
+cat cmdline.txt
+sudo cp config.txt config.txt.bck-2017.04.01-23.40
+lr
+ls
+cat config.txt
+cat /dev/ttyAMA0 
+ls
+sudo apt-get install apache2
+ps -elf
+ls /var/log/
+sudo apt-get install mysql python-mysql
+cd
+grep install teleinfo/bck.d/.bash_history.bck-2017.04.01-09.55 
+sudo apt-get install  mysql-server  python-mysqldb python-serial
+cd teleinfo/
+ll
+mysql -uroot -ppi
+ls
+cat D_TELEINFO-CREATE.sql
+mysql -uroot -ppi < D_TELEINFO-CREATE.sql 
+cat bck.d/.mysql_history.bck-2017.04.01-09.55 
+cat bck.d/.mysql_history.bck-2017.04.01-09.55  | grep USER
+cat bck.d/.mysql_history.bck-2017.04.01-09.55  | grep user
+mysql -uroot -ppi
+cat bck.d/.mysql_history.bck-2017.04.01-09.55  | grep grant
+cat bck.d/.mysql_history.bck-2017.04.01-09.55  | grep priv
+cat bck.d/.mysql_history.bck-2017.04.01-09.55  | grep PRIV
+mysql -uroot -ppi
+mysql -uteleinfo -pti
+lr
+cd ..
+ls
+lr
+sudo cp teleinfo/mysql-conf.d-binding.cnf /etc/mysql/conf.d/binding.cnf
+sudo cp teleinfo/mysql-conf.d-event_scheduler.cnf /etc/mysql/conf.d/event_scheduler.cnf
+sudo cp teleinfo/mysql-conf.d-heap_table_size.cnf /etc/mysql/conf.d/heap_table_size.cnf
+ls
+pwd
+ls
+cd teleinfo/
+ls
+lr
+mysql -uteleinfo -pti < D_TELEINFO-RESET.sql
+cp teleinfo.cgi /usr/lib/cgi-bin/
+sudo cp teleinfo.cgi /usr/lib/cgi-bin/
+ls -al /usr/lib/cgi-bin/teleinfo.cgi 
+sudo chmod +x /usr/lib/cgi-bin/teleinfo.cgi
+ls
+cd /etc/apache2/
+ls
+ls mods-enabled/
+ls mods-available/
+cat mods-available/cgi
+cat mods-available/cgi.load 
+a2enmod 
+sudo a2enmod cgi
+sudo a2enconf 
+ls
+ls mods-enabled
+ls apache2.conf  conf-available  conf-enabled  envvars  magic  mods-available  mods-enabled  ports.conf  sites-available  sites-enabled
+ls mods-available/
+sudo shutdown -r now
+cd teleinfo/
+ls
+mysql -uteleinfo -pti < D_TELEINFO-RESET.sql
+lsmod
+ls
+sudo shutdown -h now
+lsmod
+cd teleinfo/
+ls
+lr
+cat systemd-teleinfo.service
+nano systemd-teleinfo.service
+lr
+cat teleinfo.sh
+nano teleinfo.sh
+ls
+lr
+cat teleinfo.py 
+lr
+cat bck.d/.bash_history.bck-2017.04.01-09.55 
+grep system bck.d/.bash_history.bck-2017.04.01-09.55 
+cat systemd-teleinfo.service 
+sudo cp systemd-teleinfo.service /lib/systemd/system/
+sudo mv /lib/systemd/system/systemd-teleinfo.service /lib/systemd/system/teleinfo.service
+sudo chmod 644 /lib/systemd/system/teleinfo.service 
+sudo systemctl enable teleinfo.service
+sudo systemctl start teleinfo.service
+sudo systemctl status teleinfo.service
+cd /home/pi/teleinfo/
+lr
+chmod +x teleinfo.sh teleinfo.py teleinfo.cgi
+lr
+sudo systemctl status teleinfo.service
+sudo systemctl start teleinfo.service
+sudo systemctl status teleinfo.service
+mysql -uteleinfo -pti
+sudo shutdown -r now
+vcgencmd 
+vcgencmd measure_temp
+exit
+vcgencmd measure_temp
+vcgencmd help
+man vcgencmd
+vcgencmd commands
+vcgencmd pm_get_status
+vcgencmd pm_show_stats
+vcgencmd version
+vcgencmd get_lcd_info
+vcgencmd get_mem
+vcgencmd measure_volts
+vcgencmd measure_clock
+vcgencmd get_config
+vcgencmd get_config int
+vcgencmd display_power
+vcgencmd sus_status
+vcgencmd get_mem arm
+vcgencmd get_mem gpu
+cat /boot/config.txt
+vcgencmd get_mem gpu
+vcgencmd measure_volts
+nano ~/.bashrc
+. ~/.bashrc
+nano ~/.bashrc
+. ~/.bashrc
+nano ~/.bashrc
+. ~/.bashrc
+exit
+nano ~/.bashrc 
+mii-tool 
+which mii-tool 
+ls -al /sbin/mii-tool
+sudo chmod +s /sbin/mii-tool
+ls -al /sbin/mii-tool
+mii-tool 
+nano ~/.bashrc 
+lr
+cp .bashrc teleinfo/bck.d/.bashrc.bck-2017.04.04-21.46
+lsmod
+systemctl --all
+sudo systemctl disable swap.target
+sudo systemctl disable dev-ttyprintk.device
+sudo systemctl disable regenerate_ssh_host_keys.service
+sudo systemctl disable 
+systemctl --all | grep sound
+systemctl --all | grep swap
+sudo reboo
+uptime
+sudo shutdown -h now
+mysql -uteleinfo -pti
+top
+exit
+sudo systemctl stop teleinfo.service
+ps -elf
+ls
+cd teleinfo/
+lr
+cp teleinfo.py teleinfo.py.bck-2017.04.09-19.36
+lr
+nano teleinfo.py
+./teleinfo.py
+nano teleinfo.py
+./teleinfo.py
+lr
+cp teleinfo.py teleinfo.py.bck-2017.04.09-19.47
+lr
+mysql -uteleinfo -pti
+ls
+lr
+grep mysqldump bck.d/history.bck-2016.06.26-21.22 
+grep mysqldump bck.d/history.bck-2016.01.26-21.22 
+grep mysqldump bck.d/.bash_history.bck-2017.04.01-09.55 
+lr
+cp mysqldump.log mysqldump.log.bck-2017.04.09-19.53
+mysqldump --events=TRUE --no-data --databases D_TELEINFO -uroot -ppi >mysqldump.log
+lr
+cat mysqldump.log
+ls
+lr
+cp D_TELEINFO-CREATE.sql D_TELEINFO-CREATE.sql.bck-2017.04.09-19.55
+nano D_TELEINFO-CREATE.sql
+lr
+cp mysqldump.log mysqldump.log.bck-2017.04.09-19.56
+cp D_TELEINFO-CREATE.sql D_TELEINFO-CREATE.sql.bck-2017.04.09-19.56
+less D_TELEINFO-CREATE.sql
+lr
+ls *bck*
+ls
+ll
+ls *.bck-*
+mv *.bck-* bck.d/
+lr
+sudo systemctl start teleinfo.service
+sudo shutdown -r now
+cd teleinfo/
+ll
+lr
+mysql -uteleinfo -pti

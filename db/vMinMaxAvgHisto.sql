@@ -1,0 +1,22 @@
+CREATE OR REPLACE VIEW V_TELEINFO_MINAVGMAX AS
+
+SELECT
+
+MIN(PAPP) as 'Puiss. MIN',
+MIN(IINST) as 'Intens. MIN',
+MIN(TEMPERATURE) as 'Temp. MIN',
+MIN(RH) as 'RH. MIN',
+
+ROUND(AVG(PAPP)) as 'Puiss. MOY',
+ROUND(AVG(IINST)) as 'Intens. MOY',
+ROUND(AVG(TEMPERATURE)) as 'Temp. MOY',
+ROUND(AVG(RH)) as 'RH. MOY',
+
+MAX(PAPP) as 'Puiss. MAX',
+MAX(IINST) as 'Intens. MAX',
+MAX(TEMPERATURE) as 'Temp. MAX',
+MAX(RH) as 'RH. MAX',
+
+DATE(TS) as 'TS'
+
+from T_TELEINFO_HISTO group by DATE(TS) ;

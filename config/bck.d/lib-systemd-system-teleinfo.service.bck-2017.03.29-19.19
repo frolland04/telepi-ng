@@ -1,0 +1,10 @@
+[Unit]
+Description=TeleInfo ERDF Data Collection Service
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/home/pi/teleinfo.sh
+
+[Install]
+WantedBy=multi-user.target
