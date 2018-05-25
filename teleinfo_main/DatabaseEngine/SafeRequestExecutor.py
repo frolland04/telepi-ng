@@ -22,9 +22,15 @@ file = __file__.split('\\')[-1]
 
 
 class SafeRequestExecutor:
+    USER_NAME = 'teleinfo'
+    USER_PASSWORD = 'ti'
+    DATABASE_NAME = 'D_TELEINFO'
+
     @Debug.call_log
     def __init__(self, pool=None):
-        self.connection = MySQLdb.connect('localhost', 'teleinfo', 'ti', 'D_TELEINFO')
+        print(file + ':', 'DATABASE_NAME=' + self.DATABASE_NAME)
+
+        self.connection = MySQLdb.connect('localhost', self.USER_NAME, self.USER_PASSWORD, self.DATABASE_NAME)
         self.engine = self.connection.cursor()
         self.mutex = threading.RLock()
 

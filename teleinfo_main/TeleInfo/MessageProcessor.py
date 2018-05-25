@@ -13,11 +13,15 @@ file = __file__.split('\\')[-1]
 
 
 class MessageProcessor(threading.Thread):
+    MESSAGE_PORT_NAME = 'COM6'  # port='/dev/ttyAMA0' pour Linux
+
     @Debug.call_log
     def __init__(self, ex):
         # Ouverture du port série
+        print(file + ':', 'MESSAGE_PORT_NAME=' + self.MESSAGE_PORT_NAME)
+
         self.si = serial.Serial(
-            port='COM6',  # port='/dev/ttyAMA0'
+            port=self.MESSAGE_PORT_NAME,
             baudrate=1200,
             parity=serial.PARITY_EVEN,
             stopbits=serial.STOPBITS_ONE,
