@@ -26,8 +26,8 @@ import RunningLcd
 file = __file__.split('/')[-1]
 
 
-print("File", __file__)
-print("Runtime", sys.version)
+print("File:", file)
+print("Runtime:", sys.version)
 print("**** Bonjour tout le monde ! ****")
 
 # =============================
@@ -51,6 +51,7 @@ try:
     dex = DatabaseEngine.SafeRequestExecutor()
 except:
     print("Base de données indisponible!")
+    lcd.items = {'ERREUR': 'Accès BDD', 'Démarrage': 'impossible'}
     sys.exit(-2)
 
 # Tentative de connexion au port série
@@ -60,6 +61,7 @@ try:
     ti = TeleInfo.MessageProcessor(dex)
 except:
     print("Entrée série indisponible!")
+    lcd.items = {'ERREUR': 'Accès Téléinfo', 'Démarrage': 'impossible'}
     sys.exit(-3)
 
 # Température et humidité relative relevées périodiquement
@@ -69,6 +71,7 @@ try:
     thp = TemperatureHumidityProvider.TemperatureHumidityProvider(dex)
 except:
     print("Mesure de l'environnement indisponible!")
+    lcd.items = {'ERREUR': 'Accès T/H', 'Démarrage': 'impossible'}
     sys.exit(-4)
 
 # Boucle de réception des messages
@@ -78,10 +81,7 @@ except:
 # et de l'approvisionnement des premières valeurs
 time.sleep(30)
 
-lcddisp_items = lcd.items
-lcddisp_items.clear()
-
-teleinfo_tags = ti.tags
+lcd.items.clear()
 
 stop = False
 while not stop:
@@ -93,8 +93,8 @@ while not stop:
         h = thp.humidity
 
         # Appliquer à l'affichage
-        lcddisp_items['T'] = t
-        lcddisp_items['H'] = h
+        lcd.items['T'] = t
+        lcd.items['H'] = h
 
         # Appliquer à la base de données
         # ...

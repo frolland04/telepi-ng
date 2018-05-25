@@ -37,17 +37,21 @@ class RunningLcdOutput:
         print("** Affichage **")
 
         if not len(self.__items) == 0:
-            # A condition que la liste ne soit pas vide, on en affiche son contenu
-            # Affiche l'item à l'index 'self.item'
-            item = list(self.__items)[self.itemIndex]
-            print(item, '+>', self.__items[item])
+            try:
+                # A condition que la liste ne soit pas vide, on en affiche son contenu
+                # Affiche l'item à l'index 'self.item'
+                item = list(self.__items)[self.itemIndex]
+                print(item, self.__items[item])
 
-            # On programme l'item suivant pour le tour suivant
-            self.itemIndex += 1
-            if self.itemIndex >= len(self.__items):
+                # On programme l'item suivant pour le tour suivant
+                self.itemIndex += 1
+                if self.itemIndex >= len(self.__items):
+                    self.itemIndex = 0
+            except:
+                print(file + ":", "Ooops, il est difficile d'accéder à la liste des éléments à afficher!")
                 self.itemIndex = 0
         else:
-            print('vide')
+            print(file + ":", 'La liste des éléments à afficher est vide.')
             self.itemIndex = 0
 
         if not self.end:
@@ -58,12 +62,12 @@ class RunningLcdOutput:
     @property
     def items(self):
         """I'm the 'items' property."""
-        print("items.get")
+        print("RunningLcdOutput.items@get")
         return self.__items
 
     @items.setter
     def items(self, val):
-        print("items.set")
+        print("RunningLcdOutput.items@set")
         self.__items = val
 
     @Debug.call_log

@@ -7,8 +7,16 @@ import Debug  # Besoin de mon décorateur "call_log"
 import DatabaseEngine
 
 # *** Notes sur "mysqlclient" ***
-# Nécessite python3, python3-pip, python3-dev et libmysqlclient-dev
-# + pip3 install mysqlclient => installation à contrôler avec pip3 list
+# Nécessite sur le système : python3, python3-pip, python3-dev et libmysqlclient-dev
+# Nécessite dans python : mysqlclient
+# python -m pip install --upgrade pip
+# python -m pip install mysqlclient
+
+# *** Configuration de l'utilisateur sous MySQL ***
+# create user teleinfo ;
+# alter user teleinfo identified by "ti" ;
+# create database D_TELEINFO ;
+# grant all on D_TELEINFO.* to teleinfo ;
 
 file = __file__.split('\\')[-1]
 
@@ -16,7 +24,7 @@ file = __file__.split('\\')[-1]
 class SafeRequestExecutor:
     @Debug.call_log
     def __init__(self, pool=None):
-        self.connection = MySQLdb.connect('localhost', 'teleinfo', 'ti', 'D_TELEINFO_TEST')
+        self.connection = MySQLdb.connect('localhost', 'teleinfo', 'ti', 'D_TELEINFO')
         self.engine = self.connection.cursor()
         self.mutex = threading.RLock()
 
