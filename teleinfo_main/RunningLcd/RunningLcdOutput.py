@@ -65,7 +65,6 @@ class RunningLcdOutput:
     def items(self, val):
         print("RunningLcdOutput.items@set")
         self.__items = val
-        self.itemIndex = 0  # Remise à zéro de l'index courant?
 
     @Debug.call_log
     def __enter__(self):
