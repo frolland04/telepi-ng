@@ -19,8 +19,8 @@ class TemperatureHumidityProvider:
         self.ex = ex
 
         # Dernières mesures
-        self.__humidity = 0
-        self.__temperature = 0
+        self.__humidity = 0.0
+        self.__temperature = 0.0
 
         # Timer de déclenchement des mesures et condition d'arrêt
         self.t = threading.Timer(self.TIMER_PERIOD_SECS, self.run)
@@ -36,8 +36,8 @@ class TemperatureHumidityProvider:
     @Debug.call_log
     def run(self):
         print("** Mesure de l'environnement **")
-        self.__humidity += 1
-        self.__temperature += 1.1
+        self.__humidity += 1.0
+        self.__temperature += 1.2
 
         if not self.end:
             # On relance pour une prochaine occurrence
@@ -47,13 +47,13 @@ class TemperatureHumidityProvider:
     @property
     def humidity(self):
         """I'm the 'humidity' property."""
-        print("humidity.get")
+        print("TemperatureHumidityProvider.humidity@get")
         return self.__humidity
 
     @property
     def temperature(self):
         """I'm the 'temperature' property."""
-        print("temperature.get")
+        print("TemperatureHumidityProvider.temperature@get")
         return self.__temperature
 
     @Debug.call_log

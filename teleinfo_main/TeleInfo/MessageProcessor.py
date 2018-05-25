@@ -253,7 +253,7 @@ class MessageProcessor(threading.Thread):
     @property
     def tags(self):
         """I'm the 'tags' property."""
-        print("tags.get")
+        print("MessageProcessor.tags@get")
         return self.__tags
 
     @Debug.call_log

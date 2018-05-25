@@ -81,7 +81,8 @@ except:
 # et de l'approvisionnement des premières valeurs
 time.sleep(30)
 
-lcd.items.clear()
+disp = lcd.items
+disp.clear()
 
 stop = False
 while not stop:
@@ -93,8 +94,8 @@ while not stop:
         h = thp.humidity
 
         # Appliquer à l'affichage
-        lcd.items['T'] = t
-        lcd.items['H'] = h
+        disp['T'] = t
+        disp['H'] = h
 
         # Appliquer à la base de données
         # ...
