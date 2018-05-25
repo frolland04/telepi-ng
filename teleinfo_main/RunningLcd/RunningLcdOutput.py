@@ -37,18 +37,14 @@ class RunningLcdOutput:
         print("** Affichage **")
 
         if not len(self.__items) == 0:
-            try:
-                # A condition que la liste ne soit pas vide, on en affiche son contenu
-                # Affiche l'item à l'index 'self.item'
-                item = list(self.__items)[self.itemIndex]
-                print(item, self.__items[item])
+            # A condition que la liste ne soit pas vide, on en affiche son contenu
+            # Affiche l'item à l'index 'self.item'
+            item = list(self.__items)[self.itemIndex]
+            print(item, self.__items[item])
 
-                # On programme l'item suivant pour le tour suivant
-                self.itemIndex += 1
-                if self.itemIndex >= len(self.__items):
-                    self.itemIndex = 0
-            except:
-                print(file + ":", "Ooops, il est difficile d'accéder à la liste des éléments à afficher!")
+            # On programme l'item suivant pour le tour suivant
+            self.itemIndex += 1
+            if self.itemIndex >= len(self.__items):
                 self.itemIndex = 0
         else:
             print(file + ":", 'La liste des éléments à afficher est vide.')
@@ -69,6 +65,7 @@ class RunningLcdOutput:
     def items(self, val):
         print("RunningLcdOutput.items@set")
         self.__items = val
+        self.itemIndex = 0  # Remise à zéro de l'index courant?
 
     @Debug.call_log
     def __enter__(self):
