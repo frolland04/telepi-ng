@@ -11,7 +11,7 @@ file = __file__.split('\\')[-1]
 
 
 class RunningLcdOutput:
-    TIMER_PERIOD_SECS = 2
+    TIMER_PERIOD_SECS = 3
 
     @Debug.call_log
     def __init__(self):

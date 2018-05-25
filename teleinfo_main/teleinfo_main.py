@@ -4,8 +4,8 @@
 
 # *** Dépendances ***
 import sys
-import threading
 import time
+import datetime
 
 # *** Sous-modules ***
 import DatabaseEngine
@@ -81,8 +81,11 @@ except:
 # et de l'approvisionnement des premières valeurs
 time.sleep(30)
 
+# On efface l'écran LCD
 disp = lcd.items
 disp.clear()
+
+tags = ti.tags
 
 stop = False
 while not stop:
@@ -90,12 +93,23 @@ while not stop:
         print(">>> go")
 
         # Récupérer les données et les transmettre là où c'est nécessaire
-        t = thp.temperature
-        h = thp.humidity
+        # Depuis l'horloge système : la date et l'heure
+        sysclock = datetime.datetime.now()
+
+        # Depuis TemperatureHumidityProvider : température et humidité relative
+        t = round(thp.temperature, 1)
+        h = round(thp.humidity)
+
+        # Depuis MessageProcessor : tarif en cours, intensité et puissance apparente
+        ta = tags['PTEC']
+        p = tags['PAPP']
+        i = tags['IINST']
 
         # Appliquer à l'affichage
-        disp['T'] = t
-        disp['H'] = h
+        disp['T(°C), H(%)'] = ' ' + str(t) + '   ' + str(h)
+        disp['TARIF'] = ta
+        disp['II(A), PAPP(W)'] = ' ' + str(i) + '   ' + str(p)
+        disp['HORLOGE'] = sysclock.strftime('%d/%m/%Y %H:%M:%S')
 
         # Appliquer à la base de données
         # ...
