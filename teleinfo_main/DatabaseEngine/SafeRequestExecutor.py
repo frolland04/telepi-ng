@@ -43,24 +43,25 @@ class SafeRequestExecutor:
 
     @Debug.call_log
     def execute(self, sql, v=None):
-        sql = ' '.join(sql.split())
-        print("Execute: <" + sql + ">", "(", v, ")")
-        self.mutex.acquire()
+        """Exécution d'une requête sur le moteur de base de données, avec garantie qu'une seule s'exécute à la fois"""
+        # Se débrouille tout seul avec .acquire() and .release()
+        # en entrée et sortie du bloc, même sur exception
+        with self.mutex:
+            sql = ' '.join(sql.split())
+            print("Execute: <" + sql + ">", "(", v, ")")
 
-        if v is None:
-            print("(Pas d'argument à la requête)")
-            self.engine.execute(sql)
-        else:
-            if type(v) == list:
-                print("(La requête a des arguments, c'est une liste)")
-                a = v
+            if v is None:
+                print("(Pas d'argument à la requête)")
+                self.engine.execute(sql)
             else:
-                print("(La requête a des arguments, ce n'est pas une liste)")
-                a = [v]
+                if type(v) == list:
+                    print("(La requête a des arguments, c'est une liste)")
+                    a = v
+                else:
+                    print("(La requête a des arguments, ce n'est pas une liste)")
+                    a = [v]
 
-            self.engine.execute(sql, a)
-
-        self.mutex.release()
+                self.engine.execute(sql, a)
 
     @Debug.call_log
     def close(self):
