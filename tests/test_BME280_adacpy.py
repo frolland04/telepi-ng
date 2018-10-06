@@ -13,7 +13,6 @@
 import board
 import digitalio
 import busio
-import time
 import adafruit_bme280
 
 # Create library object using our Bus I2C port
