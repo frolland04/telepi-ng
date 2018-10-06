@@ -1,8 +1,9 @@
 git config  --global user.name "frolland04"
-git config  --global user.email "frederic.rolland@free.fr"
+git config  --global user.email "abcd@xxx"
 
 git clone https://github.com/adafruit/Adafruit-BMP085-Library.git
-git clone https://github.com/adafruit/Adafruit_Python_BME280.git
+#git clone https://github.com/adafruit/Adafruit_Python_BME280.git#
+git clone https://github.com/adafruit/Adafruit_CircuitPython_BME280.git
 git clone https://github.com/adafruit/Adafruit_Python_BMP.git
 git clone https://github.com/adafruit/Adafruit_Python_DHT.git
 git clone https://github.com/adafruit/Adafruit_Python_GPIO.git

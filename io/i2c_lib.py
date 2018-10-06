@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # coding: utf-8
 
 # =====================================
 # Librairie I2C pour contrôle écran LCD
 # =====================================
 
-
+# Besoin de 'sudo apt-get install python3-smbus'
 import smbus
 from time import *
 
