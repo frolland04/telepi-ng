@@ -17,5 +17,6 @@ echo "use D_TELEINFO ; INSERT into T_DBG_ENTRIES set DbgMessage = 'STARTING COLL
 mysql -uteleinfo -pti < /tmp/log.sql
 
 # Lancement du programme de collecte
-export PYTHONPATH=TELEINFO_ROOT_DIR/io
-python3 $TELEINFO_MAIN_DIR/teleinfo_main.py >/dev/null 2>&1
+export PYTHONPATH=$TELEINFO_ROOT_DIR/io
+python3 $TELEINFO_MAIN_DIR/teleinfo_main.py
+#->/dev/null 2>&1

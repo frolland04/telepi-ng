@@ -42,6 +42,8 @@ class MessageProcessor(threading.Thread):
         # Données décodées du dernier message Télé-information ERDF reçu :
         # Dictionnaire des étiquettes connues et la valeur courante associée
         # pour le message en cours de traitement
+        # + drapeau pour indiquer si la dernière lecture Télé-information ERDF
+        # est valide (et donc représentée par le dictionnaire!)
         self.__tags = \
             {
                 'PTEC': '',
@@ -76,16 +78,16 @@ class MessageProcessor(threading.Thread):
 
     def teleinfo_wait_message(self):
         # Attendre le début du message: '0x002' (STX)
-        while self.si.read(1) != chr(2):
+        while self.si.read(1)[0] != 0x02:
             pass
-
+        print('1')
         # Lire jusqu'à la fin du message: '0x003' (ETX)
-        msg = ""
+        msg = ''
         fin_msg = False
         while not fin_msg:
             c = self.si.read(1)
-            if c != chr(3):
-                msg = msg + c
+            if c[0] != 0x03:
+                msg = msg + chr(c[0])
             else:
                 fin_msg = True
 

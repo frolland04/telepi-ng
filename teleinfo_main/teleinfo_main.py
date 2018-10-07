@@ -141,7 +141,8 @@ tags = ti.tags
 stop = False
 while not stop:
     try:
-        print(">>> go")
+        print('>>> go')
+        print('DBG_MAIN:', tags)
 
         # ---------------------------------------------------------------
         # Récupérer les données et les transmettre là où c'est nécessaire
