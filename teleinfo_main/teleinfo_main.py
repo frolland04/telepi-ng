@@ -24,6 +24,7 @@ import StatusLeds
 # Historisation en BDD et affichage tournant sur LCD.
 # ================================================================================
 
+
 file = __file__.split('/')[-1]
 
 
@@ -93,7 +94,7 @@ try:
     dex = DatabaseEngine.SafeRequestExecutor()
 except:
     print("Base de données indisponible!")
-    lcd.items = {'ERREUR': 'Accès BDD', 'Démarrage': 'impossible'}
+    lcd.items = {'ERREUR': 'Acces BDD', 'Initialisation': 'impossible'}
     etat_echec_demarrage(leds)
     sys.exit(-2)
 
@@ -104,7 +105,7 @@ try:
     ti = TeleInfo.MessageProcessor(dex)
 except:
     print("Entrée série indisponible!")
-    lcd.items = {'ERREUR': 'Accès Téléinfo', 'Démarrage': 'impossible'}
+    lcd.items = {'ERREUR': 'Acces Teleinfo', 'Initialisation': 'impossible'}
     etat_echec_demarrage(leds)
     sys.exit(-3)
 
@@ -115,7 +116,7 @@ try:
     thp = TemperatureHumidityProvider.TemperatureHumidityProvider(dex)
 except:
     print("Mesure de l'environnement indisponible!")
-    lcd.items = {'ERREUR': 'Accès T/H', 'Démarrage': 'impossible'}
+    lcd.items = {'ERREUR': 'Acces TEMP/HUM', 'Initialisation': 'impossible'}
     etat_echec_demarrage(leds)
     sys.exit(-4)
 
@@ -156,9 +157,9 @@ while not stop:
         i = tags['IINST']
 
         # Appliquer à l'affichage
-        disp['TEMP(C), HUM(%)'] = ' ' + str(t) + '   ' + str(h)
+        disp['TEMP(C), HUM(%)'] = '{:7.1f}'.format(t) + ' ' + '{:7.1f}'.format(h)
         disp['TARIF'] = ta
-        disp['IINST(A), PAPP(W)'] = ' ' + str(i) + '   ' + str(p)
+        disp['IINST(A),PAPP(W)'] = '{:7.1f}'.format(i) + ' ' + '{:7.1f}'.format(p)
         disp['HORLOGE'] = sysclock.strftime('%d/%m/%Y %H:%M:%S')
 
         # Appliquer à la base de données
@@ -173,6 +174,9 @@ while not stop:
         dex.pool.notifySystemFatalCondition()
         stop = True
 
+# Message sur l'écran LCD
+disp.clear()
+disp['STOP'] = 'Fin du programme' 
 
 # LED rouge allumée, toute seule
 etat_sortie_programme(leds)

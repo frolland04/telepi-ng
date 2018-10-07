@@ -37,7 +37,7 @@ class RunningLcdOutput:
         self.t.start()
 
         # Les éléments à afficher
-        self.__items = {'Démarrage': '...', 'Patientez': '...'}
+        self.__items = {'Initialisation': '...', 'Patientez': '...'}
 
         # Affiche l'item 0 au démarrage
         self.itemIndex = 0
