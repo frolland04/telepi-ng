@@ -168,7 +168,7 @@ while not stop:
 
         if collecte_ok:
             disp['TARIF'] = bareme
-            disp['IINST(A),PAPP(W)'] = '{:7.1f}'.format(intensite) + ' ' + '{:7.1f}'.format(puissance)
+            disp['IINST(A),PAPP(W)'] = '{:7d}'.format(intensite) + ' ' + '{:7d}'.format(puissance)
         else:
             disp['TARIF'] = '???'
             disp['IINST(A),PAPP(W)'] = '    ???     ???'
@@ -185,19 +185,21 @@ while not stop:
             # aux valeurs du dictionnaire issu de la collecte
             tags['TEMPERATURE'] = temp
             tags['RH'] = hum
-
+            
+            tags2=dict(tags)
+            del tags2['OK']
             # Jeu unique de valeurs instantanées
-            dex.pool.updateTeleinfoInst(tags)
+            dex.pool.updateTeleinfoInst(tags2)
 
             # Historique de toutes les valeurs
-            dex.pool.updateTeleinfoHisto(tags)
+            dex.pool.updateTeleinfoHisto(tags2)
 
         # On se revoit dans 10s
         time.sleep(10)
 
     except Exception as e:
         # Affiche le problème
-        print('ERREUR', e)
+        print('\n>>> ERREUR :\n', e, '\n')
 
         # En cas de souci, on quitte la boucle
         print(">>> INTERRUPTED !")
