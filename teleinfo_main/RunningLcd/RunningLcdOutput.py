@@ -3,7 +3,7 @@
 # Dépendances
 import threading
 
-# On importe le pilote LCD (lcd_lib + i2c_lib)
+# *** On importe le pilote LCD (lcd_lib + i2c_lib) ***
 # Nécessite 'python3-smbus' : se promener dans le dossier 'io'
 import lcd_lib
 
@@ -93,7 +93,7 @@ class RunningLcdOutput:
 
     @property
     def items(self):
-        """I'm the 'items' property."""
+        """Je suis une @propriété Python."""
         print("RunningLcdOutput.items@get")
         return self.__items
 

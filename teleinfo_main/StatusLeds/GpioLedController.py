@@ -33,7 +33,6 @@ class GpioLedController:
     # Temporisation de maintien des leds
     TIMER_SECS = 0.4
 
-
     @Debug.call_log
     def __init__(self):
         # Choix du cablage selon la numérotation des GPIOs du SOC 'BCM'
@@ -42,7 +41,6 @@ class GpioLedController:
         # Paramétrage des sorties
         for led in self.leds:
             GPIO.setup(led, GPIO.OUT)
-
 
     @Debug.call_log
     def set_off(self, led=None):
@@ -56,7 +54,6 @@ class GpioLedController:
             for led in self.leds:
                 GPIO.output(led, GPIO.LOW)
 
-
     @Debug.call_log
     def set_on(self, led=None):
         """
@@ -69,10 +66,11 @@ class GpioLedController:
             for led in self.leds:
                 GPIO.output(led, GPIO.HIGH)
 
-
     @Debug.call_log
     def running_leds(self):
-        """Chenillard sur les leds, à la fin toutes les leds sont éteintes"""
+        """
+        Chenillard sur les leds, à la fin toutes les leds sont éteintes
+        """
         self.set_off()
         self.set_on()
         time.sleep(self.TIMER_SECS)
@@ -98,16 +96,13 @@ class GpioLedController:
             time.sleep(self.TIMER_SECS)
             GPIO.output(self.leds[i], GPIO.LOW)
 
-
     @Debug.call_log
     def __enter__(self):
         print("...")
 
-
     @Debug.call_log
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.free()
-
 
     @Debug.call_log
     def __del__(self):
