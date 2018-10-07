@@ -20,7 +20,7 @@ class RunningLcdOutput:
     Affichage tournant d'une liste d'informations.
     """
 
-    TIMER_PERIOD_SECS = 3
+    TIMER_PERIOD_SECS = 5
 
     @Debug.call_log
     def __init__(self):
@@ -52,21 +52,36 @@ class RunningLcdOutput:
     def run(self):
         print("** Affichage **")
 
-        if not len(self.__items) == 0:
-            # A condition que la liste ne soit pas vide, on en affiche son contenu
+        # On copie notre dictionnaire pour travailler sur un contenu stable
+        # (Il pourrait être modifié pendant ce temps)
+        items_dict = dict(self.__items)
+
+        # On fabrique une liste des clés
+        items_list = list(items_dict)
+
+        if not len(items_list) == 0:
+            # On s'assure que l'index n'a pas dépassé l'actuelle capacité
+            # Sinon on rembobine
+            if self.itemIndex >= len(items_list):
+                self.itemIndex = 0
+
+            # On récupère les données à afficher
+            item_ligne1 = items_list[self.itemIndex]
+            item_ligne2 = items_dict[item_ligne1]
+
             # Affiche l'item à l'index 'self.itemIndex' => la clé et son contenu
-            item = list(self.__items)[self.itemIndex]
-            print(item, self.__items[item])
+            print('DBG:', self.itemIndex, items_dict, items_list, item_ligne1, item_ligne2)
+            
+            # On efface l'écran
+            self.lcd.lcd_clear()
 
             # On affiche des caractères sur chaque ligne
             # Sur la ligne 1, la clé, et sur la ligne 2 l'élément associé
-            self.lcd.lcd_display_string(item, 1)
-            self.lcd.lcd_display_string(self.__items[item], 2)
+            self.lcd.lcd_display_string(item_ligne1, 1)
+            self.lcd.lcd_display_string(item_ligne2, 2)
 
             # On programme l'item suivant pour le tour suivant
             self.itemIndex += 1
-            if self.itemIndex >= len(self.__items):
-                self.itemIndex = 0
         else:
             print(file + ":", 'La liste des éléments à afficher est vide.')
             self.itemIndex = 0
