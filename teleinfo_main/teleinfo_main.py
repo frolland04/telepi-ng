@@ -143,27 +143,53 @@ while not stop:
     try:
         print(">>> go")
 
+        # ---------------------------------------------------------------
         # Récupérer les données et les transmettre là où c'est nécessaire
+        # ---------------------------------------------------------------
+
         # Depuis l'horloge système : la date et l'heure
         sysclock = datetime.datetime.now()
 
         # Depuis TemperatureHumidityProvider : température et humidité relative
-        t = round(thp.temperature, 1)
-        h = round(thp.humidity)
+        temp = round(thp.temperature, 1)
+        hum = round(thp.humidity)
 
-        # Depuis MessageProcessor : tarif en cours, intensité instantanée et puissance apparente
-        ta = tags['PTEC']
-        p = tags['PAPP']
-        i = tags['IINST']
+        # Depuis MessageProcessor :
+        # barème ERDF en cours, intensité instantanée, puissance apparente et validité mesure
+        bareme = tags['PTEC']
+        puissance = tags['PAPP']
+        intensite = tags['IINST']
+        collecte_ok = tags['OK']
 
+        # -----------------------
         # Appliquer à l'affichage
-        disp['TEMP(C), HUM(%)'] = '{:7.1f}'.format(t) + ' ' + '{:7.1f}'.format(h)
-        disp['TARIF'] = ta
-        disp['IINST(A),PAPP(W)'] = '{:7.1f}'.format(i) + ' ' + '{:7.1f}'.format(p)
+        # -----------------------
+
+        if collecte_ok:
+            disp['TARIF'] = bareme
+            disp['IINST(A),PAPP(W)'] = '{:7.1f}'.format(intensite) + ' ' + '{:7.1f}'.format(puissance)
+        else:
+            disp['TARIF'] = '???'
+            disp['IINST(A),PAPP(W)'] = '    ???     ???'
+
+        disp['TEMP(C), HUM(%)'] = '{:7.1f}'.format(temp) + ' ' + '{:7.1f}'.format(hum)
         disp['HORLOGE'] = sysclock.strftime('%d/%m/%Y %H:%M:%S')
 
+        # ------------------------------
         # Appliquer à la base de données
-        # ...
+        # ------------------------------
+
+        if collecte_ok:
+            # On ajoute la température et l'humidité relevées périodiquement
+            # aux valeurs du dictionnaire issu de la collecte
+            tags['TEMPERATURE'] = temp
+            tags['RH'] = hum
+
+            # Jeu unique de valeurs instantanées
+            dex.pool.updateTeleinfoInst(tags)
+
+            # Historique de toutes les valeurs
+            dex.pool.updateTeleinfoHisto(tags)
 
         # On se revoit dans 10s
         time.sleep(10)

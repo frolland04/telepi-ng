@@ -13,6 +13,12 @@ file = __file__.split('\\')[-1]
 
 
 class MessageProcessor(threading.Thread):
+    """
+    Classe de collecte TéléInformation ERDF par le port série.
+    Fonctionne en continu, décode les messages, peuple les valeurs et valide ou pas la mesure.
+    """
+
+    # Port série utilisé
     MESSAGE_PORT_NAME = '/dev/ttyAMA0'
 
     @Debug.call_log
@@ -48,7 +54,8 @@ class MessageProcessor(threading.Thread):
                 'IMAX': 0,
                 'OPTARIF': '',
                 'HHPHC': '',
-                'MOTDETAT': ''
+                'MOTDETAT': '',
+                'OK': False
             }
         # On est dans une sous-classe thread dédiée + condition d'arrêt
         threading.Thread.__init__(self)
@@ -229,23 +236,21 @@ class MessageProcessor(threading.Thread):
             print("**** message OK ****")
             ret = True
 
-            # On ajoute la date/heure aux valeurs du dictionnaire
+            # On ajoute la date/heure de collecte aux valeurs du dictionnaire
             self.__tags['TS'] = ts
 
-            # On ajoute la température et l'humidité relevées périodiquement aux valeurs du dictionnaire
-            self.__tags['TEMPERATURE'] = 20.0
-            self.__tags['RH'] = 60.0
+            # On ajoute l'indicateur de validité
+            self.__tags['OK'] = True
 
-            # Ecriture dans la BDD des valeurs du dictionnaire sur les colonnes
+            # On montre les tags
             print(self.__tags)
-
-            self.ex.pool.updateTeleinfoInst(self.__tags)  # Jeu unique de valeurs instantanées
-
-            self.ex.pool.updateTeleinfoHisto(self.__tags)  # Historique de toutes les valeurs
 
         else:
             print("**** message KO ****")
             ret = False
+
+            # On invalide la collecte
+            self.__tags['OK'] = False
 
         # On retourne l'information sur l'intégrité du message courant : bonne ou mauvaise
         return ret
