@@ -129,10 +129,12 @@ etat_programme_actif(leds)
 # et de l'approvisionnement des premières valeurs
 time.sleep(30)
 
-# On efface l'écran LCD
+# Récupère l'accès au contenu affiché sur le LCD
+# et efface l'écran
 disp = lcd.items
 disp.clear()
 
+# Récupère l'accès aux valeurs remontées par la collecte ERDF
 tags = ti.tags
 
 stop = False
@@ -148,15 +150,15 @@ while not stop:
         t = round(thp.temperature, 1)
         h = round(thp.humidity)
 
-        # Depuis MessageProcessor : tarif en cours, intensité et puissance apparente
+        # Depuis MessageProcessor : tarif en cours, intensité instantanée et puissance apparente
         ta = tags['PTEC']
         p = tags['PAPP']
         i = tags['IINST']
 
         # Appliquer à l'affichage
-        disp['T(°C), H(%)'] = ' ' + str(t) + '   ' + str(h)
+        disp['TEMP(C), HUM(%)'] = ' ' + str(t) + '   ' + str(h)
         disp['TARIF'] = ta
-        disp['II(A), PAPP(W)'] = ' ' + str(i) + '   ' + str(p)
+        disp['IINST(A), PAPP(W)'] = ' ' + str(i) + '   ' + str(p)
         disp['HORLOGE'] = sysclock.strftime('%d/%m/%Y %H:%M:%S')
 
         # Appliquer à la base de données

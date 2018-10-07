@@ -70,7 +70,7 @@ class RunningLcdOutput:
             item_ligne2 = items_dict[item_ligne1]
 
             # Affiche l'item à l'index 'self.itemIndex' => la clé et son contenu
-            print('DBG:', self.itemIndex, items_dict, items_list, item_ligne1, item_ligne2)
+            print('DBG:', self.itemIndex, items_dict, items_list, "->", item_ligne1, item_ligne2)
             
             # On efface l'écran
             self.lcd.lcd_clear()
