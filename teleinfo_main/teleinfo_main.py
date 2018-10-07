@@ -27,9 +27,30 @@ import StatusLeds
 file = __file__.split('/')[-1]
 
 
+def etat_presence_programme(si):
+    """LED bleue"""
+    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_B)
+
+def etat_sortie_programme(si):
+    """LED rouge, seule"""
+    si.set_off()
+    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_R)
+
+def etat_echec_demarrage(si):
+    """LED rouge et LED jaune"""
+    si.set_off()
+    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_R)
+    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_J)
+
+def etat_programme_actif(si):
+    """LED verte"""
+    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_G)
+
+
 print("File:", file)
 print("Runtime:", sys.version)
 print("**** Bonjour tout le monde ! ****")
+
 
 # =============================
 # *** Programme principal ! ***
@@ -40,7 +61,7 @@ print("**** Bonjour tout le monde ! ****")
 # ----------------------------------------------------
 leds = StatusLeds.GpioLedController()
 leds.running_leds()
-leds.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_B)
+etat_presence_programme(leds)
 
 
 # Démarrage de l'écran LCD
@@ -50,6 +71,7 @@ try:
     lcd = RunningLcd.RunningLcdOutput()
 except:
     print("Affichage LCD indisponible!")
+    etat_echec_demarrage(leds)
     sys.exit(-1)
 
 # Tentative de connexion à la base de données
@@ -60,6 +82,7 @@ try:
 except:
     print("Base de données indisponible!")
     lcd.items = {'ERREUR': 'Accès BDD', 'Démarrage': 'impossible'}
+    etat_echec_demarrage(leds)
     sys.exit(-2)
 
 # Tentative de connexion au port série
@@ -70,6 +93,7 @@ try:
 except:
     print("Entrée série indisponible!")
     lcd.items = {'ERREUR': 'Accès Téléinfo', 'Démarrage': 'impossible'}
+    etat_echec_demarrage(leds)
     sys.exit(-3)
 
 # Température et humidité relative relevées périodiquement
@@ -80,10 +104,14 @@ try:
 except:
     print("Mesure de l'environnement indisponible!")
     lcd.items = {'ERREUR': 'Accès T/H', 'Démarrage': 'impossible'}
+    etat_echec_demarrage(leds)
     sys.exit(-4)
 
 # Boucle de réception des messages
 # --------------------------------
+
+# La LED verte indique que tout a bien démarré
+etat_programme_actif(leds)
 
 # Attente du démarrage de tous les composants
 # et de l'approvisionnement des premières valeurs
@@ -132,9 +160,8 @@ while not stop:
         stop = True
 
 
-# LED rouge allumée
-leds.sef_off()
-leds.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_R)
+# LED rouge allumée, toute seule
+etat_sortie_programme(leds)
 
 # Arrêt de la collecte Téléinfo ERDF
 ti.close()
