@@ -142,11 +142,7 @@ stop = False
 while not stop:
     try:
         print('>>> go')
-
-        # Copie locale
-        tags2 = dict(tags)
-
-        print('DBG_MAIN:', tags2)
+        print('DBG_MAIN:', tags)
 
         # ---------------------------------------------------------------
         # Récupérer les données et les transmettre là où c'est nécessaire
@@ -161,10 +157,10 @@ while not stop:
 
         # Depuis MessageProcessor :
         # barème ERDF en cours, intensité instantanée, puissance apparente et validité mesure
-        bareme = tags2['PTEC']
-        puissance = tags2['PAPP']
-        intensite = tags2['IINST']
-        collecte_ok = tags2['OK']
+        bareme = tags['PTEC']
+        puissance = tags['PAPP']
+        intensite = tags['IINST']
+        collecte_ok = tags['OK']
 
         # -----------------------
         # Appliquer à l'affichage
@@ -187,27 +183,28 @@ while not stop:
         if collecte_ok:
             # On ajoute la température et l'humidité relevées périodiquement
             # aux valeurs du dictionnaire issu de la collecte
-            tags2['TEMPERATURE'] = temp
-            tags2['RH'] = hum
-
-            tags2.remove('OK')
+            tags['TEMPERATURE'] = temp
+            tags['RH'] = hum
 
             # Jeu unique de valeurs instantanées
-            dex.pool.updateTeleinfoInst(tags2)
+            dex.pool.updateTeleinfoInst(tags)
 
             # Historique de toutes les valeurs
-            dex.pool.updateTeleinfoHisto(tags2)
+            dex.pool.updateTeleinfoHisto(tags)
 
         # On se revoit dans 10s
         time.sleep(10)
 
-    except:
+    except Exception as e:
+        # Affiche le problème
+        print('ERREUR', e)
+
         # En cas de souci, on quitte la boucle
         print(">>> INTERRUPTED !")
         dex.pool.notifySystemFatalCondition()
         stop = True
 
-# Message sur l'écran LCD
+# Message final sur l'écran LCD
 disp.clear()
 disp['STOP'] = 'Fin du programme' 
 
