@@ -74,15 +74,26 @@ class GpioLedController:
     def running_leds(self):
         """Chenillard sur les leds, à la fin toutes les leds sont éteintes"""
         self.set_off()
+        self.set_on()
+        time.sleep(self.TIMER_SECS)
+        self.set_off()
 
         # Dans un sens
         for i in range(0, len(self.leds)):
+            print(i)
             GPIO.output(self.leds[i], GPIO.HIGH)
             time.sleep(self.TIMER_SECS)
             GPIO.output(self.leds[i], GPIO.LOW)
 
+        time.sleep(self.TIMER_SECS)
+        self.set_on()
+        time.sleep(self.TIMER_SECS)
+        self.set_off()
+        time.sleep(self.TIMER_SECS)
+
         # Puis dans l'autre
-        for i in range(len(self.leds), 0, -1):
+        for i in range(len(self.leds)-1, -1, -1):
+            print(i)
             GPIO.output(self.leds[i], GPIO.HIGH)
             time.sleep(self.TIMER_SECS)
             GPIO.output(self.leds[i], GPIO.LOW)
