@@ -147,7 +147,6 @@ print "<br>"
 readTableUniqueRow( "T_COUNTERS" )
 readTableUniqueRow( "T_TELEINFO_INST" )
 readTableRows( "T_TELEINFO_MINMAX", 10, "TS", True )
-readTableRows( "V_TELEINFO_MINAVGMAX", 10, "TS", True )
 readTableRows( "T_TELEINFO_HISTO", 5, "TS", True )
 readTableRows( "T_DBG_ENTRIES", 10 )
 

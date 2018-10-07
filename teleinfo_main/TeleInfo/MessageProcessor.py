@@ -90,7 +90,7 @@ class MessageProcessor(threading.Thread):
                 fin_msg = True
 
         ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print(msg, ts)
+        print('DBG_MSG', msg, ts)
 
         # Incrémente le nombre de messages reçus (bons ou mauvais)
         # et horodatage du dernier message reçu

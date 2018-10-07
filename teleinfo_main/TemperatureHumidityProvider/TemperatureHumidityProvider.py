@@ -65,6 +65,8 @@ class TemperatureHumidityProvider:
         self.__humidity = self.BME280_I2C.humidity
         self.__temperature = self.BME280_I2C.temperature
 
+        print('DBG_ENV:', self.__humidity, self.__temperature)
+
         if not self.end:
             # On relance pour une prochaine occurrence
             self.t = threading.Timer(self.TIMER_PERIOD_SECS, self.run)
