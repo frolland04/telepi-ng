@@ -12,6 +12,7 @@ import DatabaseEngine
 import TeleInfo
 import TemperatureHumidityProvider
 import RunningLcd
+import StatusLeds
 
 
 # ================================================================================
@@ -33,6 +34,13 @@ print("**** Bonjour tout le monde ! ****")
 # =============================
 # *** Programme principal ! ***
 # =============================
+
+
+# Afficheur 4 LEDs : chenillard puis LED bleue allumée
+# ----------------------------------------------------
+leds = StatusLeds.GpioLedController()
+leds.running_leds()
+leds.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_B)
 
 
 # Démarrage de l'écran LCD
