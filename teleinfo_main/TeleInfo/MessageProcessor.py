@@ -13,7 +13,7 @@ file = __file__.split('\\')[-1]
 
 
 class MessageProcessor(threading.Thread):
-    MESSAGE_PORT_NAME = 'COM6'  # port='/dev/ttyAMA0' pour Linux
+    MESSAGE_PORT_NAME = '/dev/ttyAMA0'
 
     @Debug.call_log
     def __init__(self, ex):
