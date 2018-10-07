@@ -158,8 +158,8 @@ while not stop:
         # Depuis MessageProcessor :
         # barème ERDF en cours, intensité instantanée, puissance apparente et validité mesure
         bareme = tags['PTEC']
-        puissance = tags['PAPP']
-        intensite = tags['IINST']
+        puissance = int(tags['PAPP'])
+        intensite = int(tags['IINST'])
         collecte_ok = tags['OK']
 
         # -----------------------
