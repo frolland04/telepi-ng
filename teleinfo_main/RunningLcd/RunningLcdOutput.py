@@ -2,19 +2,35 @@
 
 # Dépendances
 import threading
-import time
+
+# On importe le pilote LCD (lcd_lib + i2c_lib)
+# Nécessite 'python3-smbus' : se promener dans le dossier 'io'
+import lcd_lib
 
 # Sous-modules
 import Debug  # Besoin de mon décorateur 'call_log'
+
 
 file = __file__.split('\\')[-1]
 
 
 class RunningLcdOutput:
+    """
+    Une classe pour gérer un écran LCD sur bus I2C, 2 lignes de 16 caractères.
+    Affichage tournant d'une liste d'informations.
+    """
+
     TIMER_PERIOD_SECS = 3
 
     @Debug.call_log
     def __init__(self):
+        # On initialise le LCD, selon le montage télépi
+        # LCD 16X02 & PCF8574T I2C @=0x27 (5V)
+        self.lcd = lcd_lib.lcd()
+
+        # On efface l'écran
+        self.lcd.lcd_clear()
+
         # Préparation du timer et condition d'arrêt
         self.t = threading.Timer(self.TIMER_PERIOD_SECS, self.run)
         self.end = False
@@ -38,9 +54,14 @@ class RunningLcdOutput:
 
         if not len(self.__items) == 0:
             # A condition que la liste ne soit pas vide, on en affiche son contenu
-            # Affiche l'item à l'index 'self.item'
+            # Affiche l'item à l'index 'self.itemIndex' => la clé et son contenu
             item = list(self.__items)[self.itemIndex]
             print(item, self.__items[item])
+
+            # On affiche des caractères sur chaque ligne
+            # Sur la ligne 1, la clé, et sur la ligne 2 l'élément associé
+            self.lcd.lcd_display_string(item, 1)
+            self.lcd.lcd_display_string(self.__items[item], 2)
 
             # On programme l'item suivant pour le tour suivant
             self.itemIndex += 1
