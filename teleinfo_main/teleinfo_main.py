@@ -142,7 +142,11 @@ stop = False
 while not stop:
     try:
         print('>>> go')
-        print('DBG_MAIN:', tags)
+
+        # Copie locale
+        tags2 = dict(tags)
+
+        print('DBG_MAIN:', tags2)
 
         # ---------------------------------------------------------------
         # Récupérer les données et les transmettre là où c'est nécessaire
@@ -157,10 +161,10 @@ while not stop:
 
         # Depuis MessageProcessor :
         # barème ERDF en cours, intensité instantanée, puissance apparente et validité mesure
-        bareme = tags['PTEC']
-        puissance = tags['PAPP']
-        intensite = tags['IINST']
-        collecte_ok = tags['OK']
+        bareme = tags2['PTEC']
+        puissance = tags2['PAPP']
+        intensite = tags2['IINST']
+        collecte_ok = tags2['OK']
 
         # -----------------------
         # Appliquer à l'affichage
@@ -183,14 +187,16 @@ while not stop:
         if collecte_ok:
             # On ajoute la température et l'humidité relevées périodiquement
             # aux valeurs du dictionnaire issu de la collecte
-            tags['TEMPERATURE'] = temp
-            tags['RH'] = hum
+            tags2['TEMPERATURE'] = temp
+            tags2['RH'] = hum
+
+            tags2.remove('OK')
 
             # Jeu unique de valeurs instantanées
-            dex.pool.updateTeleinfoInst(tags)
+            dex.pool.updateTeleinfoInst(tags2)
 
             # Historique de toutes les valeurs
-            dex.pool.updateTeleinfoHisto(tags)
+            dex.pool.updateTeleinfoHisto(tags2)
 
         # On se revoit dans 10s
         time.sleep(10)

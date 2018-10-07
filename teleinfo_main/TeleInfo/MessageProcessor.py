@@ -77,22 +77,26 @@ class MessageProcessor(threading.Thread):
             self.teleinfo_wait_message()
 
     def teleinfo_wait_message(self):
+        """
+        Fonction préliminaire au décodage : localise un message entier
+        """
+
         # Attendre le début du message: '0x002' (STX)
         while self.si.read(1)[0] != 0x02:
             pass
-        print('1')
+
         # Lire jusqu'à la fin du message: '0x003' (ETX)
         msg = ''
         fin_msg = False
         while not fin_msg:
-            c = self.si.read(1)
-            if c[0] != 0x03:
-                msg = msg + chr(c[0])
+            ba = self.si.read(1)
+            if ba[0] != 0x03:
+                msg = msg + chr(ba[0])
             else:
                 fin_msg = True
 
         ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print('DBG_MSG', msg, ts)
+        print('DBG_MSG:', '>', msg, '<', ts)
 
         # Incrémente le nombre de messages reçus (bons ou mauvais)
         # et horodatage du dernier message reçu
@@ -100,8 +104,7 @@ class MessageProcessor(threading.Thread):
 
         # Analyse du message courant
         ret = self.teleinfo_read_message(msg, ts)
-
-        if ret == True:
+        if ret:
             # Incrémente le nombre de messages reçus bons
             self.ex.pool.incrementCountRecvMsgOk()
         else:
@@ -133,6 +136,10 @@ class MessageProcessor(threading.Thread):
     # Analyse de la valeur d'une étiquette portée par une ligne de message
 
     def teleinfo_read_ligne(self, etiquette, valeur, dictionnaire):
+        """
+        Si l'étiquette est connue, répercute la valeur dans le dictionnaire
+        """
+
         if etiquette in dictionnaire:
             if etiquette == 'PTEC' or etiquette == 'OPTARIF':
                 #  Pour les étiquettes 'PTEC' et 'OPTARIF', j'ai choisi de tronquer la valeur aux 2 premiers caractères
@@ -147,6 +154,9 @@ class MessageProcessor(threading.Thread):
     # Lecture et analyse d'un message Téléinfo ERDF
 
     def teleinfo_read_message(self, message, ts):
+        """
+        Fonction principale du décodage : analyse ligne par ligne
+        """
 
         # Maintenant qu'on a un message entier, découpons-le, mettons chaque ligne dans un tableau
         lignes = [
@@ -259,7 +269,7 @@ class MessageProcessor(threading.Thread):
 
     @property
     def tags(self):
-        """I'm the 'tags' property."""
+        """Je suis une @propriété Python."""
         print("MessageProcessor.tags@get")
         return self.__tags
 
