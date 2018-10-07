@@ -131,6 +131,11 @@ while not stop:
         dex.pool.notifySystemFatalCondition()
         stop = True
 
+
+# LED rouge allumée
+leds.sef_off()
+leds.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_R)
+
 # Arrêt de la collecte Téléinfo ERDF
 ti.close()
 

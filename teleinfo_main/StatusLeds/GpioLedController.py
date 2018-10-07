@@ -30,8 +30,8 @@ class GpioLedController:
     # Liste des 4 leds
     leds = (GPIO_ID_LED_B, GPIO_ID_LED_Y, GPIO_ID_LED_G, GPIO_ID_LED_R)
 
-    # Temporisation
-    TIMER_SECS = 1
+    # Temporisation de maintien des leds
+    TIMER_SECS = 0.4
 
 
     @Debug.call_log
