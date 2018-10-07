@@ -29,22 +29,34 @@ file = __file__.split('/')[-1]
 
 def etat_presence_programme(si):
     """LED bleue"""
-    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_B)
+    try:
+        si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_B)
+    except:
+        return
 
 def etat_sortie_programme(si):
     """LED rouge, seule"""
-    si.set_off()
-    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_R)
+    try:
+        si.set_off()
+        si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_R)
+    except:
+        return
 
 def etat_echec_demarrage(si):
     """LED rouge et LED jaune"""
-    si.set_off()
-    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_R)
-    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_J)
+    try:
+        si.set_off()
+        si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_R)
+        si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_Y)
+    except:
+        return
 
 def etat_programme_actif(si):
     """LED verte"""
-    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_G)
+    try:
+        si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_G)
+    except:
+        return
 
 
 print("File:", file)
