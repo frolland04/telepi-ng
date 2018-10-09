@@ -187,10 +187,10 @@ while not stop:
             tags['RH'] = hum
 
             # Jeu unique de valeurs instantanées
-            dex.pool.updateTeleinfoInst(tags)
+            #dex.pool.updateTeleinfoInst(tags)
 
             # Historique de toutes les valeurs
-            dex.pool.updateTeleinfoHisto(tags)
+            #dex.pool.updateTeleinfoHisto(tags)
 
         # On se revoit dans 10s
         time.sleep(10)
