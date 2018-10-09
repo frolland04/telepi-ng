@@ -185,14 +185,12 @@ while not stop:
             # aux valeurs du dictionnaire issu de la collecte
             tags['TEMPERATURE'] = temp
             tags['RH'] = hum
-            
-            tags2=dict(tags)
-            del tags2['OK']
+
             # Jeu unique de valeurs instantanées
-            dex.pool.updateTeleinfoInst(tags2)
+            dex.pool.updateTeleinfoInst(tags)
 
             # Historique de toutes les valeurs
-            dex.pool.updateTeleinfoHisto(tags2)
+            dex.pool.updateTeleinfoHisto(tags)
 
         # On se revoit dans 10s
         time.sleep(10)
