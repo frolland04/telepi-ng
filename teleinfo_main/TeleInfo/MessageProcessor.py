@@ -59,6 +59,7 @@ class MessageProcessor(threading.Thread):
                 'MOTDETAT': '',
                 'OK': False
             }
+
         # On est dans une sous-classe thread dédiée + condition d'arrêt
         threading.Thread.__init__(self)
         self.end = False

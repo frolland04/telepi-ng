@@ -137,20 +137,20 @@ class SqlPool:
 
         self.ex.execute(
             """ UPDATE T_TELEINFO_INST set
-            PTEC = %(PTEC)s,
-            PAPP = %(PAPP)s,
-            IINST = %(IINST)s,
-            HC = %(HCHC)s,
-            HP = %(HCHP)s,
-            ADCO = %(ADCO)s,
-            ISOUSC = %(ISOUSC)s,
-            IMAX = %(IMAX)s,
-            OPTARIF = %(OPTARIF)s,
-            HHPHC = %(HHPHC)s,
-            ETAT = %(MOTDETAT)s,
-            TEMPERATURE = %(TEMPERATURE)s,
-            RH = %(RH)s,
-            TS = %(TS)s """,
+            PTEC = {PTEC},
+            PAPP = {PAPP},
+            IINST = {IINST},
+            HC = {HCHC},
+            HP = {HCHP},
+            ADCO = {ADCO},
+            ISOUSC = {ISOUSC},
+            IMAX = {IMAX},
+            OPTARIF = {OPTARIF},
+            HHPHC = {HHPHC},
+            ETAT = {MOTDETAT},
+            TEMPERATURE = {TEMPERATURE},
+            RH = {RH},
+            TS = {TS} """,
             tags
         )
 
@@ -160,19 +160,19 @@ class SqlPool:
 
         self.ex.execute(
             """ INSERT T_TELEINFO_HISTO set 
-            PTEC = %(PTEC)s,
-            PAPP = %(PAPP)s,
-            IINST = %(IINST)s,
-            HC = %(HCHC)s,
-            HP = %(HCHP)s,
-            ADCO = %(ADCO)s,
-            ISOUSC = %(ISOUSC)s,
-            IMAX = %(IMAX)s,
-            OPTARIF = %(OPTARIF)s,
-            HHPHC = %(HHPHC)s,
-            ETAT = %(MOTDETAT)s,
-            TEMPERATURE = %(TEMPERATURE)s,
-            RH = %(RH)s,
-            TS = %(TS)s on duplicate key UPDATE TS = TS""",
+            PTEC = {PTEC},
+            PAPP = {PAPP},
+            IINST = {IINST},
+            HC = {HCHC},
+            HP = {HCHP},
+            ADCO = {ADCO},
+            ISOUSC = {ISOUSC},
+            IMAX = {IMAX},
+            OPTARIF = {OPTARIF},
+            HHPHC = {HHPHC},
+            ETAT = {MOTDETAT},
+            TEMPERATURE = {TEMPERATURE},
+            RH = {RH},
+            TS = {TS} on duplicate key UPDATE TS = TS""",
             tags
         )

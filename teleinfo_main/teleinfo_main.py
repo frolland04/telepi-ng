@@ -24,6 +24,10 @@ import StatusLeds
 # Historisation en BDD et affichage tournant sur LCD.
 # ================================================================================
 
+# Quelques informations
+__author__ = 'Frédéric ROLLAND'
+__version__ = '1'
+
 
 file = __file__.split('/')[-1]
 
@@ -62,6 +66,8 @@ def etat_programme_actif(si):
 
 print("File:", file)
 print("Runtime:", sys.version)
+print("Version:", sys.version_info)
+print("PATH:", sys.path)
 print("**** Bonjour tout le monde ! ****")
 
 
@@ -142,7 +148,6 @@ stop = False
 while not stop:
     try:
         print('>>> go')
-        print('DBG_MAIN:', tags)
 
         # ---------------------------------------------------------------
         # Récupérer les données et les transmettre là où c'est nécessaire
@@ -157,16 +162,17 @@ while not stop:
 
         # Depuis MessageProcessor :
         # barème ERDF en cours, intensité instantanée, puissance apparente et validité mesure
-        bareme = tags['PTEC']
-        puissance = int(tags['PAPP'])
-        intensite = int(tags['IINST'])
-        collecte_ok = tags['OK']
+        msg_tags = dict(tags)
+        bareme = msg_tags['PTEC']
+        puissance = int(msg_tags['PAPP'])
+        intensite = int(msg_tags['IINST'])
+        ok = msg_tags['OK']
 
         # -----------------------
         # Appliquer à l'affichage
         # -----------------------
 
-        if collecte_ok:
+        if ok:
             disp['TARIF'] = bareme
             disp['IINST(A),PAPP(W)'] = '{:7d}'.format(intensite) + ' ' + '{:7d}'.format(puissance)
         else:
@@ -174,23 +180,23 @@ while not stop:
             disp['IINST(A),PAPP(W)'] = '    ???     ???'
 
         disp['TEMP(C), HUM(%)'] = '{:7.1f}'.format(temp) + ' ' + '{:7.1f}'.format(hum)
-        disp['HORLOGE'] = sysclock.strftime('%d/%m/%Y %H:%M:%S')
+        disp['HORLOGE'] = sysclock.strftime('%d/%m/%Y %H:%M')
 
         # ------------------------------
         # Appliquer à la base de données
         # ------------------------------
 
-        if collecte_ok:
+        if ok:
             # On ajoute la température et l'humidité relevées périodiquement
             # aux valeurs du dictionnaire issu de la collecte
-            tags['TEMPERATURE'] = temp
-            tags['RH'] = hum
+            msg_tags['TEMPERATURE'] = temp
+            msg_tags['RH'] = hum
 
             # Jeu unique de valeurs instantanées
-            #dex.pool.updateTeleinfoInst(tags)
+            dex.pool.updateTeleinfoInst(msg_tags)
 
             # Historique de toutes les valeurs
-            #dex.pool.updateTeleinfoHisto(tags)
+            dex.pool.updateTeleinfoHisto(msg_tags)
 
         # On se revoit dans 10s
         time.sleep(10)
@@ -206,7 +212,7 @@ while not stop:
 
 # Message final sur l'écran LCD
 disp.clear()
-disp['STOP'] = 'Fin du programme' 
+disp['STOP'] = 'PROGRAMME'
 
 # LED rouge allumée, toute seule
 etat_sortie_programme(leds)
