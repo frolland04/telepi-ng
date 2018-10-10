@@ -172,5 +172,5 @@ class SqlPool:
             ETAT = {MOTDETAT},
             TEMPERATURE = {TEMPERATURE},
             RH = {RH},
-            TS = '{TS}' on duplicate key UPDATE TS = TS""".format_map(tags)
+            TS = '{TS}' on duplicate key UPDATE TS = 'TS' """.format_map(tags)
         )
