@@ -137,7 +137,7 @@ class SqlPool:
 
         self.ex.execute(
             """ UPDATE T_TELEINFO_INST set
-            PTEC = {PTEC},
+            PTEC = '{PTEC}',
             PAPP = {PAPP},
             IINST = {IINST},
             HC = {HCHC},
@@ -145,13 +145,12 @@ class SqlPool:
             ADCO = {ADCO},
             ISOUSC = {ISOUSC},
             IMAX = {IMAX},
-            OPTARIF = {OPTARIF},
-            HHPHC = {HHPHC},
+            OPTARIF = '{OPTARIF}',
+            HHPHC = '{HHPHC}',
             ETAT = {MOTDETAT},
             TEMPERATURE = {TEMPERATURE},
             RH = {RH},
-            TS = {TS} """,
-            tags
+            TS = '{TS}' """.format_map(tags)
         )
 
     @Debug.call_log
@@ -160,7 +159,7 @@ class SqlPool:
 
         self.ex.execute(
             """ INSERT T_TELEINFO_HISTO set 
-            PTEC = {PTEC},
+            PTEC = '{PTEC}',
             PAPP = {PAPP},
             IINST = {IINST},
             HC = {HCHC},
@@ -168,11 +167,10 @@ class SqlPool:
             ADCO = {ADCO},
             ISOUSC = {ISOUSC},
             IMAX = {IMAX},
-            OPTARIF = {OPTARIF},
-            HHPHC = {HHPHC},
+            OPTARIF = '{OPTARIF}',
+            HHPHC = '{HHPHC}',
             ETAT = {MOTDETAT},
             TEMPERATURE = {TEMPERATURE},
             RH = {RH},
-            TS = {TS} on duplicate key UPDATE TS = TS""",
-            tags
+            TS = '{TS}' on duplicate key UPDATE TS = TS""".format_map(tags)
         )
