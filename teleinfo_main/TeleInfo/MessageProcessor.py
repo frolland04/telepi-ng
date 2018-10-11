@@ -259,7 +259,7 @@ class MessageProcessor(threading.Thread):
             print(self.__tags)
 
             # Jeu unique de valeurs instantanées
-            dex.pool.updateTeleinfoInst(self.__tags)
+            self.ex.pool.updateTeleinfoInst(self.__tags)
 
         else:
             print("**** message KO ****")
