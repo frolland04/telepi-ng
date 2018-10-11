@@ -18,4 +18,4 @@ mysql -uteleinfo -pti < /tmp/log.sql
 
 # Lancement du programme de collecte
 export PYTHONPATH=$TELEINFO_ROOT_DIR/io
-python3 $TELEINFO_MAIN_DIR/teleinfo_main.py #>/dev/null 2>&1
+python3 $TELEINFO_MAIN_DIR/teleinfo_main.py >/dev/null 2>&1
