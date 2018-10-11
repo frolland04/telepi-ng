@@ -148,8 +148,6 @@ class SqlPool:
             OPTARIF = '{OPTARIF}',
             HHPHC = '{HHPHC}',
             ETAT = {MOTDETAT},
-            TEMPERATURE = {TEMPERATURE},
-            RH = {RH},
             TS = '{TS}' """.format_map(tags)
         )
 
@@ -164,11 +162,6 @@ class SqlPool:
             IINST = {IINST},
             HC = {HCHC},
             HP = {HCHP},
-            ADCO = {ADCO},
-            ISOUSC = {ISOUSC},
-            IMAX = {IMAX},
-            OPTARIF = '{OPTARIF}',
-            HHPHC = '{HHPHC}',
             ETAT = {MOTDETAT},
             TEMPERATURE = {TEMPERATURE},
             RH = {RH},

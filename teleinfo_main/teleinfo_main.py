@@ -173,14 +173,14 @@ while not stop:
         # -----------------------
 
         if ok:
-            disp['TARIF'] = bareme
+            disp['TARIF:'] = "  " + bareme
             disp['IINST(A),PAPP(W)'] = '{:7d}'.format(intensite) + ' ' + '{:7d}'.format(puissance)
         else:
-            disp['TARIF'] = '???'
+            disp['TARIF:'] = "  " + '???'
             disp['IINST(A),PAPP(W)'] = '    ???     ???'
 
         disp['TEMP(C), HUM(%)'] = '{:7.1f}'.format(temp) + ' ' + '{:7.1f}'.format(hum)
-        disp['HORLOGE'] = sysclock.strftime('%d/%m/%Y %H:%M')
+        disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
 
         # ------------------------------
         # Appliquer à la base de données
@@ -188,18 +188,15 @@ while not stop:
 
         if ok:
             # On ajoute la température et l'humidité relevées périodiquement
-            # aux valeurs du dictionnaire issu de la collecte
+            # aux valeurs du dictionnaire issu de la collecte, pour l'historique
             msg_tags['TEMPERATURE'] = temp
             msg_tags['RH'] = hum
 
-            # Jeu unique de valeurs instantanées
-            dex.pool.updateTeleinfoInst(msg_tags)
-
-            # Historique de toutes les valeurs
+            # Historique des valeurs échantillonnées toutes les 20s
             dex.pool.updateTeleinfoHisto(msg_tags)
 
-        # On se revoit dans 10s
-        time.sleep(10)
+        # On se revoit dans 20s
+        time.sleep(20)
 
     except Exception as e:
         # Affiche le problème
