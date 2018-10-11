@@ -12,7 +12,7 @@ TELEINFO_MAIN_DIR=$TELEINFO_ROOT_DIR/teleinfo_main
 # Mise en place de la BDD
 mysql -uteleinfo -pti < $TELEINFO_ROOT_DIR/db/D_TELEINFO.sql
 
-# Log du démarrage
+# Log du démarrage en s'adressant directement à la BDD
 echo "use D_TELEINFO ; INSERT into T_DBG_ENTRIES set DbgMessage = 'STARTING COLLECTION', DbgContext = 'teleinfo.sh', DbgTs = NOW() ;" >/tmp/log.sql
 mysql -uteleinfo -pti < /tmp/log.sql
 
