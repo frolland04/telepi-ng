@@ -64,18 +64,17 @@ class TemperatureHumidityProvider:
     def run(self):
         print("** Mesure de l'environnement **")
 
-
         val, ok = self.readRelativeHumidity()
         if ok:
             self.__humidity = val
 
-        val, ok = self.readTemperature()
-        if ok:
-            self.__temperature = val
-
-        val, ok = self.readAirPressure()
-        if ok:
-            self.__pressure = val
+        # val, ok = self.readTemperature()
+        # if ok:
+        #     self.__temperature = val
+        #
+        # val, ok = self.readAirPressure()
+        # if ok:
+        #     self.__pressure = val
 
         if not self.end:
             # On relance pour une prochaine occurrence
@@ -89,25 +88,18 @@ class TemperatureHumidityProvider:
         self.ex.pool.incrementCountEnvRelativeHumidityNbReadTotal()
         self.ex.pool.setCountEnvRelativeHumidityReadLastTs(datetime.datetime.now())
 
-        val = 0.0
-        ok = False
+        # Lecture depuis le BME280
+        val = self.BME280_I2C.humidity
+        print('DBG_ENV: Humidity', '{:.0f}'.format(self.val))
 
-        try:
-            # Lecture depuis le BME280
-            val = self.BME280_I2C.humidity
-            print('DBG_ENV: Humidity', '{:.0f}'.format(self.val))
-
-            # Les valeurs sont-elles dans des plages raisonnables?
-            if val <= 0.0 or val >= 100:
-                self.ex.pool.incrementCountEnvRelativeHumidityNbReadInvalid()
-                ok = False
-            else:
-                # Oui, on valide la nouvelle prise de mesure
-                self.ex.pool.incrementCountEnvRelativeHumidityNbReadOk()
-                ok = True
-        except:
-            self.ex.pool.incrementCountEnvRelativeHumidityNbReadFailed()
+        # Les valeurs sont-elles dans des plages raisonnables?
+        if val <= 0.0 or val >= 100:
+            self.ex.pool.incrementCountEnvRelativeHumidityNbReadInvalid()
             ok = False
+        else:
+            # Oui, on valide la nouvelle prise de mesure
+            self.ex.pool.incrementCountEnvRelativeHumidityNbReadOk()
+            ok = True
 
         return val, ok
 

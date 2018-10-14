@@ -130,7 +130,7 @@ class MessageProcessor(threading.Thread):
         # Recalage pour être le code d'un caractère affichable
         s = (s & 0x3F) + 0x20
 
-        print("Le checksum devrait être '", chr(s), "' qui est le code 0x", s)
+        # print('Le checksum devrait être', chr(s), 'qui est le code 0x', s)
         return chr(s)
 
     # =========================================================================
@@ -149,7 +149,7 @@ class MessageProcessor(threading.Thread):
                 # Pour les autres on met la valeur telle que reçue
                 dictionnaire[etiquette] = valeur
 
-            print("Nouvelle valeur de", etiquette, "=", dictionnaire[etiquette])
+            # print('Nouvelle valeur de', etiquette, '=', dictionnaire[etiquette])
 
     # =========================================================================
     # Lecture et analyse d'un message Téléinfo ERDF
@@ -167,7 +167,6 @@ class MessageProcessor(threading.Thread):
 
         # On obtient un certain nombre de lignes
         nb_lignes = len(lignes)
-        print('>>> lignes: ' + repr(nb_lignes))
 
         # Boucle de parcours des lignes avec cpt des lignes valides ou non
         i = 0
@@ -178,7 +177,6 @@ class MessageProcessor(threading.Thread):
         while i < nb_lignes:
             # On prend une des lignes
             ligne = lignes[i]
-            print("i =", i, ligne)
 
             is_good = False
             is_badtag = False
@@ -205,7 +203,7 @@ class MessageProcessor(threading.Thread):
 
             if is_good:
                 if is_badtag:
-                    print("ligne inconnue")
+                    print('ligne inconnue')
                     cpt_badtag += 1
 
                     # Place dans le journal de debug la ligne inconnue
@@ -213,14 +211,14 @@ class MessageProcessor(threading.Thread):
                     self.ex.pool.notifyUnsupportedLineTagReceived(dbg)
 
                 else:
-                    print("ligne OK")
+                    # print('ligne OK')
                     cpt_good += 1
 
                     # Analyse de la ligne et répercussion dans la liste de valeurs
                     self.teleinfo_read_ligne(ligne[0], ligne[1], self.__tags)
 
             else:
-                print("ligne KO")
+                print('ligne KO')
                 cpt_badline += 1
 
                 # Place dans le journal de debug la ligne reçue malformée
@@ -246,7 +244,7 @@ class MessageProcessor(threading.Thread):
             self.ex.pool.incrementCountRecvMsgDataLineNbBad(cpt_badline)
 
         if cpt_good == i:
-            print("**** message OK ****")
+            print('**** message OK ****')
             ret = True
 
             # On ajoute la date/heure de collecte aux valeurs du dictionnaire
@@ -262,7 +260,7 @@ class MessageProcessor(threading.Thread):
             self.ex.pool.updateTeleinfoInst(self.__tags)
 
         else:
-            print("**** message KO ****")
+            print('**** message KO ****')
             ret = False
 
             # On invalide la collecte
