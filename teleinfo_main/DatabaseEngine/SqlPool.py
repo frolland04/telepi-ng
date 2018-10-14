@@ -198,3 +198,63 @@ class SqlPool:
         """Renseigne le moment de la dernière lecture des données de l'environnement"""
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvRelativeHumidityReadLastTs = %s """, ts)
+
+    @Debug.call_log
+    def incrementCountEnvTemperatureNbReadTotal(self):
+        """Incrémente le nombre total de lectures des données de l'environnement"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvTemperatureNbReadTotal = EnvTemperatureNbReadTotal + 1 """)
+
+    @Debug.call_log
+    def incrementCountEnvTemperatureNbReadOk(self):
+        """Incrémente le nombre total de lectures des données de l'environnement qui sont un succès"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvTemperatureNbReadOk = EnvTemperatureNbReadOk + 1 """)
+
+    @Debug.call_log
+    def incrementCountEnvTemperatureNbReadFailed(self):
+        """Incrémente le nombre total de lectures des données de l'environnement qui sont en échec"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvTemperatureNbReadFailed = EnvTemperatureNbReadFailed + 1 """)
+
+    @Debug.call_log
+    def incrementCountEnvTemperatureNbReadInvalid(self):
+        """Incrémente le nombre total de lectures des données de l'environnement qui sont hors des bornes acceptables"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvTemperatureNbReadInvalid = EnvTemperatureNbReadInvalid + 1 """)
+
+    @Debug.call_log
+    def setCountEnvTemperatureReadLastTs(self, ts):
+        """Renseigne le moment de la dernière lecture des données de l'environnement"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvTemperatureReadLastTs = %s """, ts)
+
+    @Debug.call_log
+    def incrementCountEnvAirPressureNbReadTotal(self):
+        """Incrémente le nombre total de lectures des données de l'environnement"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvAirPressureNbReadTotal = EnvAirPressureNbReadTotal + 1 """)
+
+    @Debug.call_log
+    def incrementCountEnvAirPressureNbReadOk(self):
+        """Incrémente le nombre total de lectures des données de l'environnement qui sont un succès"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvAirPressureNbReadOk = EnvAirPressureNbReadOk + 1 """)
+
+    @Debug.call_log
+    def incrementCountEnvAirPressureNbReadFailed(self):
+        """Incrémente le nombre total de lectures des données de l'environnement qui sont en échec"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvAirPressureNbReadFailed = EnvAirPressureNbReadFailed + 1 """)
+
+    @Debug.call_log
+    def incrementCountEnvAirPressureNbReadInvalid(self):
+        """Incrémente le nombre total de lectures des données de l'environnement qui sont hors des bornes acceptables"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvAirPressureNbReadInvalid = EnvAirPressureNbReadInvalid + 1 """)
+
+    @Debug.call_log
+    def setCountEnvAirPressureReadLastTs(self, ts):
+        """Renseigne le moment de la dernière lecture des données de l'environnement"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvAirPressureReadLastTs = %s """, ts)

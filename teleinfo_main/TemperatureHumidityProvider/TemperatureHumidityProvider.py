@@ -64,39 +64,106 @@ class TemperatureHumidityProvider:
     def run(self):
         print("** Mesure de l'environnement **")
 
-        # Mise à jour des compteurs
-        self.ex.pool.incrementCountEnvRelativeHumidityNbReadTotal()
-        self.ex.pool.setCountEnvRelativeHumidityReadLastTs(datetime.datetime.now())
 
-        try:
-            # Lecture depuis le BME280
-            self.__humidity = self.BME280_I2C.humidity
-            self.__temperature = self.BME280_I2C.temperature
-            self.__pressure = self.BME280_I2C.pressure  # MSLP 1013.25 hPa
+        val, ok = self.readRelativeHumidity()
+        if ok:
+            self.__humidity = val
 
-            # Mise à jour des compteurs
-            self.ex.pool.incrementCountEnvRelativeHumidityNbReadOk()
+        val, ok = self.readTemperature()
+        if ok:
+            self.__temperature = val
 
-            print('DBG_ENV:',
-                  '{:.0f}'.format(self.__humidity),
-                  '{:.1f}'.format(self.__temperature),
-                  '{:.2f}'.format(self.__pressure))
-
-            # Les valeurs sont-elles dans des plages raisonnables?
-            if (self.__humidity <= 0.0 or
-                    self.__humidity >= 100 or
-                    self.__temperature <= -20.0 or
-                    self.__temperature >= 50.0):
-                self.ex.pool.incrementCountEnvRelativeHumidityNbReadInvalid()
-
-        except:
-            # Mise à jour des compteurs
-            self.ex.pool.incrementCountEnvRelativeHumidityNbReadFailed()
+        val, ok = self.readAirPressure()
+        if ok:
+            self.__pressure = val
 
         if not self.end:
             # On relance pour une prochaine occurrence
             self.t = threading.Timer(self.TIMER_PERIOD_SECS, self.run)
             self.t.start()
+
+    def readRelativeHumidity(self):
+        """Lecture de l'humidité relative depuis le BME280 et mise à jour des compteurs de BDD"""
+
+        # Mise à jour des compteurs
+        self.ex.pool.incrementCountEnvRelativeHumidityNbReadTotal()
+        self.ex.pool.setCountEnvRelativeHumidityReadLastTs(datetime.datetime.now())
+
+        val = 0.0
+        ok = False
+
+        try:
+            # Lecture depuis le BME280
+            val = self.BME280_I2C.humidity
+            print('DBG_ENV: Humidity', '{:.0f}'.format(self.val))
+
+            # Les valeurs sont-elles dans des plages raisonnables?
+            if val <= 0.0 or val >= 100:
+                self.ex.pool.incrementCountEnvRelativeHumidityNbReadInvalid()
+                ok = False
+            else:
+                # Oui, on valide la nouvelle prise de mesure
+                self.ex.pool.incrementCountEnvRelativeHumidityNbReadOk()
+                ok = True
+        except:
+            self.ex.pool.incrementCountEnvRelativeHumidityNbReadFailed()
+            ok = False
+
+        return val, ok
+
+    def readTemperature(self):
+        """Lecture de la température depuis le BME280 et mise à jour des compteurs de BDD"""
+
+        # Mise à jour des compteurs
+        self.ex.pool.incrementCountEnvTemperatureNbReadTotal()
+        self.ex.pool.setCountEnvTemperatureReadLastTs(datetime.datetime.now())
+
+        val = 0.0
+        ok = False
+
+        try:
+            # Lecture depuis le BME280
+            val = self.BME280_I2C.temperature
+            print('DBG_ENV: Temperature', '{:.1f}'.format(self.val))
+
+            # Les valeurs sont-elles dans des plages raisonnables?
+            if val <= -20.0 or val >= 60:
+                self.ex.pool.incrementCountEnvTemperatureNbReadInvalid()
+                ok = False
+            else:
+                # Oui, on valide la nouvelle prise de mesure
+                self.ex.pool.incrementCountEnvTemperatureNbReadOk()
+                ok = True
+        except:
+            self.ex.pool.incrementCountEnvTemperatureNbReadFailed()
+            ok = False
+
+        return val, ok
+    
+    def readAirPressure(self):
+        """Lecture de la pression atmosphérique depuis le BME280 et mise à jour des compteurs de BDD"""
+
+        # Mise à jour des compteurs
+        self.ex.pool.incrementCountEnvAirPressureNbReadTotal()
+        self.ex.pool.setCountEnvAirPressureReadLastTs(datetime.datetime.now())
+
+        val = 0.0
+        ok = False
+
+        try:
+            # Lecture depuis le BME280
+            val = self.BME280_I2C.pressure
+            print('DBG_ENV: Pression Atmosphérique', '{:.2f}'.format(self.val))
+
+            # On valide la nouvelle prise de mesure
+            self.ex.pool.incrementCountEnvAirPressureNbReadOk()
+            ok = True
+
+        except:
+            self.ex.pool.incrementCountEnvAirPressureNbReadFailed()
+            ok = False
+
+        return val, ok
 
     @property
     def humidity(self):

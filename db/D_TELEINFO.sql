@@ -40,11 +40,16 @@ CREATE TABLE IF NOT EXISTS `T_COUNTERS` (
   `EnvRelativeHumidityNbReadFailed` bigint(20) DEFAULT NULL,
   `EnvRelativeHumidityNbReadInvalid` bigint(20) DEFAULT NULL,
   `EnvRelativeHumidityReadLastTs` datetime DEFAULT NULL,
+  `EnvAirPressureNbReadTotal` bigint(20) DEFAULT NULL,
+  `EnvAirPressureNbReadOk` bigint(20) DEFAULT NULL,
+  `EnvAirPressureNbReadFailed` bigint(20) DEFAULT NULL,
+  `EnvAirPressureNbReadInvalid` bigint(20) DEFAULT NULL,
+  `EnvAirPressureReadLastTs` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8 ;
 
 LOCK TABLES `T_COUNTERS` WRITE ;
-INSERT INTO `T_COUNTERS` VALUES (0,0,0,0,0,0,0,0,NULL,0,NULL,NULL,NULL,0,NULL,0,0,0,0,0,0,0,0,NULL,0,0,0,0,NULL) ON DUPLICATE KEY UPDATE Id = Id ;
+INSERT INTO `T_COUNTERS` VALUES (0,0,0,0,0,0,0,0,NULL,0,NULL,NULL,NULL,0,NULL,0,0,0,0,0,0,0,0,NULL,0,0,0,0,NULL,0,0,0,0,NULL) ON DUPLICATE KEY UPDATE Id = Id ;
 UNLOCK TABLES ;
 
 --
