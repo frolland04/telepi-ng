@@ -1,4 +1,2 @@
-git config  --global user.name "frolland04"
-git config  --global user.email "abcd@xxx"
-
-git clone https://github.com/adafruit/Adafruit_CircuitPython_BME280.git
+git config  --global user.name 'frolland04'
+git config  --global user.email 'abcd@defg'
