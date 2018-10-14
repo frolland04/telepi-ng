@@ -156,7 +156,7 @@ while not stop:
         # Depuis l'horloge système : la date et l'heure
         sysclock = datetime.datetime.now()
 
-        # Depuis TemperatureHumidityProvider : température et humidité relative
+        # Depuis TemperatureHumidityProvider : température, humidité relative et pression atmosphérique
         temp = round(thp.temperature, 1)
         hum = round(thp.humidity, 0)
         atm = round(thp.pressure, 2)
