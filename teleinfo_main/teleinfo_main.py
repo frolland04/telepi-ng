@@ -158,7 +158,8 @@ while not stop:
 
         # Depuis TemperatureHumidityProvider : température et humidité relative
         temp = round(thp.temperature, 1)
-        hum = round(thp.humidity, 1)
+        hum = round(thp.humidity, 0)
+        atm = round(thp.pression, 2)
 
         # Depuis MessageProcessor :
         # barème ERDF en cours, intensité instantanée, puissance apparente et validité mesure
@@ -179,7 +180,8 @@ while not stop:
             disp['TARIF:'] = "  " + '???'
             disp['IINST(A),PAPP(W)'] = '    ???     ???'
 
-        disp['TEMP(C), HUM(%)'] = '{:7.1f}'.format(temp) + ' ' + '{:7.1f}'.format(hum)
+        disp['TEMP(C), HUM(%)'] = '{:7.1f}'.format(temp) + ' ' + '{:7.0f}'.format(hum)
+        disp['PRES.ATMOS(hPa)'] = '{:7.2f}'.format(atm)
         disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
 
         # ------------------------------
@@ -191,6 +193,7 @@ while not stop:
             # aux valeurs du dictionnaire issu de la collecte, pour l'historique
             msg_tags['TEMPERATURE'] = temp
             msg_tags['RH'] = hum
+            msg_tags['PRESS_ATMOS'] = atm
 
             # Historique des valeurs échantillonnées toutes les 20s
             dex.pool.updateTeleinfoHisto(msg_tags)

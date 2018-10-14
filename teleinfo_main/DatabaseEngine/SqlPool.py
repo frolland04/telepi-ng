@@ -166,6 +166,7 @@ class SqlPool:
             ETAT = {MOTDETAT},
             TEMPERATURE = {TEMPERATURE},
             RH = {RH},
+            PRESS_ATMOS = {PRESS_ATMOS},
             TS = '{TS}' on duplicate key UPDATE TS = 'TS' """.format_map(tags)
         )
 
