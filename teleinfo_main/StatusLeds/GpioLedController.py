@@ -78,7 +78,7 @@ class GpioLedController:
 
         # Dans un sens
         for i in range(0, len(self.leds)):
-            print('Led',i)
+            print('( Led', i, ')')
             GPIO.output(self.leds[i], GPIO.HIGH)
             time.sleep(self.TIMER_SECS)
             GPIO.output(self.leds[i], GPIO.LOW)
@@ -91,7 +91,7 @@ class GpioLedController:
 
         # Puis dans l'autre
         for i in range(len(self.leds)-1, -1, -1):
-            print('Led',i)
+            print('( Led', i, ')')
             GPIO.output(self.leds[i], GPIO.HIGH)
             time.sleep(self.TIMER_SECS)
             GPIO.output(self.leds[i], GPIO.LOW)
