@@ -159,7 +159,7 @@ while not stop:
         # Depuis TemperatureHumidityProvider : température et humidité relative
         temp = round(thp.temperature, 1)
         hum = round(thp.humidity, 0)
-        atm = round(thp.pression, 2)
+        atm = round(thp.pressure, 2)
 
         # Depuis MessageProcessor :
         # barème ERDF en cours, intensité instantanée, puissance apparente et validité mesure
