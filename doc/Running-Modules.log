@@ -1,12 +1,5 @@
 Module                  Size  Used by
-dht11                   3955  0 
-industrialio           50711  1 dht11
-rtc_ds1307             13710  0 
-hwmon                  10533  1 rtc_ds1307
-i2c_dev                 6642  0 
-i2c_bcm2835             6369  0 
-bcm2835_gpiomem         3791  0 
-w1_therm                5969  0 
-w1_gpio                 4566  0 
-wire                   31801  2 w1_gpio,w1_therm
-cn                      5860  1 wire
+rtc_ds1307             16119  0 
+hwmon                  10505  1 rtc_ds1307
+i2c_dev                 6674  4 
+i2c_bcm2835             6465  2 
