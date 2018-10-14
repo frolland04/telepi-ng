@@ -190,10 +190,10 @@ while not stop:
 
         if ok:
             # On ajoute la température et l'humidité relevées périodiquement
-            # aux valeurs du dictionnaire issu de la collecte, pour l'historique
+            # aux valeurs du dictionnaire issu de la collecte, pour l'historique en BDD
             msg_tags['TEMPERATURE'] = temp
             msg_tags['RH'] = hum
-            msg_tags['PRESS_ATMOS'] = atm
+            msg_tags['PRESSION_ATMOS'] = atm
 
             # Historique des valeurs échantillonnées toutes les 20s
             dex.pool.updateTeleinfoHisto(msg_tags)
