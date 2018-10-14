@@ -90,7 +90,7 @@ class TemperatureHumidityProvider:
 
         # Lecture depuis le BME280
         val = self.BME280_I2C.humidity
-        print('DBG_ENV: Humidity', '{:.0f}'.format(self.val))
+        print('DBG_ENV: Humidity', '{:.0f}'.format(val))
 
         # Les valeurs sont-elles dans des plages raisonnables?
         if val <= 0.0 or val >= 100:
