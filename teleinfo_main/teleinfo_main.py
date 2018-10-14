@@ -181,7 +181,7 @@ while not stop:
             disp['IINST(A),PAPP(W)'] = '    ???     ???'
 
         disp['TEMP(C), HUM(%)'] = '{:7.1f}'.format(temp) + ' ' + '{:7.0f}'.format(hum)
-        disp['PRES.ATMOS(hPa)'] = '{:7.2f}'.format(atm)
+        disp['PRESS.ATMOS(hPa)'] = '{:7.2f}'.format(atm)
         disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
 
         # ------------------------------
