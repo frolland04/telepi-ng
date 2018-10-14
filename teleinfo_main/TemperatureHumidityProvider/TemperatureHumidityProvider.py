@@ -2,6 +2,7 @@
 
 # Dépendances
 import threading
+import datetime
 
 # *** Notes sur board, digitalio, busio et adafruit_bme280 ***
 # *** Nécessite ADAFRUIT CircuitPython Library for BME 280 ***
@@ -38,6 +39,7 @@ class TemperatureHumidityProvider:
         # Dernières mesures
         self.__humidity = 0.0
         self.__temperature = 0.0
+        self.__pressure = 0.0
 
         # Préparation de l'accès au capteur Bosch SST BME280 par I2C
         # Selon montage télépi : BME280 I2C @=77 (3.3V)
@@ -62,10 +64,34 @@ class TemperatureHumidityProvider:
     def run(self):
         print("** Mesure de l'environnement **")
 
-        self.__humidity = self.BME280_I2C.humidity
-        self.__temperature = self.BME280_I2C.temperature
+        # Mise à jour des compteurs
+        self.ex.pool.incrementCountEnvRelativeHumidityNbReadTotal()
+        self.ex.pool.setCountEnvRelativeHumidityReadLastTs(datetime.datetime.now())
 
-        print('DBG_ENV:', '{:2f}'.format(self.__humidity), '{:2f}'.format(self.__temperature))
+        try:
+            # Lecture depuis le BME280
+            self.__humidity = self.BME280_I2C.humidity
+            self.__temperature = self.BME280_I2C.temperature
+            self.__pressure = self.BME280_I2C.pressure  # MSLP 1013.25 hPa
+
+            # Mise à jour des compteurs
+            self.ex.pool.incrementCountEnvRelativeHumidityNbReadOk()
+
+            print('DBG_ENV:',
+                  '{:.0f}'.format(self.__humidity),
+                  '{:.1f}'.format(self.__temperature),
+                  '{:.2f}'.format(self.__pressure))
+
+            # Les valeurs sont-elles dans des plages raisonnables?
+            if (self.__humidity <= 0.0 or
+                    self.__humidity >= 100 or
+                    self.__temperature <= -20.0 or
+                    self.__temperature >= 50.0):
+                self.ex.pool.incrementCountEnvRelativeHumidityNbReadInvalid()
+
+        except:
+            # Mise à jour des compteurs
+            self.ex.pool.incrementCountEnvRelativeHumidityNbReadFailed()
 
         if not self.end:
             # On relance pour une prochaine occurrence
@@ -83,6 +109,12 @@ class TemperatureHumidityProvider:
         """Je suis une @propriété Python."""
         print("TemperatureHumidityProvider.temperature@get")
         return self.__temperature
+
+    @property
+    def pressure(self):
+        """Je suis une @propriété Python."""
+        print("TemperatureHumidityProvider.pressure@get")
+        return self.__pressure
 
     @Debug.call_log
     def __enter__(self):

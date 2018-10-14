@@ -1,0 +1,34 @@
+mysql> desc T_COUNTERS ;
++----------------------------------+------------+------+-----+---------+-------+
+| Field                            | Type       | Null | Key | Default | Extra |
++----------------------------------+------------+------+-----+---------+-------+
+| Id                               | int(11)    | NO   | PRI | 0       |       |
+| RecvMsgNbTotal                   | bigint(20) | YES  |     | NULL    |       |
+| RecvMsgNbOk                      | bigint(20) | YES  |     | NULL    |       |
+| RecvMsgNbBad                     | bigint(20) | YES  |     | NULL    |       |
+| RecvMsgDataLineNbTotal           | bigint(20) | YES  |     | NULL    |       |
+| RecvMsgDataLineNbOk              | bigint(20) | YES  |     | NULL    |       |
+| RecvMsgDataLineNbBad             | bigint(20) | YES  |     | NULL    |       |
+| RecvMsgDataLineNbUnsupp          | bigint(20) | YES  |     | NULL    |       |
+| RecvMsgLastTs                    | datetime   | YES  |     | NULL    |       |
+| CleanHistoRunNb                  | bigint(20) | YES  |     | NULL    |       |
+| CleanHistoLastRunTs              | datetime   | YES  |     | NULL    |       |
+| CleanHistoLastRunDelNb           | bigint(20) | YES  |     | NULL    |       |
+| CleanHistoLastRunHasNb           | bigint(20) | YES  |     | NULL    |       |
+| AutoMinMaxHistoRunNb             | bigint(20) | YES  |     | NULL    |       |
+| AutoMinMaxHistoLastRunTs         | datetime   | YES  |     | NULL    |       |
+| AutoMinMaxHistoInsNbTotal        | bigint(20) | YES  |     | NULL    |       |
+| AutoMinMaxHistoDelNbTotal        | bigint(20) | YES  |     | NULL    |       |
+| AutoMinMaxHistoUpdMinNbTotal     | bigint(20) | YES  |     | NULL    |       |
+| AutoMinMaxHistoUpdMaxNbTotal     | bigint(20) | YES  |     | NULL    |       |
+| EnvTemperatureNbReadTotal        | bigint(20) | YES  |     | NULL    |       |
+| EnvTemperatureNbReadOk           | bigint(20) | YES  |     | NULL    |       |
+| EnvTemperatureNbReadFailed       | bigint(20) | YES  |     | NULL    |       |
+| EnvTemperatureNbReadInvalid      | bigint(20) | YES  |     | NULL    |       |
+| EnvTemperatureReadLastTs         | datetime   | YES  |     | NULL    |       |
+| EnvRelativeHumidityNbReadTotal   | bigint(20) | YES  |     | NULL    |       |
+| EnvRelativeHumidityNbReadOk      | bigint(20) | YES  |     | NULL    |       |
+| EnvRelativeHumidityNbReadFailed  | bigint(20) | YES  |     | NULL    |       |
+| EnvRelativeHumidityNbReadInvalid | bigint(20) | YES  |     | NULL    |       |
+| EnvRelativeHumidityReadLastTs    | datetime   | YES  |     | NULL    |       |
++----------------------------------+------------+------+-----+---------+-------+

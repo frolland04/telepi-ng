@@ -4,6 +4,7 @@
 import Debug  # Besoin de mon décorateur 'call_log'
 import DatabaseEngine
 
+
 file = __file__.split('\\')[-1]
 
 
@@ -167,3 +168,33 @@ class SqlPool:
             RH = {RH},
             TS = '{TS}' on duplicate key UPDATE TS = 'TS' """.format_map(tags)
         )
+
+    @Debug.call_log
+    def incrementCountEnvRelativeHumidityNbReadTotal(self):
+        """Incrémente le nombre total de lectures des données de l'environnement"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvRelativeHumidityNbReadTotal = EnvRelativeHumidityNbReadTotal + 1 """)
+
+    @Debug.call_log
+    def incrementCountEnvRelativeHumidityNbReadOk(self):
+        """Incrémente le nombre total de lectures des données de l'environnement qui sont un succès"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvRelativeHumidityNbReadOk = EnvRelativeHumidityNbReadOk + 1 """)
+
+    @Debug.call_log
+    def incrementCountEnvRelativeHumidityNbReadFailed(self):
+        """Incrémente le nombre total de lectures des données de l'environnement qui sont en échec"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvRelativeHumidityNbReadFailed = EnvRelativeHumidityNbReadFailed + 1 """)
+
+    @Debug.call_log
+    def incrementCountEnvRelativeHumidityNbReadInvalid(self):
+        """Incrémente le nombre total de lectures des données de l'environnement qui sont hors des bornes acceptables"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvRelativeHumidityNbReadInvalid = EnvRelativeHumidityNbReadInvalid + 1 """)
+
+    @Debug.call_log
+    def setCountEnvRelativeHumidityReadLastTs(self, ts):
+        """Renseigne le moment de la dernière lecture des données de l'environnement"""
+        self.ex.execute(
+            """ UPDATE T_COUNTERS set EnvRelativeHumidityReadLastTs = %s """, ts)
