@@ -201,8 +201,8 @@ while not stop:
         if ok:
             # On ajoute la température et l'humidité relevées périodiquement
             # aux valeurs du dictionnaire issu de la collecte, pour l'historique en BDD
-            msg_tags['TEMPERATURE'] = '{:.1f}'.format(temp)
-            msg_tags['RH'] = '{:.0f}'.format(hum)
+            msg_tags['TEMPERATURE'] = temp
+            msg_tags['RH'] = hum
             msg_tags['PRESSION_ATMOS'] = '{:.1f}'.format(atm)
 
             # Historique des valeurs échantillonnées toutes les 20s
