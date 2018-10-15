@@ -170,33 +170,39 @@ while not stop:
         ok = msg_tags['OK']
 
         # Depuis la BDD pour quelques informations
-        # notamment des compteurs
+        # notamment des compteurs sur l'activité et l'empreinte mémoire de la BDD
         histo = dex.pool.getDatabaseHistoRowNb()
         heap = dex.pool.getDatabaseGlobalHeapMax()
         tbsp = dex.pool.getDatabaseHistoTablespace()
         msgs = dex.pool.getCountRecvMsgOk()
 
-        # -----------------------
-        # Appliquer à l'affichage
-        # -----------------------
+        # -------------------------------------
+        # Envoyer les données à l'affichage LCD
+        # -------------------------------------
 
+        # Remontée des données Téléinformation
         if ok:
             disp['TARIF:'] = '  ' + bareme
-            disp['IINST(A),PAPP(W)'] = '{:7d}'.format(intensite) + ' ' + '{:7d}'.format(puissance)
+            disp['IINST(A),PAPP(W)'] = '{:7d} {:7d}'.format(intensite, puissance)
         else:
-            disp['TARIF:'] = '  ' + '???'
+            disp['TARIF:'] = '  ???'
             disp['IINST(A),PAPP(W)'] = '    ???     ???'
 
-        disp['TEMP(C), HUM(%)'] = '{:7.1f}'.format(temp) + ' ' + '{:7.0f}'.format(hum)
-        disp['PRESS.ATMOS(hPa)'] = '  ' + '{:7.1f}'.format(atm)
-        disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
-        disp['TELEINFO MESS.'] = '  ' + '{:7d}'.format(msgs)
-        disp['HISTO MESS.'] = '  ' + '{:7d}'.format(histo)
-        disp['MEM.(MB),MAX(MB)'] = '{:4.2f}'.format(tbsp) + ' ' + '{:4.2f}'.format(heap)
+        # Remontée des données d'environnement
+        disp['TEMP.(C),HUM.(%)'] = '{:7.1f} {:7.0f}'.format(temp, hum)
+        disp['PRES.ATMOS.(hPa)'] = '  {:7.1f}'.format(atm)
 
-        # ------------------------------
-        # Appliquer à la base de données
-        # ------------------------------
+        # Divers éléments
+        disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
+
+        # Statistiques et données remontées par la BDD
+        disp['TELEINFO MESS.'] = '  {:7d}'.format(msgs)
+        disp['HISTO MESS.'] = '  {:7d}'.format(histo)
+        disp['MEM.(MB),MAX(MB)'] = '{:6.2f} {:6.2f}'.format(tbsp, heap)
+
+        # ------------------------------------------
+        # Envoyer les données pour stockage à la BDD
+        # ------------------------------------------
 
         if ok:
             # On ajoute la température et l'humidité relevées périodiquement
