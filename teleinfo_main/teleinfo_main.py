@@ -190,8 +190,8 @@ while not stop:
         disp['TEMP(C), HUM(%)'] = '{:7.1f}'.format(temp) + ' ' + '{:7.0f}'.format(hum)
         disp['PRESS.ATMOS(hPa)'] = '  ' + '{:7.1f}'.format(atm)
         disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
-        disp['TELEINFO MESS.'] = '  ' + '{:7d}'.format(atm)
-        disp['HISTO MESS.'] = '  ' + '{:7d}'.format(atm)
+        disp['TELEINFO MESS.'] = '  ' + '{:7d}'.format(msgs)
+        disp['HISTO MESS.'] = '  ' + '{:7d}'.format(histo)
         disp['MEM.(MB),MAX(MB)'] = '{:7d}'.format(tbsp) + ' ' + '{:7d}'.format(heap)
 
         # ------------------------------
