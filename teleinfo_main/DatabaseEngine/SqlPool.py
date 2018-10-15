@@ -80,6 +80,11 @@ class SqlPool:
         self.ex.execute(""" UPDATE T_COUNTERS set RecvMsgNbOK = RecvMsgNbOK + 1 """)
 
     @Debug.call_log
+    def getCountRecvMsgOk(self):
+        """Récupère le nombre de messages reçus bons"""
+        return self.ex.execute_request_for_simple_value(""" SELECT RecvMsgNbOK FROM T_COUNTERS """)
+
+    @Debug.call_log
     def incrementCountRecvMsgBad(self):
         """Incrémente le nombre de messages reçus mauvais"""
         self.ex.execute(""" UPDATE T_COUNTERS set RecvMsgNbBad = RecvMsgNbBad + 1 """)
@@ -259,3 +264,19 @@ class SqlPool:
         """Renseigne le moment de la dernière lecture des données de l'environnement"""
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvAirPressureReadLastTs = %s """, ts)
+
+    @Debug.call_log
+    def getDatabaseHistoRowNb(self):
+        """Requête la BDD sur son occupation"""
+        return self.ex.execute_request_for_simple_value(""" select count(*) from T_TELEINFO_HISTO """)
+
+    @Debug.call_log
+    def getDatabaseHistoTablespace(self):
+        """Requête la BDD sur son occupation"""
+        return self.ex.execute_request_for_simple_value(""" SELECT round(((data_length + index_length) / 1024 / 1024), 2) FROM information_schema.TABLES
+         WHERE table_schema = 'D_TELEINFO' AND table_name = 'T_TELEINFO_HISTO'""")
+
+    @Debug.call_log
+    def getDatabaseGlobalHeapMax(self):
+        """Requête la BDD sur son occupation"""
+        return self.ex.execute_request_for_simple_value(""" select round(((@@max_heap_table_size) / 1024 / 1024), 2) """)

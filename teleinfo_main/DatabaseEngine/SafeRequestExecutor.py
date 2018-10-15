@@ -64,6 +64,18 @@ class SafeRequestExecutor:
                 self.engine.execute(sql, a)
 
     @Debug.call_log
+    def execute_request_for_simple_value(self, sql):
+        with self.mutex:
+            try:
+                self.engine.execute(sql)
+                s = self.engine.fetchall()
+                return s[0][0]
+
+            except Exception as e:
+                print('Unable to fetch data !', e)
+                return ''
+
+    @Debug.call_log
     def close(self):
 
         # Indication de sortie dans la BDD

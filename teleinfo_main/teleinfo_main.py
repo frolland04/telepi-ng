@@ -169,20 +169,30 @@ while not stop:
         intensite = int(msg_tags['IINST'])
         ok = msg_tags['OK']
 
+        # Depuis la BDD pour quelques informations
+        # notamment des compteurs
+        histo = dex.pool.getDatabaseHistoRowNb()
+        heap = dex.pool.getDatabaseGlobalHeapMax()
+        tbsp = dex.pool.getDatabaseHistoTablespace()
+        msgs = dex.pool.getCountRecvMsgOk()
+
         # -----------------------
         # Appliquer à l'affichage
         # -----------------------
 
         if ok:
-            disp['TARIF:'] = "  " + bareme
+            disp['TARIF:'] = '  ' + bareme
             disp['IINST(A),PAPP(W)'] = '{:7d}'.format(intensite) + ' ' + '{:7d}'.format(puissance)
         else:
-            disp['TARIF:'] = "  " + '???'
+            disp['TARIF:'] = '  ' + '???'
             disp['IINST(A),PAPP(W)'] = '    ???     ???'
 
         disp['TEMP(C), HUM(%)'] = '{:7.1f}'.format(temp) + ' ' + '{:7.0f}'.format(hum)
-        disp['PRESS.ATMOS(hPa)'] = '{:7.1f}'.format(atm)
+        disp['PRESS.ATMOS(hPa)'] = '  ' + '{:7.1f}'.format(atm)
         disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
+        disp['TELEINFO MESS.'] = '  ' + '{:7d}'.format(atm)
+        disp['HISTO MESS.'] = '  ' + '{:7d}'.format(atm)
+        disp['MEM.(MB),MAX(MB)'] = '{:7d}'.format(tbsp) + ' ' + '{:7d}'.format(heap)
 
         # ------------------------------
         # Appliquer à la base de données
