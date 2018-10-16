@@ -190,15 +190,15 @@ while not stop:
 
         # Remontée des données d'environnement
         disp['TEMP.(C),HUM.(%)'] = '{:7.1f} {:7.0f}'.format(temp, hum)
-        disp['PRES.ATMOS.(hPa)'] = '  {:7.1f}'.format(atm)
+        disp['PRESSION ATMOS.'] = '  {:7.1f} (hPa)'.format(atm)
 
         # Divers éléments
         disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
 
         # Statistiques et données remontées par la BDD
-        disp['TELEINFO MESS.'] = '  {:7d}'.format(msgs)
-        disp['HISTO MESS.'] = '  {:7d}'.format(histo)
-        disp['MEM.(MB),MAX(MB)'] = '{:6.2f} {:6.2f}'.format(tbsp, heap)
+        disp['TELEINFO:'] = '  {:10d} MESS.'.format(msgs)
+        disp['HISTO:'] = '  {:10d} MESS.'.format(histo)
+        disp['MEM./MAX.(MB):'] = '{:6.2f}/{:6.2f}'.format(tbsp, heap)
 
         # ------------------------------------------
         # Envoyer les données pour stockage à la BDD
