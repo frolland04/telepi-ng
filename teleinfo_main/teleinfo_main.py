@@ -196,9 +196,9 @@ while not stop:
         disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
 
         # Statistiques et données remontées par la BDD
-        disp['TELEINFO:'] = '  {:10d} MESS.'.format(msgs)
-        disp['HISTO:'] = '  {:10d} MESS.'.format(histo)
-        disp['MEM./MAX.(MB):'] = '{:6.2f}/{:6.2f}'.format(tbsp, heap)
+        disp['TELEINFO:'] = '{:10d} MESS.'.format(msgs)
+        disp['HISTO:'] = '{:10d} MESS.'.format(histo)
+        disp['MEM./MAX.(MB):'] = '{:6.2f} {:6.2f}'.format(tbsp, heap)
 
         # ------------------------------------------
         # Envoyer les données pour stockage à la BDD
