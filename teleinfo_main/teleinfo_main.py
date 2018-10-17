@@ -214,8 +214,8 @@ while not stop:
             # Historique des valeurs échantillonnées toutes les 20s
             dex.pool.updateTeleinfoHisto(msg_tags)
 
-        # On se revoit dans 20s
-        time.sleep(20)
+        # On se reverra dans 30s
+        time.sleep(30)
 
     except Exception as e:
         # Affiche le problème
