@@ -1,28 +1,13 @@
--- MySQL dump 10.13  Distrib 5.5.60, for debian-linux-gnu (armv8l)
---
--- Host: localhost    Database: D_TELEINFO
--- ------------------------------------------------------
--- Server version	5.5.60-0+deb8u1
+-- Database `D_TELEINFO`
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE IF NOT EXISTS `D_TELEINFO` DEFAULT CHARACTER SET utf8 ;
+USE `D_TELEINFO`;
 
 --
--- Table structure for table `T_COUNTERS`
+-- Table `T_COUNTERS`
 --
 
-DROP TABLE IF EXISTS `T_COUNTERS`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_COUNTERS` (
+CREATE TABLE IF NOT EXISTS `T_COUNTERS` (
   `Id` int(11) unsigned NOT NULL DEFAULT '0',
   `RecvMsgNbTotal` bigint(20) unsigned NOT NULL DEFAULT '0',
   `RecvMsgNbOk` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -85,51 +70,32 @@ CREATE TABLE `T_COUNTERS` (
   `EnvAirPressureReadLastTs` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `T_COUNTERS`
+-- Data of table `T_COUNTERS`
 --
 
 LOCK TABLES `T_COUNTERS` WRITE;
-/*!40000 ALTER TABLE `T_COUNTERS` DISABLE KEYS */;
 INSERT INTO `T_COUNTERS` VALUES (0,0,0,0,0,0,0,0,NULL,0,NULL,0,0,0,NULL,0,0,0,0,0,0,0,NULL,0,0,0,0,0,0,0,NULL,0,0,0,0,0,0,0,NULL,0,0,0,0,0,0,0,0,0,0,NULL,0,0,0,0,NULL,0,0,0,0,NULL);
-/*!40000 ALTER TABLE `T_COUNTERS` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `T_DBG_ENTRIES`
+-- Table `T_DBG_ENTRIES`
 --
 
-DROP TABLE IF EXISTS `T_DBG_ENTRIES`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_DBG_ENTRIES` (
+CREATE TABLE IF NOT EXISTS `T_DBG_ENTRIES` (
   `Id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `DbgMessage` varchar(60) DEFAULT NULL,
   `DbgContext` varchar(250) DEFAULT NULL,
   `DbgTs` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `T_DBG_ENTRIES`
+-- Table `T_HISTO`
 --
 
-LOCK TABLES `T_DBG_ENTRIES` WRITE;
-/*!40000 ALTER TABLE `T_DBG_ENTRIES` DISABLE KEYS */;
-/*!40000 ALTER TABLE `T_DBG_ENTRIES` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `T_HISTO`
---
-
-DROP TABLE IF EXISTS `T_HISTO`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_HISTO` (
+CREATE TABLE IF NOT EXISTS `T_HISTO` (
   `PTEC` varchar(2) NOT NULL,
   `PAPP` int(11) NOT NULL,
   `IINST` int(11) NOT NULL,
@@ -140,52 +106,42 @@ CREATE TABLE `T_HISTO` (
   `RH` float NOT NULL,
   `PA` float NOT NULL,
   `TS` datetime NOT NULL
-) ENGINE=MEMORY DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `T_HISTO`
+-- Table `T_PA_INST`
 --
 
-LOCK TABLES `T_HISTO` WRITE;
-/*!40000 ALTER TABLE `T_HISTO` DISABLE KEYS */;
-/*!40000 ALTER TABLE `T_HISTO` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `T_PA_INST`
---
-
-DROP TABLE IF EXISTS `T_PA_INST`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_PA_INST` (
+CREATE TABLE IF NOT EXISTS `T_PA_INST` (
   `Id` int(11) unsigned NOT NULL DEFAULT '0',
   `PA` float NOT NULL DEFAULT '0',
   `TS` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `T_PA_INST`
+-- Data of table `T_PA_INST`
 --
 
 LOCK TABLES `T_PA_INST` WRITE;
-/*!40000 ALTER TABLE `T_PA_INST` DISABLE KEYS */;
 INSERT INTO `T_PA_INST` VALUES (0,0,NULL);
-/*!40000 ALTER TABLE `T_PA_INST` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`teleinfo`@`%`*/ /*!50003 TRIGGER `AutoMinMaxPaUpdInst` AFTER UPDATE ON `T_PA_INST` FOR EACH ROW BEGIN
+
+--
+-- Triggers of table `T_PA_INST`
+--
+
+DELIMITER |
+
+DROP TRIGGER IF EXISTS AutoMinMaxPaUpdInst |
+
+CREATE DEFINER=`teleinfo@localhost` TRIGGER `AutoMinMaxPaUpdInst`
+
+AFTER UPDATE ON `T_PA_INST`
+
+FOR EACH ROW
+
+BEGIN
 
    DECLARE OLD_PA_MIN INTEGER ;
 
@@ -253,97 +209,68 @@ DELIMITER ;;
    
    UPDATE T_COUNTERS SET T_COUNTERS.AutoMinMaxPaMaxDelNbTotal = T_COUNTERS.AutoMinMaxPaMaxDelNbTotal + @DeletedNb ;
 
-END */;;
+END |
+
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
--- Table structure for table `T_PA_MAX`
+-- Table `T_PA_MAX`
 --
 
-DROP TABLE IF EXISTS `T_PA_MAX`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_PA_MAX` (
+CREATE TABLE IF NOT EXISTS `T_PA_MAX` (
   `Id` int(11) NOT NULL DEFAULT '0',
   `TS_DATE` date NOT NULL,
   `TS_TIME` time NOT NULL,
   `PA` float DEFAULT NULL,
   PRIMARY KEY (`TS_DATE`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `T_PA_MAX`
+-- Table `T_PA_MIN`
 --
 
-LOCK TABLES `T_PA_MAX` WRITE;
-/*!40000 ALTER TABLE `T_PA_MAX` DISABLE KEYS */;
-/*!40000 ALTER TABLE `T_PA_MAX` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `T_PA_MIN`
---
-
-DROP TABLE IF EXISTS `T_PA_MIN`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_PA_MIN` (
+CREATE TABLE IF NOT EXISTS `T_PA_MIN` (
   `Id` int(11) NOT NULL DEFAULT '0',
   `TS_DATE` date NOT NULL,
   `TS_TIME` time NOT NULL,
   `PA` float DEFAULT NULL,
   PRIMARY KEY (`TS_DATE`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `T_PA_MIN`
+-- Table `T_RH_INST`
 --
 
-LOCK TABLES `T_PA_MIN` WRITE;
-/*!40000 ALTER TABLE `T_PA_MIN` DISABLE KEYS */;
-/*!40000 ALTER TABLE `T_PA_MIN` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `T_RH_INST`
---
-
-DROP TABLE IF EXISTS `T_RH_INST`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_RH_INST` (
+CREATE TABLE IF NOT EXISTS `T_RH_INST` (
   `Id` int(11) unsigned NOT NULL DEFAULT '0',
   `RH` float NOT NULL DEFAULT '0',
   `TS` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `T_RH_INST`
+-- Data of table `T_RH_INST`
 --
 
 LOCK TABLES `T_RH_INST` WRITE;
-/*!40000 ALTER TABLE `T_RH_INST` DISABLE KEYS */;
 INSERT INTO `T_RH_INST` VALUES (0,0,NULL);
-/*!40000 ALTER TABLE `T_RH_INST` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`teleinfo`@`%`*/ /*!50003 TRIGGER `AutoMinMaxRhUpdInst` AFTER UPDATE ON `T_RH_INST` FOR EACH ROW BEGIN
+
+--
+-- Triggers of table `T_RH_INST`
+--
+
+DELIMITER |
+
+DROP TRIGGER IF EXISTS AutoMinMaxRhUpdInst |
+
+CREATE DEFINER=`teleinfo@localhost` TRIGGER `AutoMinMaxRhUpdInst`
+
+AFTER UPDATE ON `T_RH_INST`
+
+FOR EACH ROW
+
+BEGIN
 
    DECLARE OLD_RH_MIN INTEGER ;
 
@@ -411,71 +338,39 @@ DELIMITER ;;
    
    UPDATE T_COUNTERS SET T_COUNTERS.AutoMinMaxRhMaxDelNbTotal = T_COUNTERS.AutoMinMaxRhMaxDelNbTotal + @DeletedNb ;
 
-END */;;
+END |
+
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
--- Table structure for table `T_RH_MAX`
+-- Table `T_RH_MAX`
 --
 
-DROP TABLE IF EXISTS `T_RH_MAX`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_RH_MAX` (
+CREATE TABLE IF NOT EXISTS `T_RH_MAX` (
   `Id` int(11) NOT NULL DEFAULT '0',
   `TS_DATE` date NOT NULL,
   `TS_TIME` time NOT NULL,
   `RH` float DEFAULT NULL,
   PRIMARY KEY (`TS_DATE`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `T_RH_MAX`
+-- Table `T_RH_MIN`
 --
 
-LOCK TABLES `T_RH_MAX` WRITE;
-/*!40000 ALTER TABLE `T_RH_MAX` DISABLE KEYS */;
-/*!40000 ALTER TABLE `T_RH_MAX` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `T_RH_MIN`
---
-
-DROP TABLE IF EXISTS `T_RH_MIN`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_RH_MIN` (
+CREATE TABLE IF NOT EXISTS `T_RH_MIN` (
   `Id` int(11) NOT NULL DEFAULT '0',
   `TS_DATE` date NOT NULL,
   `TS_TIME` time NOT NULL,
   `RH` float DEFAULT NULL,
   PRIMARY KEY (`TS_DATE`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `T_RH_MIN`
+-- Table `T_TELEINFO_HISTO`
 --
 
-LOCK TABLES `T_RH_MIN` WRITE;
-/*!40000 ALTER TABLE `T_RH_MIN` DISABLE KEYS */;
-/*!40000 ALTER TABLE `T_RH_MIN` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `T_TELEINFO_HISTO`
---
-
-DROP TABLE IF EXISTS `T_TELEINFO_HISTO`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_TELEINFO_HISTO` (
+CREATE TABLE IF NOT EXISTS `T_TELEINFO_HISTO` (
   `PTEC` varchar(2) NOT NULL,
   `PAPP` int(11) unsigned NOT NULL,
   `IINST` int(11) unsigned NOT NULL,
@@ -488,25 +383,12 @@ CREATE TABLE `T_TELEINFO_HISTO` (
   `TS` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`TS`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `T_TELEINFO_HISTO`
+-- Table `T_TELEINFO_INST`
 --
 
-LOCK TABLES `T_TELEINFO_HISTO` WRITE;
-/*!40000 ALTER TABLE `T_TELEINFO_HISTO` DISABLE KEYS */;
-/*!40000 ALTER TABLE `T_TELEINFO_HISTO` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `T_TELEINFO_INST`
---
-
-DROP TABLE IF EXISTS `T_TELEINFO_INST`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_TELEINFO_INST` (
+CREATE TABLE IF NOT EXISTS `T_TELEINFO_INST` (
   `Id` int(11) unsigned NOT NULL DEFAULT '0',
   `PTEC` varchar(2) NOT NULL DEFAULT '''''',
   `PAPP` int(11) unsigned NOT NULL DEFAULT '0',
@@ -522,27 +404,30 @@ CREATE TABLE `T_TELEINFO_INST` (
   `TS` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `T_TELEINFO_INST`
+-- Data of table `T_TELEINFO_INST`
 --
 
 LOCK TABLES `T_TELEINFO_INST` WRITE;
-/*!40000 ALTER TABLE `T_TELEINFO_INST` DISABLE KEYS */;
 INSERT INTO `T_TELEINFO_INST` VALUES (0,'\'\'',0,0,0,0,0,0,'\'\'','\'\'',0,0,NULL);
-/*!40000 ALTER TABLE `T_TELEINFO_INST` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`teleinfo`@`%`*/ /*!50003 TRIGGER `AutoMinMaxTeleinfoUpdInst` AFTER UPDATE ON `T_TELEINFO_INST` FOR EACH ROW BEGIN
+
+--
+-- Triggers of table `T_TELEINFO_INST`
+--
+
+DELIMITER |
+
+DROP TRIGGER IF EXISTS AutoMinMaxTeleinfoUpdInst |
+
+CREATE DEFINER=`teleinfo@localhost` TRIGGER `AutoMinMaxTeleinfoUpdInst`
+
+AFTER UPDATE ON `T_TELEINFO_INST`
+
+FOR EACH ROW
+
+BEGIN
 
    DECLARE OLD_PAPP_MIN INTEGER ;
 
@@ -610,21 +495,15 @@ DELIMITER ;;
    
    UPDATE T_COUNTERS SET T_COUNTERS.AutoMinMaxTeleinfoMaxDelNbTotal = T_COUNTERS.AutoMinMaxTeleinfoMaxDelNbTotal + @DeletedNb ;
 
-END */;;
+END |
+
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
--- Table structure for table `T_TELEINFO_MAX`
+-- Table `T_TELEINFO_MAX`
 --
 
-DROP TABLE IF EXISTS `T_TELEINFO_MAX`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_TELEINFO_MAX` (
+CREATE TABLE IF NOT EXISTS `T_TELEINFO_MAX` (
   `Id` int(11) unsigned NOT NULL DEFAULT '0',
   `TS_DATE` date NOT NULL,
   `TS_TIME` time NOT NULL,
@@ -632,25 +511,12 @@ CREATE TABLE `T_TELEINFO_MAX` (
   `IINST` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`TS_DATE`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `T_TELEINFO_MAX`
+-- Table `T_TELEINFO_MIN`
 --
 
-LOCK TABLES `T_TELEINFO_MAX` WRITE;
-/*!40000 ALTER TABLE `T_TELEINFO_MAX` DISABLE KEYS */;
-/*!40000 ALTER TABLE `T_TELEINFO_MAX` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `T_TELEINFO_MIN`
---
-
-DROP TABLE IF EXISTS `T_TELEINFO_MIN`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_TELEINFO_MIN` (
+CREATE TABLE IF NOT EXISTS `T_TELEINFO_MIN` (
   `Id` int(11) unsigned NOT NULL DEFAULT '0',
   `TS_DATE` date NOT NULL,
   `TS_TIME` time NOT NULL,
@@ -658,51 +524,41 @@ CREATE TABLE `T_TELEINFO_MIN` (
   `IINST` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`TS_DATE`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `T_TELEINFO_MIN`
+-- Table `T_TEMP_INST`
 --
 
-LOCK TABLES `T_TELEINFO_MIN` WRITE;
-/*!40000 ALTER TABLE `T_TELEINFO_MIN` DISABLE KEYS */;
-/*!40000 ALTER TABLE `T_TELEINFO_MIN` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `T_TEMP_INST`
---
-
-DROP TABLE IF EXISTS `T_TEMP_INST`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_TEMP_INST` (
+CREATE TABLE IF NOT EXISTS `T_TEMP_INST` (
   `Id` int(11) unsigned NOT NULL DEFAULT '0',
   `TEMP` float NOT NULL DEFAULT '0',
   `TS` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `T_TEMP_INST`
+-- Data of table `T_TEMP_INST`
 --
 
 LOCK TABLES `T_TEMP_INST` WRITE;
-/*!40000 ALTER TABLE `T_TEMP_INST` DISABLE KEYS */;
 INSERT INTO `T_TEMP_INST` VALUES (0,0,NULL);
-/*!40000 ALTER TABLE `T_TEMP_INST` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = '' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`teleinfo`@`%`*/ /*!50003 TRIGGER `AutoMinMaxTempUpdInst` AFTER UPDATE ON `T_TEMP_INST` FOR EACH ROW BEGIN
+
+--
+-- Triggers of table `T_TEMP_INST`
+--
+
+DELIMITER |
+
+DROP TRIGGER IF EXISTS AutoMinMaxTempUpdInst |
+
+CREATE DEFINER=`teleinfo@localhost` TRIGGER `AutoMinMaxTempUpdInst`
+
+AFTER UPDATE ON `T_TEMP_INST`
+
+FOR EACH ROW
+
+BEGIN
 
    DECLARE OLD_TEMP_MIN INTEGER ;
 
@@ -770,70 +626,71 @@ DELIMITER ;;
    
    UPDATE T_COUNTERS SET T_COUNTERS.AutoMinMaxTempMaxDelNbTotal = T_COUNTERS.AutoMinMaxTempMaxDelNbTotal + @DeletedNb ;
 
-END */;;
+END |
+
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
--- Table structure for table `T_TEMP_MAX`
+-- Table `T_TEMP_MAX`
 --
 
-DROP TABLE IF EXISTS `T_TEMP_MAX`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_TEMP_MAX` (
-  `Id` int(11) NOT NULL DEFAULT '0',
-  `TS_DATE` date NOT NULL,
-  `TS_TIME` time NOT NULL,
-  `TEMP` float DEFAULT NULL,
-  PRIMARY KEY (`TS_DATE`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `T_TEMP_MAX`
---
-
-LOCK TABLES `T_TEMP_MAX` WRITE;
-/*!40000 ALTER TABLE `T_TEMP_MAX` DISABLE KEYS */;
-/*!40000 ALTER TABLE `T_TEMP_MAX` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `T_TEMP_MIN`
---
-
-DROP TABLE IF EXISTS `T_TEMP_MIN`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `T_TEMP_MIN` (
+CREATE TABLE IF NOT EXISTS `T_TEMP_MAX` (
   `Id` int(11) NOT NULL DEFAULT '0',
   `TS_DATE` date NOT NULL,
   `TS_TIME` time NOT NULL,
   `TEMP` float DEFAULT NULL,
   PRIMARY KEY (`TS_DATE`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `T_TEMP_MIN`
+-- Table `T_TEMP_MIN`
 --
 
-LOCK TABLES `T_TEMP_MIN` WRITE;
-/*!40000 ALTER TABLE `T_TEMP_MIN` DISABLE KEYS */;
-/*!40000 ALTER TABLE `T_TEMP_MIN` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+CREATE TABLE IF NOT EXISTS `T_TEMP_MIN` (
+  `Id` int(11) NOT NULL DEFAULT '0',
+  `TS_DATE` date NOT NULL,
+  `TS_TIME` time NOT NULL,
+  `TEMP` float DEFAULT NULL,
+  PRIMARY KEY (`TS_DATE`)
+) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+--
+-- Database Scheduled Events
+--
 
--- Dump completed on 2018-11-03  8:14:22
+DELIMITER |
+
+DROP EVENT IF EXISTS `CleanOldHisto` |
+
+CREATE EVENT `CleanOldHisto`
+
+ON SCHEDULE
+
+  EVERY 1 HOUR
+
+  STARTS CURRENT_TIMESTAMP
+
+  COMMENT 'Database scheduled event cleaning up histo past 120 DAYS.'
+
+  DO
+
+  BEGIN
+
+    DECLARE DeletedNb INTEGER ;
+
+    DECLARE HasNb INTEGER ;
+
+    SET @HasNb = ( SELECT COUNT(*) FROM T_TELEINFO_HISTO ) ;
+
+    DELETE FROM T_TELEINFO_HISTO
+
+    WHERE T_TELEINFO_HISTO.TS < DATE_SUB(NOW(), INTERVAL 120 DAY) ;
+
+    SET @DeletedNb = ROW_COUNT() ;
+
+    UPDATE T_COUNTERS SET T_COUNTERS.CleanHistoLastRunTs = NOW(), T_COUNTERS.CleanHistoRunNb = T_COUNTERS.CleanHistoRunNb + 1, T_COUNTERS.CleanHistoLastRunDelNb = @DeletedNb, T_COUNTERS.CleanHistoLastRunHasNb = @HasNb ;
+
+END |
+
+DELIMITER ;
+
