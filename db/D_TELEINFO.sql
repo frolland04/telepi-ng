@@ -135,7 +135,7 @@ DELIMITER |
 
 DROP TRIGGER IF EXISTS AutoMinMaxPaUpdInst |
 
-CREATE DEFINER=`teleinfo@localhost` TRIGGER `AutoMinMaxPaUpdInst`
+CREATE TRIGGER `AutoMinMaxPaUpdInst`
 
 AFTER UPDATE ON `T_PA_INST`
 
@@ -264,7 +264,7 @@ DELIMITER |
 
 DROP TRIGGER IF EXISTS AutoMinMaxRhUpdInst |
 
-CREATE DEFINER=`teleinfo@localhost` TRIGGER `AutoMinMaxRhUpdInst`
+CREATE TRIGGER `AutoMinMaxRhUpdInst`
 
 AFTER UPDATE ON `T_RH_INST`
 
@@ -421,7 +421,7 @@ DELIMITER |
 
 DROP TRIGGER IF EXISTS AutoMinMaxTeleinfoUpdInst |
 
-CREATE DEFINER=`teleinfo@localhost` TRIGGER `AutoMinMaxTeleinfoUpdInst`
+CREATE TRIGGER `AutoMinMaxTeleinfoUpdInst`
 
 AFTER UPDATE ON `T_TELEINFO_INST`
 
@@ -552,7 +552,7 @@ DELIMITER |
 
 DROP TRIGGER IF EXISTS AutoMinMaxTempUpdInst |
 
-CREATE DEFINER=`teleinfo@localhost` TRIGGER `AutoMinMaxTempUpdInst`
+CREATE TRIGGER `AutoMinMaxTempUpdInst`
 
 AFTER UPDATE ON `T_TEMP_INST`
 
