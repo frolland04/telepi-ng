@@ -162,16 +162,16 @@ class SqlPool:
         """Insertion d'une nouvelle valeur téléinfo instantanée dans l'historique"""
 
         self.ex.execute(
-            """ INSERT T_TELEINFO_HISTO set 
+            """ INSERT T_HISTO set 
             PTEC = '{PTEC}',
             PAPP = {PAPP},
             IINST = {IINST},
             HC = {HCHC},
             HP = {HCHP},
             ETAT = {MOTDETAT},
-            TEMPERATURE = {TEMPERATURE},
+            TEMP = {TEMPERATURE},
             RH = {RH},
-            PRESSION_ATMOS = {PRESSION_ATMOS},
+            PA = {PRESSION_ATMOS},
             TS = '{TS}' on duplicate key UPDATE TS = 'TS' """.format_map(tags)
         )
 
