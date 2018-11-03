@@ -268,13 +268,13 @@ class SqlPool:
     @Debug.call_log
     def getDatabaseHistoRowNb(self):
         """Requête la BDD sur son occupation"""
-        return self.ex.execute_request_for_simple_value(""" select count(*) from T_TELEINFO_HISTO """)
+        return self.ex.execute_request_for_simple_value(""" select count(*) from T_HISTO """)
 
     @Debug.call_log
     def getDatabaseHistoTablespace(self):
         """Requête la BDD sur son occupation"""
         return self.ex.execute_request_for_simple_value(""" SELECT round(((data_length + index_length) / 1024 / 1024), 2) FROM information_schema.TABLES
-         WHERE table_schema = 'D_TELEINFO' AND table_name = 'T_TELEINFO_HISTO'""")
+         WHERE table_schema = 'D_TELEINFO' AND table_name = 'T_HISTO'""")
 
     @Debug.call_log
     def getDatabaseGlobalHeapMax(self):
