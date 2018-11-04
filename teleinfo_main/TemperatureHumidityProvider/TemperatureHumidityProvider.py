@@ -93,18 +93,25 @@ class TemperatureHumidityProvider:
             val = self.BME280_I2C.humidity
             print('DBG_ENV: Humidity', '{:.0f}'.format(val))
 
-            # Les valeurs sont-elles dans des plages raisonnables?
-            if val <= 0.0 or val >= 100:
-                self.ex.pool.incrementCountEnvRelativeHumidityNbReadInvalid()
-                ok = False
-            else:
-                # Oui, on valide la nouvelle prise de mesure
-                self.ex.pool.incrementCountEnvRelativeHumidityNbReadOk()
+            try:
+                # Les valeurs sont-elles dans des plages raisonnables?
+                if val <= 0.0 or val >= 100:
+                    # Non, on la laissera de coté
+                    ok = False
+                    self.ex.pool.incrementCountEnvRelativeHumidityNbReadInvalid()
 
-                ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                self.ex.pool.updateRhInst(val, ts)
+                else:
+                    # Oui, on valide la nouvelle prise de mesure
+                    ok = True
 
-                ok = True
+                    self.ex.pool.incrementCountEnvRelativeHumidityNbReadOk()
+
+                    ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    self.ex.pool.updateRhInst(val, ts)
+
+            except Exception as e:
+                print(e)
+
         except:
             self.ex.pool.incrementCountEnvRelativeHumidityNbReadFailed()
             ok = False
@@ -126,18 +133,25 @@ class TemperatureHumidityProvider:
             val = self.BME280_I2C.temperature
             print('DBG_ENV: Temperature', '{:.1f}'.format(val))
 
-            # Les valeurs sont-elles dans des plages raisonnables?
-            if val <= -20.0 or val >= 60:
-                self.ex.pool.incrementCountEnvTemperatureNbReadInvalid()
-                ok = False
-            else:
-                # Oui, on valide la nouvelle prise de mesure
-                self.ex.pool.incrementCountEnvTemperatureNbReadOk()
+            try:
+                # Les valeurs sont-elles dans des plages raisonnables?
+                if val <= -20.0 or val >= 60:
+                    # Non, on la laissera de coté
+                    ok = False
+                    self.ex.pool.incrementCountEnvTemperatureNbReadInvalid()
 
-                ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                self.ex.pool.updateTempInst(val, ts)
+                else:
+                    # Oui, on valide la nouvelle prise de mesure
+                    ok = True
 
-                ok = True
+                    self.ex.pool.incrementCountEnvTemperatureNbReadOk()
+
+                    ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    self.ex.pool.updateTempInst(val, ts)
+
+            except Exception as e:
+                print(e)
+
         except:
             self.ex.pool.incrementCountEnvTemperatureNbReadFailed()
             ok = False
@@ -159,13 +173,17 @@ class TemperatureHumidityProvider:
             val = self.BME280_I2C.pressure
             print('DBG_ENV: Pression atmosphérique', '{:.2f}'.format(val))
 
-            # On valide la nouvelle prise de mesure
-            self.ex.pool.incrementCountEnvAirPressureNbReadOk()
+            try:
+                # On valide la nouvelle prise de mesure
+                ok = True
 
-            ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            self.ex.pool.updatePaInst(val, ts)
+                self.ex.pool.incrementCountEnvAirPressureNbReadOk()
 
-            ok = True
+                ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                self.ex.pool.updatePaInst(val, ts)
+
+            except Exception as e:
+                print(e)
 
         except:
             self.ex.pool.incrementCountEnvAirPressureNbReadFailed()
