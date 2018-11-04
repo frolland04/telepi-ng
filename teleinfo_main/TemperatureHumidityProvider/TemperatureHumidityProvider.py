@@ -100,6 +100,10 @@ class TemperatureHumidityProvider:
             else:
                 # Oui, on valide la nouvelle prise de mesure
                 self.ex.pool.incrementCountEnvRelativeHumidityNbReadOk()
+
+                ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                self.ex.pool.updateRhInst(val, ts)
+
                 ok = True
         except:
             self.ex.pool.incrementCountEnvRelativeHumidityNbReadFailed()
@@ -129,6 +133,10 @@ class TemperatureHumidityProvider:
             else:
                 # Oui, on valide la nouvelle prise de mesure
                 self.ex.pool.incrementCountEnvTemperatureNbReadOk()
+
+                ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                self.ex.pool.updateTempInst(val, ts)
+
                 ok = True
         except:
             self.ex.pool.incrementCountEnvTemperatureNbReadFailed()
@@ -153,6 +161,10 @@ class TemperatureHumidityProvider:
 
             # On valide la nouvelle prise de mesure
             self.ex.pool.incrementCountEnvAirPressureNbReadOk()
+
+            ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            self.ex.pool.updatePaInst(val, ts)
+
             ok = True
 
         except:

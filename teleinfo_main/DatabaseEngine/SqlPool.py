@@ -280,3 +280,24 @@ class SqlPool:
     def getDatabaseGlobalHeapMax(self):
         """Requête la BDD sur son occupation"""
         return self.ex.execute_request_for_simple_value(""" select round(((@@max_heap_table_size) / 1024 / 1024), 2) """)
+
+    @Debug.call_log
+    def updateRhInst(self, val, ts):
+        """Mise à jour de la valeur d'humidité instantanée"""
+
+        self.ex.execute(
+            """ UPDATE T_RH_INST set RH = {:d}, TS = {:s} """, format(round(val), ts))
+
+    @Debug.call_log
+    def updateTempInst(self, val, ts):
+        """Mise à jour de la valeur de température instantanée"""
+
+        self.ex.execute(
+            """ UPDATE T_TEMP_INST set TEMP = {:.1f}, TS = {:s} """, format(val, ts))
+
+    @Debug.call_log
+    def updatePaInst(self, val, ts):
+        """Mise à jour de la valeur de pression atmosphérique instantanée"""
+
+        self.ex.execute(
+            """ UPDATE T_PA_INST set PA = {:.2f}, TS = {:s} """, format(val, ts))
