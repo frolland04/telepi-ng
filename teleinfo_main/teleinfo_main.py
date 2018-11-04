@@ -157,9 +157,9 @@ while not stop:
         sysclock = datetime.datetime.now()
 
         # Depuis TemperatureHumidityProvider : température, humidité relative et pression atmosphérique
-        temp = round(thp.temperature, 1)
-        hum = round(thp.humidity, 0)
-        atm = round(thp.pressure, 2)
+        temp = thp.temperature
+        hum = thp.humidity
+        atm = thp.pressure
 
         # Depuis MessageProcessor :
         # barème ERDF en cours, intensité instantanée, puissance apparente et validité mesure
@@ -183,22 +183,22 @@ while not stop:
         # Remontée des données Téléinformation
         if ok:
             disp['TARIF:'] = '  ' + bareme
-            disp['IINST(A),PAPP(W)'] = '{:7d} {:7d}'.format(intensite, puissance)
+            disp['IINST(A),PAPP(W)'] = '{:07d} {:07d}'.format(intensite, puissance)
         else:
             disp['TARIF:'] = '  ???'
             disp['IINST(A),PAPP(W)'] = '    ???     ???'
 
         # Remontée des données d'environnement
-        disp['TEMP.(C),HUM.(%)'] = '{:7.1f} {:7.0f}'.format(temp, hum)
-        disp['PRESSION ATMOS.'] = '  {:7.1f} (hPa)'.format(atm)
+        disp['TEMP.(C),HUM.(%)'] = '{:07.1f} {:07.0f}'.format(temp, hum)
+        disp['PRESSION ATMOS.'] = '{:09.2f} (hPa)'.format(atm)
 
         # Divers éléments
         disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
 
         # Statistiques et données remontées par la BDD
-        disp['TELEINFO:'] = '{:10d} MESS.'.format(msgs)
-        disp['HISTO:'] = '{:10d} MESS.'.format(histo)
-        disp['MEM./MAX.(MB):'] = '{:6.2f} {:6.2f}'.format(tbsp, heap)
+        disp['TELEINFO:'] = '{:010d} MESS.'.format(msgs)
+        disp['HISTO:'] = '{:010d} MESS.'.format(histo)
+        disp['MEM./MAX.(MB):'] = '{:06.2f}/{:06.2f}'.format(tbsp, heap)
 
         # ------------------------------------------
         # Envoyer les données pour stockage à la BDD
@@ -209,7 +209,7 @@ while not stop:
             # aux valeurs du dictionnaire issu de la collecte, pour l'historique en BDD
             msg_tags['TEMPERATURE'] = temp
             msg_tags['RH'] = hum
-            msg_tags['PRESSION_ATMOS'] = '{:.1f}'.format(atm)
+            msg_tags['PRESSION_ATMOS'] = atm
 
             # Historique des valeurs échantillonnées toutes les 20s
             dex.pool.updateTeleinfoHisto(msg_tags)
