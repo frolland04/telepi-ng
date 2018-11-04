@@ -86,10 +86,11 @@ class TemperatureHumidityProvider:
 
         val = 0.0
         ok = False
+        ts = datetime.datetime.now()
 
         # Mise à jour des compteurs BDD
         self.ex.pool.incrementCountEnvRelativeHumidityNbReadTotal()
-        self.ex.pool.setCountEnvRelativeHumidityReadLastTs(datetime.datetime.now())
+        self.ex.pool.setCountEnvRelativeHumidityReadLastTs(ts)
 
         try:
             # Lecture depuis le BME280
@@ -117,7 +118,6 @@ class TemperatureHumidityProvider:
                 self.ex.pool.incrementCountEnvRelativeHumidityNbReadOk()
 
                 # Mise à jour valeur instantanée dans la BDD
-                ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 self.ex.pool.updateRhInst(val, ts)
 
         return val, ok
@@ -127,10 +127,11 @@ class TemperatureHumidityProvider:
 
         val = 0.0
         ok = False
+        ts = datetime.datetime.now()
 
         # Mise à jour des compteurs BDD
         self.ex.pool.incrementCountEnvTemperatureNbReadTotal()
-        self.ex.pool.setCountEnvTemperatureReadLastTs(datetime.datetime.now())
+        self.ex.pool.setCountEnvTemperatureReadLastTs(ts)
 
         try:
             # Lecture depuis le BME280
@@ -158,7 +159,6 @@ class TemperatureHumidityProvider:
                 self.ex.pool.incrementCountEnvTemperatureNbReadOk()
 
                 # Mise à jour valeur instantanée dans la BDD
-                ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 self.ex.pool.updateTempInst(val, ts)
 
         return val, ok
@@ -168,10 +168,11 @@ class TemperatureHumidityProvider:
 
         val = 0.0
         ok = False
+        ts = datetime.datetime.now()
 
         # Mise à jour des compteurs
         self.ex.pool.incrementCountEnvAirPressureNbReadTotal()
-        self.ex.pool.setCountEnvAirPressureReadLastTs(datetime.datetime.now())
+        self.ex.pool.setCountEnvAirPressureReadLastTs(ts)
 
         try:
             # Lecture depuis le BME280
@@ -190,7 +191,6 @@ class TemperatureHumidityProvider:
             self.ex.pool.incrementCountEnvAirPressureNbReadOk()
 
             # Mise à jour valeur instantanée dans la BDD
-            ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             self.ex.pool.updatePaInst(val, ts)
 
         return val, ok
