@@ -84,110 +84,114 @@ class TemperatureHumidityProvider:
     def readRelativeHumidity(self):
         """Lecture de l'humidité relative depuis le BME280 et mise à jour des compteurs de BDD"""
 
-        # Mise à jour des compteurs
+        val = 0.0
+        ok = False
+
+        # Mise à jour des compteurs BDD
         self.ex.pool.incrementCountEnvRelativeHumidityNbReadTotal()
         self.ex.pool.setCountEnvRelativeHumidityReadLastTs(datetime.datetime.now())
 
         try:
             # Lecture depuis le BME280
             val = self.BME280_I2C.humidity
-            print('DBG_ENV: Humidity', '{:.0f}'.format(val))
+            print('DBG_ENV: RH', '{:.2f}'.format(val))
 
-            try:
-                # Les valeurs sont-elles dans des plages raisonnables?
-                if val <= 0.0 or val >= 100:
-                    # Non, on la laissera de coté
-                    ok = False
-                    self.ex.pool.incrementCountEnvRelativeHumidityNbReadInvalid()
-
-                else:
-                    # Oui, on valide la nouvelle prise de mesure
-                    ok = True
-
-                    self.ex.pool.incrementCountEnvRelativeHumidityNbReadOk()
-
-                    ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    self.ex.pool.updateRhInst(val, ts)
-
-            except Exception as e:
-                print(e)
-
-        except:
+        except Exception as e:
+            Debug.log_except(e, fileName)
             self.ex.pool.incrementCountEnvRelativeHumidityNbReadFailed()
-            ok = False
+
+        else:
+            # Les valeurs sont-elles dans des plages raisonnables?
+            if val <= 0.0 or val >= 100:
+                # Non, on la laissera de coté
+                ok = False
+
+                # Mise à jour des compteurs BDD
+                self.ex.pool.incrementCountEnvRelativeHumidityNbReadInvalid()
+
+            else:
+                # Oui, on conserve la nouvelle mesure
+                ok = True
+
+                # Mise à jour des compteurs BDD
+                self.ex.pool.incrementCountEnvRelativeHumidityNbReadOk()
+
+                # Mise à jour valeur instantanée dans la BDD
+                ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                self.ex.pool.updateRhInst(val, ts)
 
         return val, ok
 
     def readTemperature(self):
         """Lecture de la température depuis le BME280 et mise à jour des compteurs de BDD"""
 
-        # Mise à jour des compteurs
-        self.ex.pool.incrementCountEnvTemperatureNbReadTotal()
-        self.ex.pool.setCountEnvTemperatureReadLastTs(datetime.datetime.now())
-
         val = 0.0
         ok = False
+
+        # Mise à jour des compteurs BDD
+        self.ex.pool.incrementCountEnvTemperatureNbReadTotal()
+        self.ex.pool.setCountEnvTemperatureReadLastTs(datetime.datetime.now())
 
         try:
             # Lecture depuis le BME280
             val = self.BME280_I2C.temperature
-            print('DBG_ENV: Temperature', '{:.1f}'.format(val))
+            print('DBG_ENV: TEMP', '{:.2f}'.format(val))
 
-            try:
-                # Les valeurs sont-elles dans des plages raisonnables?
-                if val <= -20.0 or val >= 60:
-                    # Non, on la laissera de coté
-                    ok = False
-                    self.ex.pool.incrementCountEnvTemperatureNbReadInvalid()
-
-                else:
-                    # Oui, on valide la nouvelle prise de mesure
-                    ok = True
-
-                    self.ex.pool.incrementCountEnvTemperatureNbReadOk()
-
-                    ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    self.ex.pool.updateTempInst(val, ts)
-
-            except Exception as e:
-                print(e)
-
-        except:
+        except Exception as e:
+            Debug.log_except(e, fileName)
             self.ex.pool.incrementCountEnvTemperatureNbReadFailed()
-            ok = False
+
+        else:
+            # Les valeurs sont-elles dans des plages raisonnables?
+            if val <= -20.0 or val >= 60:
+                # Non, on la laissera de coté
+                ok = False
+
+                # Mise à jour des compteurs BDD
+                self.ex.pool.incrementCountEnvTemperatureNbReadInvalid()
+
+            else:
+                # Oui, on conserve la nouvelle mesure
+                ok = True
+
+                # Mise à jour des compteurs BDD
+                self.ex.pool.incrementCountEnvTemperatureNbReadOk()
+
+                # Mise à jour valeur instantanée dans la BDD
+                ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                self.ex.pool.updateTempInst(val, ts)
 
         return val, ok
     
     def readAirPressure(self):
         """Lecture de la pression atmosphérique depuis le BME280 et mise à jour des compteurs de BDD"""
 
+        val = 0.0
+        ok = False
+
         # Mise à jour des compteurs
         self.ex.pool.incrementCountEnvAirPressureNbReadTotal()
         self.ex.pool.setCountEnvAirPressureReadLastTs(datetime.datetime.now())
 
-        val = 0.0
-        ok = False
-
         try:
             # Lecture depuis le BME280
             val = self.BME280_I2C.pressure
-            print('DBG_ENV: Pression atmosphérique', '{:.2f}'.format(val))
+            print('DBG_ENV: PA', '{:.2f}'.format(val))
 
-            try:
-                # On valide la nouvelle prise de mesure
-                ok = True
-
-                self.ex.pool.incrementCountEnvAirPressureNbReadOk()
-
-                ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                self.ex.pool.updatePaInst(val, ts)
-
-            except Exception as e:
-                print(e)
-
-        except:
+        except Exception as e:
+            Debug.log_except(e, fileName)
             self.ex.pool.incrementCountEnvAirPressureNbReadFailed()
-            ok = False
+
+        else:
+            # On conserve la nouvelle mesure
+            ok = True
+
+            # Mise à jour des compteurs BDD
+            self.ex.pool.incrementCountEnvAirPressureNbReadOk()
+
+            # Mise à jour valeur instantanée dans la BDD
+            ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            self.ex.pool.updatePaInst(val, ts)
 
         return val, ok
 

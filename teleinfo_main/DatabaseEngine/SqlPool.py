@@ -284,20 +284,20 @@ class SqlPool:
     @Debug.call_log
     def updateRhInst(self, val, ts):
         """Mise à jour de la valeur d'humidité instantanée"""
-        print('RH_INST', type(val), val, type(ts), ts)
+
         self.ex.execute(
             """ UPDATE T_RH_INST set RH = {:d}, TS = '{:s}' """.format(round(val), ts))
 
     @Debug.call_log
     def updateTempInst(self, val, ts):
         """Mise à jour de la valeur de température instantanée"""
-        print('TEMP_INST', type(val), val, type(ts), ts)
+
         self.ex.execute(
             """ UPDATE T_TEMP_INST set TEMP = {:.1f}, TS = '{:s}' """.format(val, ts))
 
     @Debug.call_log
     def updatePaInst(self, val, ts):
         """Mise à jour de la valeur de pression atmosphérique instantanée"""
-        print('PA_INST', type(val), val, type(ts), ts)
+
         self.ex.execute(
             """ UPDATE T_PA_INST set PA = {:.2f}, TS = '{:s}' """.format(val, ts))

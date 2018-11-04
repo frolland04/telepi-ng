@@ -31,3 +31,8 @@ def call_log(method):
         return method(*args, **kwargs)
 
     return print_identification
+
+
+def log_except(e, msg):
+    """Petite fonction gentille pour afficher les caractéristiques d'une exception"""
+    print('\n>>> EXCEPTION :\n', e, '(', msg, ')\n')
