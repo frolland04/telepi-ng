@@ -183,13 +183,13 @@ while not stop:
         # Remontée des données Téléinformation
         if ok:
             disp['TARIF:'] = '  ' + bareme
-            disp['IINST(A),PAPP(W)'] = '{:07d} {:07d}'.format(intensite, puissance)
+            disp['IINST(A),PAPP(W)'] = '{:07d}  {:07d}'.format(intensite, puissance)
         else:
             disp['TARIF:'] = '  ???'
             disp['IINST(A),PAPP(W)'] = '    ???     ???'
 
         # Remontée des données d'environnement
-        disp['TEMP.(C),HUM.(%)'] = '{:07.1f} {:07.0f}'.format(temp, hum)
+        disp['TEMP.(C),HUM.(%)'] = '{:08.1f} {:07.0f}'.format(temp, hum)
         disp['PRESSION ATMOS.'] = '{:09.2f} (hPa)'.format(atm)
 
         # Divers éléments
@@ -198,7 +198,7 @@ while not stop:
         # Statistiques et données remontées par la BDD
         disp['TELEINFO:'] = '{:010d} MESS.'.format(msgs)
         disp['HISTO:'] = '{:010d} MESS.'.format(histo)
-        disp['MEM./MAX.(MB):'] = '{:06.2f}/{:06.2f}'.format(tbsp, heap)
+        disp['MEM. / MAX.(MB):'] = '{:06.2f} / {:06.2f}'.format(tbsp, heap)
 
         # ------------------------------------------
         # Envoyer les données pour stockage à la BDD
