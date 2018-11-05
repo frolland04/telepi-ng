@@ -189,7 +189,7 @@ while not stop:
             disp['IINST(A),PAPP(W)'] = '    ???     ???'
 
         # Remontée des données d'environnement
-        disp['TEMP.(C),HUM.(%)'] = '{:08.1f} {:07.0f}'.format(temp, hum)
+        disp['TEMP.(C),HUM.(%)'] = '{:07.1f}  {:07.0f}'.format(temp, hum)
         disp['PRESSION ATMOS.'] = '{:09.2f} (hPa)'.format(atm)
 
         # Divers éléments
