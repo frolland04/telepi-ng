@@ -93,8 +93,8 @@ class TemperatureHumidityProvider:
         self.ex.pool.setCountEnvRelativeHumidityReadLastTs(ts)
 
         try:
-            # Lecture depuis le BME280
-            val = self.BME280_I2C.humidity
+            # Lecture depuis le BME280, avec une décimale conservée
+            val = round(self.BME280_I2C.humidity, 1)
             print('DBG_ENV: RH', '{:.2f}'.format(val))
 
         except Exception as e:
@@ -134,8 +134,8 @@ class TemperatureHumidityProvider:
         self.ex.pool.setCountEnvTemperatureReadLastTs(ts)
 
         try:
-            # Lecture depuis le BME280
-            val = self.BME280_I2C.temperature
+            # Lecture depuis le BME280, avec une décimale conservée
+            val = round(self.BME280_I2C.temperature, 1)
             print('DBG_ENV: TEMP', '{:.2f}'.format(val))
 
         except Exception as e:
@@ -175,8 +175,8 @@ class TemperatureHumidityProvider:
         self.ex.pool.setCountEnvAirPressureReadLastTs(ts)
 
         try:
-            # Lecture depuis le BME280
-            val = self.BME280_I2C.pressure
+            # Lecture depuis le BME280, avec deux décimales conservées
+            val = round(self.BME280_I2C.pressure, 2)
             print('DBG_ENV: PA', '{:.2f}'.format(val))
 
         except Exception as e:

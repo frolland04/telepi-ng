@@ -183,14 +183,14 @@ while not stop:
         # Remontée des données Téléinformation
         if ok:
             disp['TARIF:'] = '  ' + bareme
-            disp['IINST(A),PAPP(W)'] = '{:07d}  {:07d}'.format(intensite, puissance)
+            disp['IINST(A),PAPP(W)'] = '{:05d}  {:05d}'.format(intensite, puissance)
         else:
-            disp['TARIF:'] = '  ???'
-            disp['IINST(A),PAPP(W)'] = '    ???     ???'
+            disp['TARIF:'] = '  ' + '???'
+            disp['IINST(A),PAPP(W)'] = '?????  ?????'
 
         # Remontée des données d'environnement
-        disp['TEMP.(C),HUM.(%)'] = '{:07.1f}  {:07.0f}'.format(temp, hum)
-        disp['PRESSION ATMOS.'] = '{:09.2f} (hPa)'.format(atm)
+        disp['TEMP.(C),HUM.(%)'] = '{:05.1f}  {:05.1f}'.format(temp, hum)
+        disp['PRESSION ATMOS.'] = '{:06.2f} (hPa)'.format(atm)
 
         # Divers éléments
         disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
