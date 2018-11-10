@@ -680,10 +680,8 @@ DELIMITER ;
 --- Database Views
 ---
 
-CREATE OR REPLACE VIEW V_PA_MIN_MAX AS
-SELECT
- `min`.`TS_DATE` AS `Date`,
- `min`.TS_TIME AS 'Heure (min)',
+CREATE OR REPLACE VIEW V_PA_MIN_MAX AS SELECT `min`.`TS_DATE` AS 'Date', \
+ `min`.TS_TIME AS 'Heure (min)', \
  FORMAT(`min`.PA,2,'fr_FR') AS 'Pression Atmos. (min)',
  `max`.TS_TIME AS 'Heure (max)',
  FORMAT(`max`.PA,2,'fr_FR') AS 'Pression Atmos. (max)'
