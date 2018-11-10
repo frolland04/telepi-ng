@@ -103,7 +103,7 @@ def executeRequestUniqueValue(sql):
 # -----------------------------------------------------------
 # Programme principal de la "cgi"
 
-print("Content-type: text/html; charset=iso-8859-1\n\n")
+print("Content-type: text/html; charset=UTF-8\n\n")
 print("<html>")
 print("<head><title>")
 print("TéléInformation ERDF")

@@ -683,42 +683,42 @@ DELIMITER ;
 CREATE OR REPLACE VIEW V_PA_MIN_MAX AS
 SELECT
  min.TS_DATE AS 'Date',
- min.TS_TIME AS 'Heure (min)',
- FORMAT(min.PA,2,'fr_FR') AS 'Pression Atmos. (min)',
- max.TS_TIME AS 'Heure (max)',
- FORMAT(max.PA,2,'fr_FR') AS 'Pression Atmos. (max)'
+ min.TS_TIME AS 'Heure (min.)',
+ FORMAT(min.PA,2,'fr_FR') AS 'Pression (min.)',
+ max.TS_TIME AS 'Heure (max.)',
+ FORMAT(max.PA,2,'fr_FR') AS 'Pression (max.)'
 FROM T_PA_MIN AS min JOIN T_PA_MAX AS max ON min.TS_DATE = max.TS_DATE
 ORDER BY min.TS_DATE DESC;
 
 CREATE OR REPLACE VIEW V_RH_MIN_MAX AS
 SELECT
  min.TS_DATE AS 'Date',
- min.TS_TIME AS 'Heure (min)',
- ROUND(min.RH) AS 'Humidité (min)',
- max.TS_TIME AS 'Heure (max)',
- ROUND(max.RH) AS 'Humidité (max)'
+ min.TS_TIME AS 'Heure (min.)',
+ ROUND(min.RH) AS 'Hum. (min.)',
+ max.TS_TIME AS 'Heure (max.)',
+ ROUND(max.RH) AS 'Hum. (max.)'
 FROM T_RH_MIN AS min JOIN T_RH_MAX AS max ON min.TS_DATE = max.TS_DATE
 ORDER BY min.TS_DATE DESC;
 
 CREATE OR REPLACE VIEW V_TELEINFO_MIN_MAX AS
 SELECT
  min.TS_DATE AS 'Date',
- min.TS_TIME AS 'Heure (min)',
- min.PAPP AS 'Puissance (min)',
- min.IINST AS 'Intensité (min)',
- max.TS_TIME AS 'Heure (max)',
- max.PAPP AS 'Puissance (max)',
- max.IINST AS 'Intensité (max)'
+ min.TS_TIME AS 'Heure (min.)',
+ min.PAPP AS 'Puissance (min.)',
+ min.IINST AS 'Intens. (min.)',
+ max.TS_TIME AS 'Heure (max.)',
+ max.PAPP AS 'Puissance (max.)',
+ max.IINST AS 'Intens. (max.)'
 FROM T_TELEINFO_MIN AS min JOIN T_TELEINFO_MAX AS max ON min.TS_DATE = max.TS_DATE
 ORDER BY min.TS_DATE DESC;
 
 CREATE OR REPLACE VIEW V_TEMP_MIN_MAX AS
 SELECT
  min.TS_DATE AS 'Date',
- min.TS_TIME AS 'Heure (min)',
- FORMAT(min.TEMP,1,'fr_FR') AS 'Température (min)',
- max.TS_TIME AS 'Heure (max)',
- FORMAT(max.TEMP,1,'fr_FR') AS 'Température (max)'
+ min.TS_TIME AS 'Heure (min.)',
+ FORMAT(min.TEMP,1,'fr_FR') AS 'Temp. (min.)',
+ max.TS_TIME AS 'Heure (max.)',
+ FORMAT(max.TEMP,1,'fr_FR') AS 'Temp. (max.)'
 FROM T_TEMP_MIN AS min JOIN T_TEMP_MAX AS max ON min.TS_DATE = max.TS_DATE
 ORDER BY min.TS_DATE DESC;
 
