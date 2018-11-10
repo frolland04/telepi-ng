@@ -694,9 +694,9 @@ CREATE OR REPLACE VIEW V_RH_MIN_MAX AS
 SELECT
  min.TS_DATE AS 'Date',
  min.TS_TIME AS 'Heure (min)',
- min.RH AS 'Humidité (min)',
+ ROUND(min.RH) AS 'Humidité (min)',
  max.TS_TIME AS 'Heure (max)',
- max.RH AS 'Humidité (max)'
+ ROUND(max.RH) AS 'Humidité (max)'
 FROM T_RH_MIN AS min JOIN T_RH_MAX AS max ON min.TS_DATE = max.TS_DATE
 ORDER BY min.TS_DATE DESC;
 
