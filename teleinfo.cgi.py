@@ -16,9 +16,8 @@ def readTableRows(name, nb, order='', reverse=False ):
 
     if order != '' :
         optOrderedBy = " order by " + order
-	
-       if reverse:
-          optOrderedBy += " desc"
+    if reverse:
+        optOrderedBy += " desc"
 
     sql = "select * from " + name + optOrderedBy + " limit " + str(nb )
 
@@ -29,8 +28,8 @@ def readTableRows(name, nb, order='', reverse=False ):
         d = cs.description
 
     except:
-       print("Unable to fetch data from table", name, "!<br><br>")
-       sys.exit(1)
+        print("Unable to fetch data from table", name, "!<br><br>")
+        sys.exit(1)
        
     row_idx = 0
     hdr_idx = 0
