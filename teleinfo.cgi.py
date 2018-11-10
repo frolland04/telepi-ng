@@ -104,16 +104,13 @@ def executeRequestUniqueValue(sql):
 # -----------------------------------------------------------
 # Programme principal de la "cgi"
 
-print("Content-type: text/html; charset=UTF-8\n\n")
+print("Content-type: text/html; charset=iso-8859-1\n\n")
 print("<html>")
 print("<head><title>")
 print("TéléInformation ERDF")
 print("</title></head>")
 print("<body>")
 print("<style>table, th, td { border: 2px solid black; border-collapse: collapse; padding: 10px; } </style>")
-print('<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">')
-
-
 print("Bienvenue sur la page du résumé de la collecte de données TéléInfo ERDF !<br><br>")
 
 # Lecture 'uptime' sous forme de durée
