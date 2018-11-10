@@ -676,9 +676,9 @@ END |
 
 DELIMITER ;
 
----
---- Database Views
----
+--
+-- Database Views
+--
 
 CREATE OR REPLACE VIEW V_PA_MIN_MAX AS
 SELECT
