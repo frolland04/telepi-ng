@@ -108,9 +108,7 @@ print('<html lang="fr">')
 
 print("<head>")
 print('<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>')
-print("<title>")
-print("TéléInformation ERDF")
-print("</title>")
+print("<title>TéléInformation ERDF</title>")
 print("</head>")
 
 print("<body>")
