@@ -10,16 +10,16 @@ import sys
 # ---------------------------------------------
 # Lecture des N lignes d'une table
 
-def readTableRows(name, nb, order='', reverse=False ):
+def readTableRows(name, nb, order='', reverse=False):
     
     optOrderedBy = ""
 
-    if order != '' :
+    if order != '':
         optOrderedBy = " order by " + order
-    if reverse:
-        optOrderedBy += " desc"
+        if reverse:
+            optOrderedBy += " desc"
 
-    sql = "select * from " + name + optOrderedBy + " limit " + str(nb )
+    sql = "select * from " + name + optOrderedBy + " limit " + str(nb)
 
     try:
         cs.execute(sql)
