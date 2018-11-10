@@ -103,18 +103,19 @@ def executeRequestUniqueValue(sql):
 # -----------------------------------------------------------
 # Programme principal de la "cgi"
 
+print("Content-type: text/html; charset=UTF-8\n\n")
 print("<!DOCTYPE html>")
-print('<html lang="fr">')
+print('<html lang="eng">')
 
 print("<head>")
 print('<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>')
-print("<title>TéléInformation ERDF</title>")
+print("<title>TeleInformation ERDF</title>")
 print("</head>")
 
 print("<body>")
 print("<style>table, th, td { border: 2px solid black; border-collapse: collapse; padding: 10px; } </style>")
 
-print("Bienvenue sur la page du résumé de la collecte de données TéléInfo ERDF !<br><br>")
+print("Bienvenue sur la page du resume de la collecte de donnees TeleInfo ERDF !<br><br>")
 print("</body>")
 print("</html>")
 exit(0)
