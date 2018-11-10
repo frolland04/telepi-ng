@@ -145,19 +145,30 @@ print "</table>"
 print "<br>"
     
 readTableUniqueRow( "T_COUNTERS" )
+
 readTableUniqueRow( "T_TELEINFO_INST" )
 readTableUniqueRow( "T_TEMP_INST" )
 readTableUniqueRow( "T_RH_INST" )
 readTableUniqueRow( "T_PA_INST" )
+
 readTableRows( "T_HISTO", 5, "TS", True )
+
 readTableRows( "T_TELEINFO_MIN", 5, "TS_DATE", True )
 readTableRows( "T_TELEINFO_MAX", 5, "TS_DATE", True )
+readTableRows( "V_TELEINFO_MIN_MAX", 5 )
+
 readTableRows( "T_TEMP_MIN", 5, "TS_DATE", True )
 readTableRows( "T_TEMP_MAX", 5, "TS_DATE", True )
+readTableRows( "V_TEMP_MIN_MAX", 5 )
+
 readTableRows( "T_RH_MIN", 5, "TS_DATE", True )
 readTableRows( "T_RH_MAX", 5, "TS_DATE", True )
+readTableRows( "V_RH_MIN_MAX", 5 )
+
 readTableRows( "T_PA_MIN", 5, "TS_DATE", True )
 readTableRows( "T_PA_MAX", 5, "TS_DATE", True )
+readTableRows( "V_PA_MIN_MAX", 5 )
+
 readTableRows( "T_DBG_ENTRIES", 10 )
 
 db.close()
