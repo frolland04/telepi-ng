@@ -27,8 +27,8 @@ def readTableRows(name, nb, order='', reverse=False):
         s = cs.fetchall()
         d = cs.description
 
-    except:
-        print("Unable to fetch data from table", name, "!<br><br>")
+    except Exception as e:
+        print("Unable to fetch data from table", name, "!<br><br>", e, "<br><br>")
         sys.exit(1)
        
     row_idx = 0
@@ -64,8 +64,8 @@ def readTableUniqueRow(name):
         s = cs.fetchall()
         d = cs.description
 
-    except:
-        print("Unable to fetch data from table", name, "!<br><br>")
+    except Exception as e:
+        print("Unable to fetch data from table", name, "!<br><br>", e, "<br><br>")
 
     i = 0
 
@@ -93,9 +93,9 @@ def executeRequestUniqueValue(sql):
         cs.execute(sql)
 
         s = cs.fetchall()
-       
-    except:
-        print("Unable to fetch data !")
+
+    except Exception as e:
+        print("Unable to fetch data !", "<br><br>", e)
 
     return s[0][0]
 
@@ -103,7 +103,7 @@ def executeRequestUniqueValue(sql):
 # -----------------------------------------------------------
 # Programme principal de la "cgi"
 
-#print("Content-type: text/html; charset=iso-8859-1\n\n")
+print("Content-type: text/html; charset=iso-8859-1\n\n")
 print("<html>")
 print("<head><title>")
 print("TéléInformation ERDF")
