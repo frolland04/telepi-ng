@@ -680,13 +680,7 @@ DELIMITER ;
 --- Database Views
 ---
 
-CREATE OR REPLACE VIEW V_PA_MIN_MAX AS SELECT `min`.`TS_DATE` AS 'Date', \
- `min`.TS_TIME AS 'Heure (min)', \
- FORMAT(`min`.PA,2,'fr_FR') AS 'Pression Atmos. (min)',
- `max`.TS_TIME AS 'Heure (max)',
- FORMAT(`max`.PA,2,'fr_FR') AS 'Pression Atmos. (max)'
-FROM T_PA_MIN AS `min` JOIN T_PA_MAX AS `max` ON `min`.TS_DATE = `max`.TS_DATE
-ORDER BY `min`.TS_DATE DESC;
+CREATE OR REPLACE VIEW V_PA_MIN_MAX AS select `min`.`TS_DATE` AS `Date`,`min`.`TS_TIME` AS `Heure (min)`,format(`min`.`PA`,2,'fr_FR') AS `Pression Atmos. (min)`,`max`.`TS_TIME` AS `Heure (max)`,format(`max`.`PA`,2,'fr_FR') AS `Pression Atmos. (max)` from (`T_PA_MIN` `min` join `T_PA_MAX` `max` on((`min`.`TS_DATE` = `max`.`TS_DATE`))) order by `min`.`TS_DATE` desc
 
 CREATE OR REPLACE VIEW V_RH_MIN_MAX AS
 SELECT
