@@ -116,9 +116,6 @@ print("<body>")
 print("<style>table, th, td { border: 2px solid black; border-collapse: collapse; padding: 10px; } </style>")
 
 print("Bienvenue sur la page du resume de la collecte de donnees TeleInfo ERDF !<br><br>")
-print("</body>")
-print("</html>")
-exit(0)
 
 # Lecture 'uptime' sous forme de durée
 with open('/proc/uptime', 'r') as f:
