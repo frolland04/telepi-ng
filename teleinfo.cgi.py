@@ -115,12 +115,17 @@ print("</head>")
 print("<body>")
 print("<style>table, th, td { border: 2px solid black; border-collapse: collapse; padding: 10px; } </style>")
 
-print("Bienvenue sur la page du resume de la collecte de donnees TeleInfo ERDF !<br><br>")
+print("Bienvenue sur la page du résumé de la collecte de données TéléInfo ERDF !<br><br>".encode('utf8'))
+
+# Lecture ID du système Linux
+p = subprocess.Popen(["/bin/uname"], stdout=subprocess.PIPE)
+output = p.communicate()
+uname = output[0]
 
 # Lecture 'uptime' sous forme de durée
 with open('/proc/uptime', 'r') as f:
     secs = f.readline().split()[0]
-    uptime = datetime.timedelta(seconds=float(secs))
+    uptime = datetime.timedelta(seconds=float(secs)).days
 
 # Lecture horloge DS3231 sous forme de chaine
 p = subprocess.Popen(["/sbin/hwclock"], stdout=subprocess.PIPE)
@@ -138,6 +143,7 @@ cs = db.cursor()
 
 print("<table>")
 print("<th colspan=2>Histo buffer</th>")
+print("<tr><td>System ID</td><td>", uname, "</td></tr>")
 print("<tr><td>Uptime</td><td>", uptime, "</td></tr>")
 print("<tr><td>DS3231 clock</td><td>", hwclock, "</td></tr>")
 print("<tr><td>System clock</td><td>", sysclock, "</td></tr>")
