@@ -119,7 +119,7 @@ print("Bienvenue sur la page du résumé de la collecte de données TéléInfo E
 
 
 # Lecture de l'identification du système Linux
-p = subprocess.Popen(["/bin/uname -snrom"], stdout=subprocess.PIPE)
+p = subprocess.Popen(["/bin/uname", "-snrom"], stdout=subprocess.PIPE)
 output = p.communicate()
 uname = output[0]
 
@@ -142,7 +142,7 @@ output = p.communicate()
 hostname = output[0]
 
 # Lecture de l'adresse IPv4 sous forme de chaine
-p = subprocess.Popen(["/bin/hostname -I"], stdout=subprocess.PIPE)
+p = subprocess.Popen(["/bin/hostname", "-I"], stdout=subprocess.PIPE)
 output = p.communicate()
 address = output[0]
 
