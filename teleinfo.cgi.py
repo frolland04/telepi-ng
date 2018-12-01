@@ -121,15 +121,15 @@ print('Bienvenue sur la page du resume de la collecte de donnees TeleInfo ERDF !
 # Lecture de l'identification du système Linux
 p = subprocess.Popen(['/bin/uname', '-snrom'], stdout=subprocess.PIPE)
 output = p.communicate()
-uname = output[0]
+uname = bytes(output[0]).decode('ascii')
 
 # Lecture 'modèle'
 with open('/proc/device-tree/model', 'r') as f:
-    model = f.readline().split()[0]
+    model = f.readline()
 
 # Lecture 'numéro de série'
 with open('/proc/device-tree/serial-number', 'r') as f:
-    sn = f.readline().split()[0]
+    sn = f.readline()
 
 # Lecture 'uptime' sous forme de durée
 with open('/proc/uptime', 'r') as f:
@@ -139,22 +139,22 @@ with open('/proc/uptime', 'r') as f:
 # Lecture du nom de la machine sous forme de chaine
 p = subprocess.Popen(['/bin/hostname'], stdout=subprocess.PIPE)
 output = p.communicate()
-hostname = output[0]
+hostname = bytes(output[0]).decode('ascii')
 
 # Lecture de l'adresse IPv4 sous forme de chaine
 p = subprocess.Popen(['/bin/hostname', '-I'], stdout=subprocess.PIPE)
 output = p.communicate()
-address = output[0]
+address = bytes(output[0]).decode('ascii')
 
 # Lecture horloge DS3231 sous forme de chaine
 p = subprocess.Popen(['/sbin/hwclock'], stdout=subprocess.PIPE)
 output = p.communicate()
-hwclock = output[0]
+hwclock = bytes(output[0]).decode('utf8')
 
 # Lecture horloge système sous forme de chaine
 p = subprocess.Popen(['/bin/date'], stdout=subprocess.PIPE)
 output = p.communicate()
-sysclock = output[0]
+sysclock = bytes(output[0]).decode('utf8')
  
 # Connexion à la BDD
 db = MySQLdb.connect('localhost', 'teleinfo', 'ti', 'D_TELEINFO')
@@ -167,7 +167,7 @@ print('<tr><td>IP</td><td>', address, '</td></tr>')
 print('<tr><td>Model ID</td><td>', model, '</td></tr>')
 print('<tr><td>SN</td><td>', sn, '</td></tr>')
 print('<tr><td>System ID</td><td>', uname, '</td></tr>')
-print('<tr><td>Uptime</td><td>', uptime, '</td></tr>')
+print('<tr><td>Uptime (days)</td><td>', uptime, '</td></tr>')
 print('<tr><td>DS3231 clock</td><td>', hwclock, '</td></tr>')
 print('<tr><td>System clock</td><td>', sysclock, '</td></tr>')
 print('<tr><td>Collected samples</td><td>', executeRequestUniqueValue('select count(*) from T_HISTO' ), '</td></tr>')
