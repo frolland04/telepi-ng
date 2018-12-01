@@ -115,17 +115,36 @@ print("</head>")
 print("<body>")
 print("<style>table, th, td { border: 2px solid black; border-collapse: collapse; padding: 10px; } </style>")
 
-print("Bienvenue sur la page du résumé de la collecte de données TéléInfo ERDF !<br><br>".encode('utf8'))
+print("Bienvenue sur la page du résumé de la collecte de données TéléInfo ERDF !<br><br>")
 
-# Lecture ID du système Linux
-p = subprocess.Popen(["/bin/uname"], stdout=subprocess.PIPE)
+
+# Lecture de l'identification du système Linux
+p = subprocess.Popen(["/bin/uname -snrom"], stdout=subprocess.PIPE)
 output = p.communicate()
 uname = output[0]
+
+# Lecture 'modèle'
+with open('/proc/device-tree/model', 'r') as f:
+    model = f.readline().split()[0]
+
+# Lecture 'numéro de série'
+with open('/proc/device-tree/serial-number', 'r') as f:
+    sn = f.readline().split()[0]
 
 # Lecture 'uptime' sous forme de durée
 with open('/proc/uptime', 'r') as f:
     secs = f.readline().split()[0]
     uptime = datetime.timedelta(seconds=float(secs)).days
+
+# Lecture du nom de la machine sous forme de chaine
+p = subprocess.Popen(["/bin/hostname"], stdout=subprocess.PIPE)
+output = p.communicate()
+hostname = output[0]
+
+# Lecture de l'adresse IPv4 sous forme de chaine
+p = subprocess.Popen(["/bin/hostname -I"], stdout=subprocess.PIPE)
+output = p.communicate()
+address = output[0]
 
 # Lecture horloge DS3231 sous forme de chaine
 p = subprocess.Popen(["/sbin/hwclock"], stdout=subprocess.PIPE)
@@ -143,6 +162,10 @@ cs = db.cursor()
 
 print("<table>")
 print("<th colspan=2>Histo buffer</th>")
+print("<tr><td>Name</td><td>", hostname, "</td></tr>")
+print("<tr><td>IP</td><td>", address, "</td></tr>")
+print("<tr><td>Model ID</td><td>", model, "</td></tr>")
+print("<tr><td>SN</td><td>", sn, "</td></tr>")
 print("<tr><td>System ID</td><td>", uname, "</td></tr>")
 print("<tr><td>Uptime</td><td>", uptime, "</td></tr>")
 print("<tr><td>DS3231 clock</td><td>", hwclock, "</td></tr>")
