@@ -4,12 +4,9 @@
 import sys
 sys.path.insert(0, '/home/pi/teleinfo/www/common')
 
+"""On récupère le code commun à tous les scripts CGI en Python de Télépi"""
 import telepi_cgi
 
-
-# -------------------------------------------------------
-#
-# -------------------------------------------------------
 
 if __name__ == "__main__":
     """
@@ -26,7 +23,7 @@ if __name__ == "__main__":
     print('</head>')
 
     print('<body>')
-    print('<p>Coucou depuis la CGI Python ' + __name__ + '!</p>')
+    print('<p>Coucou depuis la CGI Python ' + __file__ + '!</p>')
     print('</body>')
     print('</html>')
 
