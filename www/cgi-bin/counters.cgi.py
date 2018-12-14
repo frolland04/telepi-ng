@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
+import sys
+sys.path.insert(0, '/home/pi/teleinfo/www/common')
+
 import telepi_cgi
 
 
@@ -23,7 +26,7 @@ if __name__ == "__main__":
     print('</head>')
 
     print('<body>')
-    print('<p>Coucou depuis la CGI Python!</p>')
+    print('<p>Coucou depuis la CGI Python ' + __name__ + '!</p>')
     print('</body>')
     print('</html>')
 
