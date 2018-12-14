@@ -1,0 +1,34 @@
+/* style.css
+ * Ici, c'est la place des attributs et des choix CSS!
+ */
+
+button
+{
+    width: 150px;
+    padding: 20px 20px;
+    border: 2px solid #4CAF50;
+    border-radius: 4px;
+    font-family: "Georgia", Times, serif;
+    font-size: 20px;
+    background-color: #4CAF50;
+    cursor: pointer;
+}
+
+button:hover
+{
+    border: yellow;
+    background-color: yellow;
+}
+
+h1
+{
+    color: grey;
+    font-size: 40px;
+    text-decoration: underline overline;
+}
+
+p
+{
+    color: black;
+    font-size: 20px;
+}
