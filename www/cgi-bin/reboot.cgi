@@ -1,17 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-import telepi_cgi
-
-
 # -------------------------------------------------------
-#
+# Exemple d'une 'cgi' en Python, 100% faite à la main :-)
 # -------------------------------------------------------
 
 if __name__ == "__main__":
-    """
-    Exemple d'une 'cgi' en Python, 100% faite à la main :-)
-    """
     print('Content-type: text/html; charset=UTF-8\n\n')
     print('<!DOCTYPE html>')
     print("<html lang='FR'>")
