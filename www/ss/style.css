@@ -32,3 +32,11 @@ p
     color: black;
     font-size: 20px;
 }
+
+th
+{
+    font-family: "Georgia", Times, serif;
+    font-size: 20px;
+    font-weight: normal;
+    padding: 20px 20px;
+}
