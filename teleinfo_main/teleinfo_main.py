@@ -138,11 +138,11 @@ time.sleep(30)
 
 # Récupère l'accès au contenu affiché sur le LCD
 # et efface l'écran
-disp = lcd.items
-disp.clear()
+disp_dict = lcd.items
+disp_dict.clear()
 
 # Récupère l'accès aux valeurs remontées par la collecte ERDF
-tags = ti.tags
+edis_tags = ti.tags
 
 stop = False
 while not stop:
@@ -154,65 +154,65 @@ while not stop:
         # ---------------------------------------------------------------
 
         # Depuis l'horloge système : la date et l'heure
-        sysclock = datetime.datetime.now()
+        sys_clock = datetime.datetime.now()
 
         # Depuis TemperatureHumidityProvider : température, humidité relative et pression atmosphérique
-        temp = thp.temperature
-        hum = thp.humidity
-        atm = thp.pressure
+        env_temp = thp.temperature
+        env_hum = thp.humidity
+        env_atm = thp.pressure
 
         # Depuis MessageProcessor :
         # barème ERDF en cours, intensité instantanée, puissance apparente et validité mesure
-        msg_tags = dict(tags)
-        bareme = msg_tags['PTEC']
-        puissance = int(msg_tags['PAPP'])
-        intensite = int(msg_tags['IINST'])
-        ok = msg_tags['OK']
+        edis_dict = dict(edis_tags)
+        edis_bareme = edis_dict['PTEC']
+        edis_puissance = int(edis_dict['PAPP'])
+        edis_intensite = int(edis_dict['IINST'])
+        edis_ok = edis_dict['OK']
 
         # Depuis la BDD pour quelques informations
         # notamment des compteurs sur l'activité et l'empreinte mémoire de la BDD
-        histo = dex.pool.getDatabaseHistoRowNb()
-        heap = dex.pool.getDatabaseGlobalHeapMax()
-        tbsp = dex.pool.getDatabaseHistoTablespace()
-        msgs = dex.pool.getCountRecvMsgOk()
+        db_rows = dex.pool.getDatabaseHistoRowNb()
+        db_heapmax = dex.pool.getDatabaseGlobalHeapMax()
+        db_tbspace = dex.pool.getDatabaseHistoTablespace()
+        db_recvmsgs = dex.pool.getCountRecvMsgOk()
 
         # -------------------------------------
         # Envoyer les données à l'affichage LCD
         # -------------------------------------
 
         # Remontée des données Téléinformation
-        if ok:
-            disp['TARIF:'] = '  ' + bareme
-            disp['IINST(A),PAPP(W)'] = '{:05d}  {:05d}'.format(intensite, puissance)
+        if edis_ok:
+            disp_dict['TARIF:'] = '  ' + edis_bareme
+            disp_dict['IINST(A),PAPP(W)'] = '{:05d}  {:05d}'.format(edis_intensite, edis_puissance)
         else:
-            disp['TARIF:'] = '  ' + '???'
-            disp['IINST(A),PAPP(W)'] = '?????  ?????'
+            disp_dict['TARIF:'] = '  ' + '???'
+            disp_dict['IINST(A),PAPP(W)'] = '?????  ?????'
 
         # Remontée des données d'environnement
-        disp['TEMP.(C),HUM.(%)'] = '{:05.1f}  {:05.1f}'.format(temp, hum)
-        disp['PRESSION ATMOS.'] = '{:06.2f} (hPa)'.format(atm)
+        disp_dict['TEMP.(C),HUM.(%)'] = '{:05.1f}  {:05.1f}'.format(env_temp, env_hum)
+        disp_dict['PRESSION ATMOS.'] = '{:06.2f} (hPa)'.format(env_atm)
 
         # Divers éléments
-        disp['HORLOGE:'] = sysclock.strftime('%d/%m/%Y %H:%M')
+        disp_dict['HORLOGE:'] = sys_clock.strftime('%d/%m/%Y %H:%M')
 
         # Statistiques et données remontées par la BDD
-        disp['TELEINFO:'] = '{:010d} MESS.'.format(msgs)
-        disp['HISTO:'] = '{:010d} MESS.'.format(histo)
-        disp['MEM. / MAX.(MB):'] = '{:06.2f} / {:06.2f}'.format(tbsp, heap)
+        disp_dict['TELEINFO:'] = '{:010d} MESS.'.format(db_recvmsgs)
+        disp_dict['HISTO:'] = '{:010d} MESS.'.format(db_rows)
+        disp_dict['MEM. / MAX.(MB):'] = '{:06.2f} / {:06.2f}'.format(db_tbspace, db_heapmax)
 
         # ------------------------------------------
         # Envoyer les données pour stockage à la BDD
         # ------------------------------------------
 
-        if ok:
+        if edis_ok:
             # On ajoute la température et l'humidité relevées périodiquement
             # aux valeurs du dictionnaire issu de la collecte, pour l'historique en BDD
-            msg_tags['TEMPERATURE'] = temp
-            msg_tags['RH'] = hum
-            msg_tags['PRESSION_ATMOS'] = atm
+            edis_dict['TEMPERATURE'] = env_temp
+            edis_dict['RH'] = env_hum
+            edis_dict['PRESSION_ATMOS'] = env_atm
 
             # Historique des valeurs échantillonnées toutes les 20s
-            dex.pool.updateTeleinfoHisto(msg_tags)
+            dex.pool.updateTeleinfoHisto(edis_dict)
 
         # On se reverra dans 30s
         time.sleep(30)
@@ -227,8 +227,8 @@ while not stop:
         stop = True
 
 # Message final sur l'écran LCD
-disp.clear()
-disp['STOP'] = 'PROGRAMME'
+disp_dict.clear()
+disp_dict['STOP'] = 'PROGRAMME'
 
 # LED rouge allumée, toute seule
 etat_sortie_programme(leds)

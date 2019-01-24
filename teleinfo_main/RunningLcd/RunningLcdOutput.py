@@ -20,7 +20,7 @@ class RunningLcdOutput:
     Affichage tournant d'une liste d'informations.
     """
 
-    TIMER_PERIOD_SECS = 5
+    TIMER_PERIOD_SECS = 4
 
     @Debug.call_log
     def __init__(self):
