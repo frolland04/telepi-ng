@@ -17,7 +17,7 @@ file = __file__.split('\\')[-1]
 
 class GpioLedController:
     """
-    Cette classe permet de controler facilement les 4 leds de statut du montage Télépi
+    Cette classe permet de contrôler facilement les 4 leds de statut du montage Télépi
     """
 
     # Montage 'telepi' sur PI T-clobber (V2.2)
@@ -31,7 +31,7 @@ class GpioLedController:
     leds = (GPIO_ID_LED_B, GPIO_ID_LED_Y, GPIO_ID_LED_G, GPIO_ID_LED_R)
 
     # Temporisation de maintien des leds
-    TIMER_SECS = 0.4
+    LED_HOLDON_TIMER_SECS = 0.4
 
     @Debug.call_log
     def __init__(self):
@@ -41,6 +41,13 @@ class GpioLedController:
         # Paramétrage des sorties
         for led in self.leds:
             GPIO.setup(led, GPIO.OUT)
+
+    @Debug.call_log
+    def close(self):
+        """
+        Fin propre : libération des ressources
+        """
+        GPIO.cleanup()
 
     @Debug.call_log
     def set_off(self, led=None):
@@ -73,27 +80,27 @@ class GpioLedController:
         """
         self.set_off()
         self.set_on()
-        time.sleep(self.TIMER_SECS)
+        time.sleep(self.LED_HOLDON_TIMER_SECS)
         self.set_off()
 
         # Dans un sens
         for i in range(0, len(self.leds)):
             print('( Led', i, ')')
             GPIO.output(self.leds[i], GPIO.HIGH)
-            time.sleep(self.TIMER_SECS)
+            time.sleep(self.LED_HOLDON_TIMER_SECS)
             GPIO.output(self.leds[i], GPIO.LOW)
 
-        time.sleep(self.TIMER_SECS)
+        time.sleep(self.LED_HOLDON_TIMER_SECS)
         self.set_on()
-        time.sleep(self.TIMER_SECS)
+        time.sleep(self.LED_HOLDON_TIMER_SECS)
         self.set_off()
-        time.sleep(self.TIMER_SECS)
+        time.sleep(self.LED_HOLDON_TIMER_SECS)
 
         # Puis dans l'autre
         for i in range(len(self.leds)-1, -1, -1):
             print('( Led', i, ')')
             GPIO.output(self.leds[i], GPIO.HIGH)
-            time.sleep(self.TIMER_SECS)
+            time.sleep(self.LED_HOLDON_TIMER_SECS)
             GPIO.output(self.leds[i], GPIO.LOW)
 
     @Debug.call_log
@@ -102,7 +109,7 @@ class GpioLedController:
 
     @Debug.call_log
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.free()
+        self.close()
 
     @Debug.call_log
     def __del__(self):
