@@ -1,0 +1,2 @@
+sudo dphys-swapfile uninstall
+sudo systemctl --no-pager disable dphys-swapfile.service
