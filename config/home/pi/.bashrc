@@ -92,6 +92,8 @@ alias ll='ls -la'
 alias la='ls -A'
 alias l='ls -CF'
 alias lr='ls -altr'
+
+# other personal aliases
 alias gs='git status'
 
 # Alias definitions.
@@ -118,27 +120,25 @@ echo "-----------------------------------------------------------------"
 uname -a
 uptime
 echo "-----------------------------------------------------------------"
-echo "[Voltages]"
+echo "[PWR]"
 vcgencmd measure_temp
 vcgencmd measure_volts
 echo "[RAM]"
 vcgencmd get_mem gpu
 vcgencmd get_mem arm | sed s/arm/cpu/g
 echo "-----------------------------------------------------------------"
-free
+free --mega --human --wide | grep -v Swap
 echo "-----------------------------------------------------------------"
-df -h
+df -hT
 echo "-----------------------------------------------------------------"
 hostname ; hostname -I
-ifconfig eth0 | grep --color=never -E "Link|inet|MTU|bytes"
-ethtool eth0 | grep --color=never -E "Speed:|Duplex:|Auto-negotiation:" | cut -b 2-
-ethtool -i eth0 | grep --color=never -E "driver:|version:|firmware-version:|bus-info:"
 echo "-----------------------------------------------------------------"
-echo "[Model]"
+echo "[VER]"
 cat /proc/device-tree/model
 echo ""
 echo "[SN]"
 cat /proc/device-tree/serial-number
 echo ""
+echo "-----------------------------------------------------------------"
 i2cdetect -y 1
 
