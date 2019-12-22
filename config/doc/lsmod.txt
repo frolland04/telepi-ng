@@ -1,5 +1,0 @@
-Module                  Size  Used by
-raspberrypi_hwmon      16384  0
-hwmon                  16384  1 raspberrypi_hwmon
-i2c_bcm2835            16384  0
-i2c_dev                20480  0
