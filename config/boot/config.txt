@@ -1,11 +1,13 @@
 # For more options and information see 'http://rpf.io/configtxt'
 
 # Additional overlays and parameters are documented '/boot/overlays/README'
-dtparam=i2c_arm=on
+dtparam=i2c=on
 dtparam=i2s=off
 dtparam=spi=off
 
-# Battery backed up realtime clock (i2c)
+# Battery backed up realtime clock (i2c at '1-0068' loads module 'rtc_ds1307')
+# To disable the service that emulates a backed up clock, please execute 'sudo systemctl disable fake-hwclock'
+# and install a new one to load/save the system clock
 dtoverlay=i2c-rtc,ds3231
 
 # Disable audio (loads 'snd_bcm2835')

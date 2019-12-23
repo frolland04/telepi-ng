@@ -1,5 +1,5 @@
 [Unit]
-Description=Restore System Clock from the Hardware Clock
+Description=Save and Restore System Clock from the Hardware Clock
 Documentation=man:hwclock(8)
 DefaultDependencies=no
 After=systemd-modules-load.service
@@ -7,7 +7,8 @@ Before=sysinit.target
 Conflicts=shutdown.target
 
 [Service]
-ExecStart=/sbin/hwclock -D --hctosys
+ExecStart=/sbin/hwclock --hctosys
+ExecStop=/sbin/hwclock --systohc
 Type=oneshot
 RemainAfterExit=yes
 

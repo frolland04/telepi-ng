@@ -10,5 +10,5 @@ bcm2835-gpiomem
 i2c-bcm2835
 i2c-dev
 
-# Enable I2C '0x57' RTC ds1307/ds3231
+# Enable backed up realtime clock 'ds1307/ds3231' (i2c at '1-0068')
 rtc-ds1307
