@@ -8,3 +8,5 @@ sudo systemctl disable hciuart
 sudo systemctl disable dphys-swapfile.service
 sudo dphys-swapfile swapoff
 sudo dphys-swapfile uninstall
+sudo systemctl disable fake-hwclock
+sudo systemctl disable hciuart
