@@ -8,13 +8,14 @@
 import RPi.GPIO as GPIO
 import time
 
-# Montage 'telepi' sur PI T-clobber (V2.2)
-led_BLEU  = 17  # GPIO P0
-led_JAUNE = 18  # GPIO P1
-led_VERTE = 27  # GPIO P2
-led_ROUGE = 22  # GPIO P3
+# Montage 'telepi' avec Adafruit T-Clobber Plus 
+led_BLEUE   = 25
+led_VERTE   = 12
+led_JAUNE   = 16
+led_ROUGE   = 20
+led_BLANCHE = 21
 
-ledPin = led_VERTE
+ledPin = led_BLANCHE
 
 #Choix du cablage selon la numérotation des GPIOs du SOC 'BCM'
 GPIO.setmode(GPIO.BCM)
@@ -32,7 +33,7 @@ try:
 
       print("LED off")
       GPIO.output( ledPin, GPIO.LOW )
-       
+
       # On attend encore une demi-seconde et on recommence
       time.sleep( 0.5 )
 
