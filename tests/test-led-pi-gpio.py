@@ -17,7 +17,7 @@ led_BLANCHE = 21
 
 ledPin = led_BLANCHE
 
-#Choix du cablage selon la numérotation des GPIOs du SOC 'BCM'
+# Choix du cablage selon la numérotation des GPIOs du SOC 'BCM'
 GPIO.setmode(GPIO.BCM)
 
 # Paramétrage des sorties

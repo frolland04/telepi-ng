@@ -20,6 +20,9 @@ dtoverlay=disable-bt
 # Disable onboard WiFi on Pi 3B, 3B+, 3A+, 4B, ZW
 dtoverlay=disable-wifi
 
+# Initiates a shutdown when GPIO pin changes
+dtoverlay=gpio-shutdown,gpio_pin=4
+
 [all]
 start_x=0
 enable_uart=1
