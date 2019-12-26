@@ -17,6 +17,7 @@ GPIO.setmode(GPIO.BCM)
 # Paramétrage des sorties
 for gpio_id in leds:
     GPIO.setup( gpio_id, GPIO.OUT )
+    GPIO.output( gpio_id, GPIO.LOW )
 
 try:
 
@@ -32,14 +33,14 @@ try:
          # On allume
          GPIO.output( leds[i], GPIO.HIGH )
 
-         # On attend une demi-seconde
-         time.sleep( 0.2 )
+         # On attend un dixième de seconde
+         time.sleep( 0.1 )
 
          # On éteint
          GPIO.output( leds[i], GPIO.LOW )
 
-         # On attend encore une demi-seconde et on recommence
-         time.sleep( 0.2 )
+         # On attend encore un dixième de seconde et on continue
+         time.sleep( 0.1 )
 
          # Led suivante
          i = i+1
