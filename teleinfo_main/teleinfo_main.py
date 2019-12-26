@@ -33,35 +33,27 @@ file = __file__.split('/')[-1]
 
 
 def etat_presence_programme(si):
-    """LED bleue"""
-    try:
-        si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_B)
-    except:
-        return
+    """LED bleue allumée"""
+    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_BLUE)
 
 def etat_sortie_programme(si):
-    """LED rouge, seule"""
-    try:
-        si.set_off()
-        si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_R)
-    except:
-        return
+    """LED rouge allumée, seule"""
+    si.set_off()
+    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_RED)
 
 def etat_echec_demarrage(si):
-    """LED rouge et LED jaune"""
-    try:
-        si.set_off()
-        si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_R)
-        si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_Y)
-    except:
-        return
+    """LED rouge et LED jaune allumées"""
+    si.set_off()
+    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_RED)
+    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_YELLOW)
 
 def etat_programme_actif(si):
-    """LED verte"""
-    try:
-        si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_G)
-    except:
-        return
+    """LED verte allumée"""
+    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_GREEN)
+
+def signaler_programme_actif(si):
+    """LED blanche allumée puis éteinte"""
+    si.flash_led(StatusLeds.GpioLedController.GPIO_ID_LED_WHITE)
 
 
 print("File:", file)
@@ -76,7 +68,7 @@ print("**** Bonjour tout le monde ! ****")
 # =============================
 
 
-# Afficheur 4 LEDs : chenillard puis LED bleue allumée
+# Afficheur 5 LEDs : chenillard puis LED bleue allumée
 # ----------------------------------------------------
 leds = StatusLeds.GpioLedController()
 leds.running_leds()
@@ -126,11 +118,12 @@ except:
     etat_echec_demarrage(leds)
     sys.exit(-4)
 
-# Boucle de réception des messages
-# --------------------------------
+# Boucle principale
+# -----------------
 
 # La LED verte indique que tout a bien démarré
 etat_programme_actif(leds)
+signaler_programme_actif(leds)
 
 # Attente du démarrage de tous les composants
 # et de l'approvisionnement des premières valeurs
@@ -138,16 +131,17 @@ time.sleep(30)
 
 # Récupère l'accès au contenu affiché sur le LCD
 # et efface l'écran
-disp_dict = lcd.items
-disp_dict.clear()
+disp = lcd.items
+disp.clear()
 
 # Récupère l'accès aux valeurs remontées par la collecte ERDF
-edis_tags = ti.tags
+tags = ti.tags
 
 stop = False
 while not stop:
     try:
         print('>>> go')
+        signaler_programme_actif()
 
         # ---------------------------------------------------------------
         # Récupérer les données et les transmettre là où c'est nécessaire
@@ -156,18 +150,19 @@ while not stop:
         # Depuis l'horloge système : la date et l'heure
         sys_clock = datetime.datetime.now()
 
-        # Depuis TemperatureHumidityProvider : température, humidité relative et pression atmosphérique
+        # Depuis 'TemperatureHumidityProvider' : température, humidité relative et pression atmosphérique
         env_temp = thp.temperature
         env_hum = thp.humidity
         env_atm = thp.pressure
 
-        # Depuis MessageProcessor :
+        # Depuis 'MessageProcessor' :
         # barème ERDF en cours, intensité instantanée, puissance apparente et validité mesure
-        edis_dict = dict(edis_tags)
-        edis_bareme = edis_dict['PTEC']
-        edis_puissance = int(edis_dict['PAPP'])
-        edis_intensite = int(edis_dict['IINST'])
-        edis_ok = edis_dict['OK']
+        # (on recopie le message de téléinformation courant)
+        mesure = dict(tags)
+        edis_bareme = mesure['PTEC']
+        edis_puissance = int(mesure['PAPP'])
+        edis_intensite = int(mesure['IINST'])
+        edis_ok = mesure['OK']
 
         # Depuis la BDD pour quelques informations
         # notamment des compteurs sur l'activité et l'empreinte mémoire de la BDD
@@ -180,25 +175,25 @@ while not stop:
         # Envoyer les données à l'affichage LCD
         # -------------------------------------
 
-        # Remontée des données Téléinformation
+        # Affichage des données de Téléinformation
         if edis_ok:
-            disp_dict['TARIF:'] = '  ' + edis_bareme
-            disp_dict['IINST(A),PAPP(W)'] = '{:05d}  {:05d}'.format(edis_intensite, edis_puissance)
+            disp['TARIF:'] = '  ' + edis_bareme
+            disp['IINST(A),PAPP(W)'] = '{:05d}  {:05d}'.format(edis_intensite, edis_puissance)
         else:
-            disp_dict['TARIF:'] = '  ' + '???'
-            disp_dict['IINST(A),PAPP(W)'] = '?????  ?????'
+            disp['TARIF:'] = '  ' + '???'
+            disp['IINST(A),PAPP(W)'] = '?????  ?????'
 
-        # Remontée des données d'environnement
-        disp_dict['TEMP.(C),HUM.(%)'] = '{:05.1f}  {:05.1f}'.format(env_temp, env_hum)
-        disp_dict['PRESSION ATMOS.'] = '{:06.2f} (hPa)'.format(env_atm)
+        # Affichage des données d'environnement
+        disp['TEMP.(C),HUM.(%)'] = '{:05.1f}  {:05.1f}'.format(env_temp, env_hum)
+        disp['PRESSION ATMOS.'] = '{:06.2f} (hPa)'.format(env_atm)
 
-        # Divers éléments
-        disp_dict['HORLOGE:'] = sys_clock.strftime('%d/%m/%Y %H:%M')
+        # Affichage de divers éléments
+        disp['HORLOGE:'] = sys_clock.strftime('%d/%m/%Y %H:%M')
 
-        # Statistiques et données remontées par la BDD
-        disp_dict['TELEINFO:'] = '{:010d} MESS.'.format(db_recvmsgs)
-        disp_dict['HISTO:'] = '{:010d} MESS.'.format(db_rows)
-        disp_dict['MEM. / MAX.(MB):'] = '{:06.2f} / {:06.2f}'.format(db_tbspace, db_heapmax)
+        # Affichage des statistiques et des données remontées par la BDD
+        disp['TELEINFO:'] = '{:010d} MESS.'.format(db_recvmsgs)
+        disp['HISTO:'] = '{:010d} MESS.'.format(db_rows)
+        disp['MEM. / MAX.(MB):'] = '{:06.2f} / {:06.2f}'.format(db_tbspace, db_heapmax)
 
         # ------------------------------------------
         # Envoyer les données pour stockage à la BDD
@@ -207,12 +202,12 @@ while not stop:
         if edis_ok:
             # On ajoute la température et l'humidité relevées périodiquement
             # aux valeurs du dictionnaire issu de la collecte, pour l'historique en BDD
-            edis_dict['TEMPERATURE'] = env_temp
-            edis_dict['RH'] = env_hum
-            edis_dict['PRESSION_ATMOS'] = env_atm
+            mesure['TEMPERATURE'] = env_temp
+            mesure['RH'] = env_hum
+            mesure['PRESSION_ATMOS'] = env_atm
 
             # Historique des valeurs échantillonnées toutes les 20s
-            dex.pool.updateTeleinfoHisto(edis_dict)
+            dex.pool.updateTeleinfoHisto(mesure)
 
         # On se reverra dans 30s
         time.sleep(30)
@@ -227,8 +222,8 @@ while not stop:
         stop = True
 
 # Message final sur l'écran LCD
-disp_dict.clear()
-disp_dict['STOP'] = 'PROGRAMME'
+disp.clear()
+disp['STOP'] = 'PROGRAMME'
 
 # LED rouge allumée, toute seule
 etat_sortie_programme(leds)

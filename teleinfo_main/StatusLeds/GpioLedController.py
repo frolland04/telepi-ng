@@ -17,30 +17,32 @@ file = __file__.split('\\')[-1]
 
 class GpioLedController:
     """
-    Cette classe permet de contrôler facilement les 4 leds de statut du montage Télépi
+    Cette classe permet de contrôler facilement les 5 leds de statut du montage Télépi
     """
 
-    # Montage 'telepi' sur PI T-clobber (V2.2)
-    # Id des GPIO pour les 4 leds colorées
-    GPIO_ID_LED_B = 17  # GPIO P0, led bleue
-    GPIO_ID_LED_Y = 18  # GPIO P1, led jaune
-    GPIO_ID_LED_G = 27  # GPIO P2, led verte
-    GPIO_ID_LED_R = 22  # GPIO P3, led rouge
+    # Montage 'télépi' sur PI AdaFruit T-Clobber Plus
+    # Identités des GPIOs pour les 5 leds colorées
+    GPIO_ID_LED_BLUE = 25
+    GPIO_ID_LED_GREEN = 12
+    GPIO_ID_LED_YELLOW = 16
+    GPIO_ID_LED_RED = 20
+    GPIO_ID_LED_WHITE = 21
 
-    # Liste des 4 leds
-    leds = (GPIO_ID_LED_B, GPIO_ID_LED_Y, GPIO_ID_LED_G, GPIO_ID_LED_R)
+    # Liste des 5 leds, dans l'ordre d'apparition sur le montage 'télépi'
+    leds = (GPIO_ID_LED_BLUE, GPIO_ID_LED_GREEN, GPIO_ID_LED_YELLOW, GPIO_ID_LED_RED, GPIO_ID_LED_WHITE)
 
     # Temporisation de maintien des leds
     LED_HOLDON_TIMER_SECS = 0.4
 
     @Debug.call_log
     def __init__(self):
-        # Choix du cablage selon la numérotation des GPIOs du SOC 'BCM'
+        # Choix du câblage selon la numérotation des GPIOs du SOC 'BCM'
         GPIO.setmode(GPIO.BCM)
 
-        # Paramétrage des sorties
+        # Paramétrage des sorties et effacement
         for led in self.leds:
             GPIO.setup(led, GPIO.OUT)
+            GPIO.output(led, GPIO.LOW)
 
     @Debug.call_log
     def close(self):
@@ -74,29 +76,38 @@ class GpioLedController:
                 GPIO.output(led, GPIO.HIGH)
 
     @Debug.call_log
+    def flash_led(self, led=None):
+        """
+        Un flash avec la led donnée ou toutes les leds allumées, à la fin toutes les leds sont éteintes
+        """
+        if (led is not None and led in self.leds) or led is None:
+            self.set_off(led)
+            time.sleep(self.LED_HOLDON_TIMER_SECS)
+            self.set_on(led)
+            time.sleep(self.LED_HOLDON_TIMER_SECS)
+            self.set_off(led)
+            time.sleep(self.LED_HOLDON_TIMER_SECS)
+
+    @Debug.call_log
     def running_leds(self):
         """
         Chenillard sur les leds, à la fin toutes les leds sont éteintes
         """
-        self.set_off()
-        self.set_on()
-        time.sleep(self.LED_HOLDON_TIMER_SECS)
-        self.set_off()
 
-        # Dans un sens
+        # Un premier "flash" de toutes les leds ensemble
+        self.flash_led()
+
+        # Le chenillard dans un sens
         for i in range(0, len(self.leds)):
             print('( Led', i, ')')
             GPIO.output(self.leds[i], GPIO.HIGH)
             time.sleep(self.LED_HOLDON_TIMER_SECS)
             GPIO.output(self.leds[i], GPIO.LOW)
 
-        time.sleep(self.LED_HOLDON_TIMER_SECS)
-        self.set_on()
-        time.sleep(self.LED_HOLDON_TIMER_SECS)
-        self.set_off()
-        time.sleep(self.LED_HOLDON_TIMER_SECS)
+        # Un second "flash" de toutes les leds ensemble
+        self.flash_led()
 
-        # Puis dans l'autre
+        # Le chenillard dans l'autre sens
         for i in range(len(self.leds)-1, -1, -1):
             print('( Led', i, ')')
             GPIO.output(self.leds[i], GPIO.HIGH)
