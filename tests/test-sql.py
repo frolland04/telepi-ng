@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Dépendances
-import MySQLdb  # Besoin de "mysqlclient"
+import mysql.connector as db
 
 file = __file__.split('\\')[-1]
 
@@ -10,17 +10,24 @@ USER_NAME = 'teleinfo'
 USER_PASSWORD = 'ti'
 DATABASE_NAME = 'D_TEST'
 
+print('Testing SQL connection')
 print(file + ':', 'DATABASE_NAME=' + DATABASE_NAME)
 
-connection = MySQLdb.connect('localhost', USER_NAME, USER_PASSWORD, DATABASE_NAME)
-engine = self.connection.cursor()
+connection = db.connect(host='localhost', user=USER_NAME, password=USER_PASSWORD, database=DATABASE_NAME)
+engine = connection.cursor()
 
-engine.execute(
-""" INSERT T_TEST_SQL set
-msg = 'FATAL EXCEPTION CAUSED ABORTING',
-val = %s,
-ts = NOW() """,
-144
-)
+print('Testing data injection')
+engine.execute(""" INSERT INTO T_TEST_SQL SET msg = 'test-sql', val = %s, ts = NOW() """, (12001,))
+connection.commit()
+
+print('Testing data query')
+engine.execute(""" SELECT * FROM T_TEST_SQL """)
+s = engine.fetchall()
+print(s)
+#print("'{}':".format(s.statement))
 
 connection.close()
+
+print('Finished.')
+
+

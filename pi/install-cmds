@@ -1,6 +1,7 @@
 sudo apt-get install python3 python3-pip git i2c-tools
 sudo apt-get install python3-smbus
 sudo apt-get install mariadb-client mariadb-server
+sudo apt-get install python3-mysql.connector
 sudo python3 -m pip install pip --upgrade
 sudo python3 -m pip install setuptools --upgrade
 sudo python3 -m pip install rpi.gpio
