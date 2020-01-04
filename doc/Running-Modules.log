@@ -1,5 +1,0 @@
-Module                  Size  Used by
-rtc_ds1307             16119  0 
-hwmon                  10505  1 rtc_ds1307
-i2c_dev                 6674  4 
-i2c_bcm2835             6465  2 

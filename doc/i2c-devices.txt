@@ -1,0 +1,6 @@
+i2c RTC ds1307/ds3231                @=0x68    (ZS-042/ks3231: 3.3-5V)
+i2c LCD 16X02 & PCF8574T             @=0x27    (5V)
+i2c BMP180 (spare replaces BMP085)   @=0x77    (3.3V)
+i2c BMP280                           @=0x76    (3.3V)
+i2c BME280                           @=0x77    (3.3V)
+

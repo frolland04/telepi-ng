@@ -1,0 +1,1 @@
+sudo mysql -u root < misc/db-create-user-and-database.sql
