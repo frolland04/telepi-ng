@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 # Dépendances
-import mysql.connector as db
+import mysql.connector as db # Besoin de 'sudo apt-get install python3-mysql.connector'
 
 file = __file__.split('\\')[-1]
 
+# Paramètres d'accès à la BDD
 USER_NAME = 'teleinfo'
 USER_PASSWORD = 'ti'
 DATABASE_NAME = 'D_TEST'
@@ -24,10 +25,7 @@ print('Testing data query')
 engine.execute(""" SELECT * FROM T_TEST_SQL """)
 s = engine.fetchall()
 print(s)
-#print("'{}':".format(s.statement))
 
 connection.close()
-
 print('Finished.')
-
 
