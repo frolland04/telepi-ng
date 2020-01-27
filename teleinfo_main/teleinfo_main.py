@@ -67,80 +67,105 @@ print("**** Bonjour tout le monde ! ****")
 # *** Programme principal ! ***
 # =============================
 
+SYSEXIT_ERROR_LEDS = -1
+SYSEXIT_ERROR_LCD = -2
+SYSEXIT_ERROR_DBE = -3
+SYSEXIT_ERROR_MPR = -4
+SYSEXIT_ERROR_THP = -5
+SYSEXIT_ERROR_PRE = -6
+SYSEXIT_ERROR_INT = -7
+
 
 # Afficheur 5 LEDs : chenillard puis LED bleue allumée
 # ----------------------------------------------------
-leds = StatusLeds.GpioLedController()
-leds.running_leds()
-etat_presence_programme(leds)
 
+try:
+    leds = StatusLeds.GpioLedController()
+    leds.running_leds()
+    etat_presence_programme(leds)
+
+except (BaseException, KeyboardInterrupt, SystemExit) as e:
+    print("Afficheur 5 LED indisponible!", e)
+    sys.exit(SYSEXIT_ERROR_LEDS)
 
 # Démarrage de l'écran LCD
 # ------------------------
 
 try:
     lcd = RunningLcd.RunningLcdOutput()
-except:
-    print("Affichage LCD indisponible!")
+
+except (BaseException, KeyboardInterrupt, SystemExit) as e:
+    print("Affichage LCD indisponible!", e)
     etat_echec_demarrage(leds)
-    sys.exit(-1)
+    sys.exit(SYSEXIT_ERROR_LCD)
 
 # Tentative de connexion à la base de données
 # -------------------------------------------
 
 try:
     dex = DatabaseEngine.SafeRequestExecutor()
-except:
-    print("Base de données indisponible!")
+
+except (BaseException, KeyboardInterrupt, SystemExit) as e:
+    print("Base de données indisponible!", e)
     lcd.items = {'ERREUR': 'Acces BDD', 'Initialisation': 'impossible'}
     etat_echec_demarrage(leds)
-    sys.exit(-2)
+    sys.exit(SYSEXIT_ERROR_DBE)
 
 # Tentative de connexion au port série
 # ------------------------------------
 
 try:
     ti = TeleInfo.MessageProcessor(dex)
-except:
-    print("Entrée série indisponible!")
+
+except (BaseException, KeyboardInterrupt, SystemExit) as e:
+    print("Entrée série indisponible!", e)
     lcd.items = {'ERREUR': 'Acces Teleinfo', 'Initialisation': 'impossible'}
     etat_echec_demarrage(leds)
-    sys.exit(-3)
+    sys.exit(SYSEXIT_ERROR_MPR)
 
 # Température et humidité relative relevées périodiquement
 # --------------------------------------------------------
 
 try:
     thp = TemperatureHumidityProvider.TemperatureHumidityProvider(dex)
-except:
-    print("Mesure de l'environnement indisponible!")
+
+except (BaseException, KeyboardInterrupt, SystemExit) as e:
+    print("Mesure de l'environnement indisponible!", e)
     lcd.items = {'ERREUR': 'Acces TEMP/HUM', 'Initialisation': 'impossible'}
     etat_echec_demarrage(leds)
-    sys.exit(-4)
+    sys.exit(SYSEXIT_ERROR_THP)
 
-# Boucle principale
-# -----------------
+# Préparation de la boucle principale
+# -----------------------------------
 
-# La LED verte indique que tout a bien démarré
-etat_programme_actif(leds)
-signaler_programme_actif(leds)
+try:
+    # La LED verte indique que tout a bien démarré
+    etat_programme_actif(leds)
+    signaler_programme_actif(leds)
 
-# Attente du démarrage de tous les composants
-# et de l'approvisionnement des premières valeurs
-time.sleep(30)
+    # Attente du démarrage de tous les composants
+    # et de l'approvisionnement des premières valeurs
+    time.sleep(30)
 
-# Récupère l'accès au contenu affiché sur le LCD
-# et efface l'écran
-disp = lcd.items
-disp.clear()
+    # Récupère l'accès au contenu affiché sur le LCD
+    # et efface l'écran
+    disp = lcd.items
+    disp.clear()
 
-# Récupère l'accès aux valeurs remontées par la collecte ERDF
-tags = ti.tags
+    # Récupère l'accès aux valeurs remontées par la collecte ERDF
+    tags = ti.tags
 
+except (BaseException, KeyboardInterrupt, SystemExit) as e:
+    print("Erreur pendant la préparation de la boucle principale!", e)
+    lcd.items = {'ERREUR': 'Amont boucle', 'Initialisation': 'impossible'}
+    etat_echec_demarrage(leds)
+    sys.exit(SYSEXIT_ERROR_PRE)
+
+# --------------------------------------------- DEBUT BOUCLE PRINCIPALE ---------------------------------------------
 stop = False
 while not stop:
     try:
-        print('>>> go')
+        print('>>> GO!')
         signaler_programme_actif(leds)
 
         # ---------------------------------------------------------------
@@ -209,17 +234,23 @@ while not stop:
             # Historique des valeurs échantillonnées toutes les 20s
             dex.pool.updateTeleinfoHisto(mesure)
 
-        # On se reverra dans 30s
+        # ------------------------------
+        # On se reverra dans 30 secondes
+        # ------------------------------
         time.sleep(30)
 
-    except Exception as e:
-        # Affiche le problème
-        print('\n>>> ERREUR :\n', e, '\n')
-
-        # En cas de souci, on quitte la boucle
-        print(">>> INTERRUPTED !")
+    # En cas de souci, on quitte directement la boucle avant le prochain tour!
+    # ------------------------------------------------------------------------
+    except (BaseException, KeyboardInterrupt, SystemExit) as e:
+        print('>>> INTERRUPTED !', e)
         dex.pool.notifySystemFatalCondition()
         stop = True
+
+    print('STOP?', stop)
+# -------------------------------------------- FIN DE LA BOUCLE PRINCIPALE --------------------------------------------
+
+# C'est la séquence de fin!
+print('STOP!')
 
 # Message final sur l'écran LCD
 disp.clear()
@@ -241,4 +272,4 @@ lcd.close()
 dex.close()
 
 # On s'en va maintenant
-sys.exit(-5)
+sys.exit(SYSEXIT_ERROR_INT)
