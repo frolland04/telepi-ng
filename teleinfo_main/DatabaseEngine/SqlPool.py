@@ -46,7 +46,7 @@ class SqlPool:
     def notifyDatabaseClosing(self, context=''):
         self.ex.execute(
             """ INSERT T_DBG_ENTRIES set
-            DbgMessage = 'DATABASE IS CLOSING',
+            DbgMessage = 'CLOSING DATABASE',
             DbgContext = %s,
             DbgTs = NOW() """,
             context
@@ -56,7 +56,7 @@ class SqlPool:
     def notifySystemFatalCondition(self, context=''):
         self.ex.execute(
             """ INSERT T_DBG_ENTRIES set
-            DbgMessage = 'FATAL EXCEPTION CAUSED ABORTING',
+            DbgMessage = 'FATAL EXCEPTION, ABORTING',
             DbgContext = %s,
             DbgTs = NOW() """,
             context

@@ -141,7 +141,7 @@ stop = False
 while not stop:
     try:
         print('>>> go')
-        signaler_programme_actif()
+        signaler_programme_actif(leds)
 
         # ---------------------------------------------------------------
         # Récupérer les données et les transmettre là où c'est nécessaire

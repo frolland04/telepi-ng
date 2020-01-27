@@ -1,22 +1,20 @@
 # -*- coding: UTF-8 -*-
 
 # Dépendances
-import MySQLdb  # Besoin de "mysqlclient"
+import mysql.connector as db
 import threading
+
 import Debug  # Besoin de mon décorateur "call_log"
 import DatabaseEngine
 
-# *** Notes sur "mysqlclient" ***
-# Nécessite sur le système : python3, python3-pip, python3-dev et libmysqlclient-dev
-# Nécessite dans python : mysqlclient
-# python -m pip install --upgrade pip
-# python -m pip install mysqlclient
+# *** Notes sur "mysql.connector" ***
+# Nécessite sur le système : python3, python3-mysql.connector
 
 # *** Configuration de l'utilisateur sous MySQL ***
-# create user teleinfo ;
-# alter user teleinfo identified by "ti" ;
-# create database D_TELEINFO ;
-# grant all on D_TELEINFO.* to teleinfo ;
+# CREATE USER `teleinfo` ;
+# ALTER USER `teleinfo` IDENTIFIED BY "ti" ;
+# CREATE DATABASE `D_TELEINFO` ;
+# GRANT ALL ON `D_TELEINFO`.`*` TO `teleinfo` ;
 
 file = __file__.split('\\')[-1]
 
@@ -30,7 +28,10 @@ class SafeRequestExecutor:
     def __init__(self, pool=None):
         print(file + ':', 'DATABASE_NAME=' + self.DATABASE_NAME)
 
-        self.connection = MySQLdb.connect('localhost', self.USER_NAME, self.USER_PASSWORD, self.DATABASE_NAME)
+        self.connection = db.connect(host='localhost',
+                                     user=self.USER_NAME,
+                                     password=self.USER_PASSWORD,
+                                     database=self.DATABASE_NAME)
         self.engine = self.connection.cursor()
         self.mutex = threading.RLock()
 
@@ -43,7 +44,9 @@ class SafeRequestExecutor:
 
     @Debug.call_log
     def execute(self, sql, v=None):
-        """Exécution d'une requête sur le moteur de base de données, avec garantie qu'une seule s'exécute à la fois"""
+        """
+        Exécution d'une requête sur le moteur de base de données, avec garantie qu'une seule s'exécute à la fois
+        """
         # Se débrouille tout seul avec .acquire() and .release()
         # en entrée et sortie du bloc, même sur exception
         with self.mutex:
