@@ -24,6 +24,9 @@ class RunningLcdOutput:
 
     @Debug.call_log
     def __init__(self):
+        """
+        Initialisation du RunningLcdOutput : bibliothèque LCD/I2C, timer et données
+        """
         # On initialise le LCD, selon le montage télépi
         # LCD 16X02 & PCF8574T I2C @=0x27 (5V)
         self.lcd = lcd_lib.lcd()
@@ -43,9 +46,22 @@ class RunningLcdOutput:
         self.itemIndex = 0
 
     @Debug.call_log
+    def __del__(self):
+        """
+        Nettoyage du RunningLcdOutput
+        """
+        print('...')
+
+    @Debug.call_log
     def close(self):
-        """Fin propre : arrêt timer si en attente et pas de relance si en cours d'exécution grâce à condition d'arrêt"""
+        """
+        Fin propre : arrêt timer si en attente et pas de relance si en cours d'exécution,
+        grâce à condition d'arrêt
+        """
+        # On signale l'arrêt
         self.end = True
+
+        # On annule le timer
         self.t.cancel()
 
     @Debug.call_log
@@ -109,7 +125,3 @@ class RunningLcdOutput:
     @Debug.call_log
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
-
-    @Debug.call_log
-    def __del__(self):
-        print('...')

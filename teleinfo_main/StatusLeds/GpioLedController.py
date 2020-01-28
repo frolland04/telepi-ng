@@ -36,6 +36,9 @@ class GpioLedController:
 
     @Debug.call_log
     def __init__(self):
+        """
+        Initialisation du GpioLedController : ressources GPIO
+        """
         # Choix du câblage selon la numérotation des GPIOs du SOC 'BCM'
         GPIO.setmode(GPIO.BCM)
 
@@ -45,9 +48,14 @@ class GpioLedController:
             GPIO.output(led, GPIO.LOW)
 
     @Debug.call_log
+    def __del__(self):
+        """Nettoyage du GpioLedController"""
+        print('...')
+
+    @Debug.call_log
     def close(self):
         """
-        Fin propre : libération des ressources
+        Fin propre : libération des ressources GPIO
         """
         GPIO.cleanup()
 
@@ -121,7 +129,3 @@ class GpioLedController:
     @Debug.call_log
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
-
-    @Debug.call_log
-    def __del__(self):
-        print('...')

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
+import sys
 
 file = __file__.split('\\')[-1]
 
@@ -16,7 +17,11 @@ while not stop:
         # On se reverra dans 3s
         time.sleep(3)
 
-        raise (Exception('aaaabbbb'))
+        # raise (Exception('aaaabbbb'))
+        # or
+        # sys.exit(0)
+        # or
+        # hit [CTRL-C]
 
     except (KeyboardInterrupt, SystemExit) as e:
         print('>>> INTERRUPTED !', e)

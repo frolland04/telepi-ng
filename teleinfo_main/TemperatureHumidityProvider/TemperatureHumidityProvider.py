@@ -33,6 +33,9 @@ class TemperatureHumidityProvider:
 
     @Debug.call_log
     def __init__(self, ex):
+        """
+        Initialisation du TemperatureHumidityProvider : données, communication avec le capteur, timer
+        """
         # Handle pour exécuter les requêtes à la BDD
         self.ex = ex
 
@@ -52,12 +55,23 @@ class TemperatureHumidityProvider:
         self.t.start()
 
     @Debug.call_log
+    def __del__(self):
+        """
+        Initialisation du TemperatureHumidityProvider
+        """
+        print('...')
+
+    @Debug.call_log
     def close(self):
         """
-        Fin propre : arrêt timer si en attente et pas de relance si en cours d'exécution
+        Fin propre : arrêt timer si en attente et pas de relance si en cours d'exécution,
         grâce à condition d'arrêt
         """
+
+        # On signale l'arrêt
         self.end = True
+
+        # On annule le timer
         self.t.cancel()
 
     @Debug.call_log
@@ -220,7 +234,3 @@ class TemperatureHumidityProvider:
     @Debug.call_log
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
-
-    @Debug.call_log
-    def __del__(self):
-        print('...')

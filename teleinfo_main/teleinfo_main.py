@@ -32,30 +32,6 @@ __version__ = '1'
 file = __file__.split('/')[-1]
 
 
-def etat_presence_programme(si):
-    """LED bleue allumée"""
-    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_BLUE)
-
-def etat_sortie_programme(si):
-    """LED rouge allumée, seule"""
-    si.set_off()
-    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_RED)
-
-def etat_echec_demarrage(si):
-    """LED rouge et LED jaune allumées"""
-    si.set_off()
-    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_RED)
-    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_YELLOW)
-
-def etat_programme_actif(si):
-    """LED verte allumée"""
-    si.set_on(StatusLeds.GpioLedController.GPIO_ID_LED_GREEN)
-
-def signaler_programme_actif(si):
-    """LED blanche allumée puis éteinte"""
-    si.flash_led(StatusLeds.GpioLedController.GPIO_ID_LED_WHITE)
-
-
 print("File:", file)
 print("Runtime:", sys.version)
 print("Version:", sys.version_info)
@@ -67,6 +43,7 @@ print("**** Bonjour tout le monde ! ****")
 # *** Programme principal ! ***
 # =============================
 
+# Les codes de retour en cas de problème
 SYSEXIT_ERROR_LEDS = -1
 SYSEXIT_ERROR_LCD = -2
 SYSEXIT_ERROR_DBE = -3
@@ -82,7 +59,7 @@ SYSEXIT_ERROR_INT = -7
 try:
     leds = StatusLeds.GpioLedController()
     leds.running_leds()
-    etat_presence_programme(leds)
+    StatusLeds.SystemLeds.presence(leds)
 
 except (BaseException, KeyboardInterrupt, SystemExit) as e:
     print("Afficheur 5 LED indisponible!", e)
@@ -96,7 +73,7 @@ try:
 
 except (BaseException, KeyboardInterrupt, SystemExit) as e:
     print("Affichage LCD indisponible!", e)
-    etat_echec_demarrage(leds)
+    StatusLeds.SystemLeds.initialization_failed(leds)
     sys.exit(SYSEXIT_ERROR_LCD)
 
 # Tentative de connexion à la base de données
@@ -107,8 +84,8 @@ try:
 
 except (BaseException, KeyboardInterrupt, SystemExit) as e:
     print("Base de données indisponible!", e)
-    lcd.items = {'ERREUR': 'Acces BDD', 'Initialisation': 'impossible'}
-    etat_echec_demarrage(leds)
+    lcd.items = {'ERREUR': 'BDD', 'Initialisation': 'impossible'}
+    StatusLeds.SystemLeds.initialization_failed(leds)
     sys.exit(SYSEXIT_ERROR_DBE)
 
 # Tentative de connexion au port série
@@ -119,8 +96,8 @@ try:
 
 except (BaseException, KeyboardInterrupt, SystemExit) as e:
     print("Entrée série indisponible!", e)
-    lcd.items = {'ERREUR': 'Acces Teleinfo', 'Initialisation': 'impossible'}
-    etat_echec_demarrage(leds)
+    lcd.items = {'ERREUR': 'TELEINFO', 'Initialisation': 'impossible'}
+    StatusLeds.SystemLeds.initialization_failed(leds)
     sys.exit(SYSEXIT_ERROR_MPR)
 
 # Température et humidité relative relevées périodiquement
@@ -131,8 +108,8 @@ try:
 
 except (BaseException, KeyboardInterrupt, SystemExit) as e:
     print("Mesure de l'environnement indisponible!", e)
-    lcd.items = {'ERREUR': 'Acces TEMP/HUM', 'Initialisation': 'impossible'}
-    etat_echec_demarrage(leds)
+    lcd.items = {'ERREUR': 'BME280', 'Initialisation': 'impossible'}
+    StatusLeds.SystemLeds.initialization_failed(leds)
     sys.exit(SYSEXIT_ERROR_THP)
 
 # Préparation de la boucle principale
@@ -140,8 +117,10 @@ except (BaseException, KeyboardInterrupt, SystemExit) as e:
 
 try:
     # La LED verte indique que tout a bien démarré
-    etat_programme_actif(leds)
-    signaler_programme_actif(leds)
+    StatusLeds.SystemLeds.initialized(leds)
+
+    # On complète par un flash sur la LED blanche :-)
+    StatusLeds.SystemLeds.running(leds)
 
     # Attente du démarrage de tous les composants
     # et de l'approvisionnement des premières valeurs
@@ -157,8 +136,8 @@ try:
 
 except (BaseException, KeyboardInterrupt, SystemExit) as e:
     print("Erreur pendant la préparation de la boucle principale!", e)
-    lcd.items = {'ERREUR': 'Amont boucle', 'Initialisation': 'impossible'}
-    etat_echec_demarrage(leds)
+    lcd.items = {'ERREUR': 'PREPARATION', 'Initialisation': 'impossible'}
+    StatusLeds.SystemLeds.initialization_failed(leds)
     sys.exit(SYSEXIT_ERROR_PRE)
 
 # --------------------------------------------- DEBUT BOUCLE PRINCIPALE ---------------------------------------------
@@ -166,7 +145,9 @@ stop = False
 while not stop:
     try:
         print('>>> GO!')
-        signaler_programme_actif(leds)
+
+        # Encore un flash sur la LED blanche :-) à chaque tour!
+        StatusLeds.SystemLeds.running(leds)
 
         # ---------------------------------------------------------------
         # Récupérer les données et les transmettre là où c'est nécessaire
@@ -255,21 +236,28 @@ print('STOP!')
 # Message final sur l'écran LCD
 disp.clear()
 disp['STOP'] = 'PROGRAMME'
+print('[Final status on display.]')
 
 # LED rouge allumée, toute seule
-etat_sortie_programme(leds)
+StatusLeds.SystemLeds.aborted(leds)
+print('[Final status on leds.]')
 
 # Arrêt de la collecte Téléinfo ERDF
 ti.close()
+print('[Data collection released.]')
 
 # Arrêt des mesures de l'environnement
 thp.close()
+print('[Monitoring released.]')
 
 # Libération de l'écran LCD
 lcd.close()
+print('[Display released.]')
 
 # Libération de la BDD
 dex.close()
+print('[Database closed.]')
 
-# On s'en va maintenant
+# On s'en va maintenant, on sort réellement si tous les autres threads sont terminés
 sys.exit(SYSEXIT_ERROR_INT)
+print('SHOULD NOT BE HERE.')

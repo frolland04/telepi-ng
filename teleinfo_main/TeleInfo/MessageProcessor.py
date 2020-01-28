@@ -23,6 +23,9 @@ class MessageProcessor(threading.Thread):
 
     @Debug.call_log
     def __init__(self, ex):
+        """
+        Initialisation de MessageProcessor : port série, thread, données
+        """
         # Ouverture du port série
         print(file + ':', 'MESSAGE_PORT_NAME=' + self.MESSAGE_PORT_NAME)
 
@@ -66,22 +69,47 @@ class MessageProcessor(threading.Thread):
         self.start()
 
     @Debug.call_log
+    def __del__(self):
+        """
+        Nettoyage de MessageProcessor : port série
+        """
+        print('...')
+
+    @Debug.call_log
     def close(self):
-        """Fin propre : arrêt thread (sur contrôle d'une variable dans le corps de la boucle)"""
+        """
+        Fin propre : arrêt thread (sur contrôle d'une variable dans le corps de la boucle),
+        libération du port série
+        """
+        # On place la boucle en position d'arrêt
         self.end = True
+
+        # On rend la main au plus au bout de 5 secondes,
+        # (tant pis ça tourne toujours)
+        self.join(5)
+
+        # On libère le port série
         self.si.close()
 
     @Debug.call_log
     def run(self):
-        """Boucle de réception des messages, exécutée par le thread dédié"""
+        """
+        Boucle de réception des messages, exécutée par le thread dédié
+        """
+        print(__class__, 'threading.Thread is STARTING!')
+
         while not self.end:
             self.teleinfo_wait_message()
+
+        print(__class__, 'threading.Thread is FINISHING!')
+
+        # En sortant on provoque la fin du thread.
+        return
 
     def teleinfo_wait_message(self):
         """
         Fonction préliminaire au décodage : localise un message entier
         """
-
         # Attendre le début du message: '0x002' (STX)
         while self.si.read(1)[0] != 0x02:
             pass
@@ -282,7 +310,3 @@ class MessageProcessor(threading.Thread):
     @Debug.call_log
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
-
-    @Debug.call_log
-    def __del__(self):
-        print('...')

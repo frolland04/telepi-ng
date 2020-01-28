@@ -26,6 +26,9 @@ class SafeRequestExecutor:
 
     @Debug.call_log
     def __init__(self, pool=None):
+        """
+        Initialisation du SafeRequestExecutor : connection et verrou
+        """
         print(file + ':', 'DATABASE_NAME=' + self.DATABASE_NAME)
 
         self.connection = db.connect(host='localhost',
@@ -41,6 +44,22 @@ class SafeRequestExecutor:
             self.pool = DatabaseEngine.SqlPool(self)
 
         self.pool.notifyDatabaseConnected(file)
+
+    @Debug.call_log
+    def __del__(self):
+        """
+        Nettoyage de MessageProcessor
+        """
+        print('...')
+
+    @Debug.call_log
+    def close(self):
+        """
+        Fin propre : notification et fermeture BDD
+        """
+        # Indication de sortie dans la BDD
+        self.pool.notifyDatabaseClosing(file)
+        self.connection.close()
 
     @Debug.call_log
     def execute(self, sql, v=None):
@@ -79,13 +98,6 @@ class SafeRequestExecutor:
                 return ''
 
     @Debug.call_log
-    def close(self):
-
-        # Indication de sortie dans la BDD
-        self.pool.notifyDatabaseClosing(file)
-        self.connection.close()
-
-    @Debug.call_log
     def __enter__(self):
         print("...")
 
@@ -93,6 +105,3 @@ class SafeRequestExecutor:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.free()
 
-    @Debug.call_log
-    def __del__(self):
-        print('...')
