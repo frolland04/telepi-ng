@@ -7,9 +7,10 @@ import threading
 import time
 
 # Sous-modules
-import Debug  # Besoin de mon décorateur 'call_log'
+import Debug  # Besoin de mon décorateur 'log_class_func'
 
-file = __file__.split('\\')[-1]
+# Pour le débogage
+this_file = __file__.split('\\')[-1]
 
 
 class MessageProcessor(threading.Thread):
@@ -21,13 +22,13 @@ class MessageProcessor(threading.Thread):
     # Port série utilisé
     MESSAGE_PORT_NAME = '/dev/ttyAMA0'
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __init__(self, ex):
         """
-        Initialisation de MessageProcessor : port série, thread, données
+        Initialisation de 'MessageProcessor' : port série, thread, données
         """
         # Ouverture du port série
-        print(file + ':', 'MESSAGE_PORT_NAME=' + self.MESSAGE_PORT_NAME)
+        print(this_file + ':', 'MESSAGE_PORT_NAME=' + self.MESSAGE_PORT_NAME)
 
         self.si = serial.Serial(
             port=self.MESSAGE_PORT_NAME,
@@ -68,17 +69,17 @@ class MessageProcessor(threading.Thread):
         self.end = False
         self.start()
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __del__(self):
         """
-        Nettoyage de MessageProcessor : port série
+        Nettoyage de 'MessageProcessor'
         """
         print('...')
 
-    @Debug.call_log
+    @Debug.log_class_func
     def close(self):
         """
-        Fin propre : arrêt thread (sur contrôle d'une variable dans le corps de la boucle),
+        Fin propre de 'MessageProcessor' : arrêt thread (sur contrôle d'une variable dans le corps de la boucle),
         libération du port série
         """
         # On place la boucle en position d'arrêt
@@ -91,7 +92,7 @@ class MessageProcessor(threading.Thread):
         # On libère le port série
         self.si.close()
 
-    @Debug.call_log
+    @Debug.log_class_func
     def run(self):
         """
         Boucle de réception des messages, exécutée par le thread dédié
@@ -168,7 +169,6 @@ class MessageProcessor(threading.Thread):
         """
         Si l'étiquette est connue, répercute la valeur dans le dictionnaire
         """
-
         if etiquette in dictionnaire:
             if etiquette == 'PTEC' or etiquette == 'OPTARIF':
                 #  Pour les étiquettes 'PTEC' et 'OPTARIF', j'ai choisi de tronquer la valeur aux 2 premiers caractères
@@ -186,7 +186,6 @@ class MessageProcessor(threading.Thread):
         """
         Fonction principale du décodage : analyse ligne par ligne
         """
-
         # Maintenant qu'on a un message entier, découpons-le, mettons chaque ligne dans un tableau
         lignes = [
             ligne.split(" ")
@@ -299,14 +298,22 @@ class MessageProcessor(threading.Thread):
 
     @property
     def tags(self):
-        """Je suis une @propriété Python."""
-        print("MessageProcessor.tags@get")
+        """
+        Je suis une @propriété Python.
+        """
+        print("@MessageProcessor.tags")
         return self.__tags
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __enter__(self):
-        print('...')
+        """
+        Entrée de zone, pour gestion de contextes
+        """
+        print("...")
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
+        """
+        Sortie de zone, pour gestion de contextes
+        """
+        print("...")

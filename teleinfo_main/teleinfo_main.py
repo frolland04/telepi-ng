@@ -14,7 +14,6 @@ import TemperatureHumidityProvider
 import RunningLcd
 import StatusLeds
 
-
 # ================================================================================
 # NAME: TELEINFO
 # AUTHORS: Frédéric ROLLAND, depuis une idée et un code original de Sébastien Joly
@@ -28,16 +27,14 @@ import StatusLeds
 __author__ = 'Frédéric ROLLAND'
 __version__ = '1'
 
+# Pour le débogage
+this_file = __file__.split('\\')[-1]
 
-file = __file__.split('/')[-1]
-
-
-print("File:", file)
+print("File:", this_file)
 print("Runtime:", sys.version)
 print("Version:", sys.version_info)
 print("PATH:", sys.path)
 print("**** Bonjour tout le monde ! ****")
-
 
 # =============================
 # *** Programme principal ! ***
@@ -51,7 +48,6 @@ SYSEXIT_ERROR_MPR = -4
 SYSEXIT_ERROR_THP = -5
 SYSEXIT_ERROR_PRE = -6
 SYSEXIT_ERROR_INT = -7
-
 
 # Afficheur 5 LEDs : chenillard puis LED bleue allumée
 # ----------------------------------------------------

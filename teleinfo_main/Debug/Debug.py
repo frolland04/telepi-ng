@@ -1,15 +1,19 @@
 # -*- coding: UTF-8 -*-
 
-# Dépendances
-# ...
-
-file = __file__.split('\\')[-1]
+# Pour le débogage
+this_file = __file__.split('\\')[-1]
 
 
-def call_log(method):
-    """Ceci est un décorateur de méthode pour afficher automatiquement un message à l'appel de cette méthode"""
-    def print_identification(*args, **kwargs):
-        id = {
+def log_class_func(f):
+    """
+    Ceci est un décorateur de méthode pour afficher automatiquement un message à l'appel de cette méthode
+    """
+
+    def log(*args, **kwargs):
+        """
+        Cette fonction embarquée affiche le texte souhaité et appelle la fonction décorée
+        """
+        translations = {
             '__init__': 'Initialisation',
             '__del__': 'Nettoyage',
             '__enter__': 'Entrée de zone',
@@ -17,22 +21,25 @@ def call_log(method):
             'close': 'Libération'
         }
 
-        # Note: 'args' est un tuple qui contient les arguments, pour une méthode de classe c'est 'self'.
-        methodName = method.__name__
-        className = args[0].__class__.__name__
+        # Note: 'args' est un tuple qui contient les arguments, pour une méthode de classe le premier c'est 'self'.
+        # On y trouve alors dedans le nom de la classe.
+        method_name = f.__name__
+        class_name = args[0].__class__.__name__
 
         # Si c'est une méthode spéciale on traduit le nom sinon on affiche le nom réel de la méthode
-        if methodName in id:
-            identName = id[methodName]
+        if method_name in translations:
+            method_msg = translations[method_name]
         else:
-            identName = 'Appel de ' + methodName + '()'
+            method_msg = 'Appel de ' + method_name + '()'
 
-        print("Debug: %s de '%s'" % (identName, className))
-        return method(*args, **kwargs)
+        print("Debug: %s de '%s'" % (method_msg, class_name))
+        return f(*args, **kwargs)
 
-    return print_identification
+    return log
 
 
-def log_except(e, msg):
-    """Petite fonction gentille pour afficher les caractéristiques d'une exception"""
+def log_exc(e, msg):
+    """
+    Petite fonction gentille pour afficher les caractéristiques d'une exception
+    """
     print('\n>>> EXCEPTION :\n', e, '(', msg, ')\n')

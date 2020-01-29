@@ -1,35 +1,34 @@
 # -*- coding: UTF-8 -*-
 
 # Dépendances
-import mysql.connector as db
+import mysql.connector as db  # Nécessite sur le système : python3, python3-mysql.connector
 import threading
 
-import Debug  # Besoin de mon décorateur "call_log"
+# Sous-modules
+import Debug  # Besoin de mon décorateur "log_class_func"
 import DatabaseEngine
 
-# *** Notes sur "mysql.connector" ***
-# Nécessite sur le système : python3, python3-mysql.connector
-
-# *** Configuration de l'utilisateur sous MySQL ***
-# CREATE USER `teleinfo` ;
-# ALTER USER `teleinfo` IDENTIFIED BY "ti" ;
-# CREATE DATABASE `D_TELEINFO` ;
-# GRANT ALL ON `D_TELEINFO`.`*` TO `teleinfo` ;
-
-file = __file__.split('\\')[-1]
+# Pour le débogage
+this_file = __file__.split('\\')[-1]
 
 
 class SafeRequestExecutor:
+    """
+    Cette classe implémente un exécuteur mono-connexion de requêtes à la BDD,
+    qui peut être utilisé en multithread, garantissant une seule requête à la fois.
+    Utilise le pool de requêtes prédéfinies pour ses propres notifications.
+    """
+
     USER_NAME = 'teleinfo'
     USER_PASSWORD = 'ti'
     DATABASE_NAME = 'D_TELEINFO'
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __init__(self, pool=None):
         """
-        Initialisation du SafeRequestExecutor : connection et verrou
+        Initialisation du 'SafeRequestExecutor' : connection et verrou
         """
-        print(file + ':', 'DATABASE_NAME=' + self.DATABASE_NAME)
+        print(this_file + ':', 'DATABASE_NAME=' + self.DATABASE_NAME)
 
         self.connection = db.connect(host='localhost',
                                      user=self.USER_NAME,
@@ -43,25 +42,25 @@ class SafeRequestExecutor:
         else:
             self.pool = DatabaseEngine.SqlPool(self)
 
-        self.pool.notifyDatabaseConnected(file)
+        self.pool.notifyDatabaseConnected(this_file)
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __del__(self):
         """
-        Nettoyage de MessageProcessor
+        Nettoyage du 'SafeRequestExecutor'
         """
         print('...')
 
-    @Debug.call_log
+    @Debug.log_class_func
     def close(self):
         """
-        Fin propre : notification et fermeture BDD
+        Fin propre du 'SafeRequestExecutor' : notification au journal et fermeture BDD
         """
         # Indication de sortie dans la BDD
-        self.pool.notifyDatabaseClosing(file)
+        self.pool.notifyDatabaseClosing(this_file)
         self.connection.close()
 
-    @Debug.call_log
+    @Debug.log_class_func
     def execute(self, sql, v=None):
         """
         Exécution d'une requête sur le moteur de base de données, avec garantie qu'une seule s'exécute à la fois
@@ -85,8 +84,11 @@ class SafeRequestExecutor:
 
                 self.engine.execute(sql, a)
 
-    @Debug.call_log
+    @Debug.log_class_func
     def execute_request_for_simple_value(self, sql):
+        """
+        Exécute une requête avec résultat simple, et le retourne
+        """
         with self.mutex:
             try:
                 self.engine.execute(sql)
@@ -97,11 +99,16 @@ class SafeRequestExecutor:
                 print('Unable to fetch data !', e)
                 return ''
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __enter__(self):
+        """
+        Entrée de zone, pour gestion de contextes
+        """
         print("...")
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.free()
-
+        """
+        Sortie de zone, pour gestion de contextes
+        """
+        print("...")

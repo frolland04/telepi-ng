@@ -14,12 +14,11 @@ import digitalio
 import busio
 import adafruit_bme280
 
-
 # Sous-modules
 import Debug
 
-
-fileName = __file__.split('\\')[-1]
+# Pour le débogage
+this_file = __file__.split('\\')[-1]
 
 
 class TemperatureHumidityProvider:
@@ -31,10 +30,10 @@ class TemperatureHumidityProvider:
     # Une mesure toutes les 20s
     TIMER_PERIOD_SECS = 20
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __init__(self, ex):
         """
-        Initialisation du TemperatureHumidityProvider : données, communication avec le capteur, timer
+        Initialisation du 'TemperatureHumidityProvider' : données, communication avec le capteur, timer
         """
         # Handle pour exécuter les requêtes à la BDD
         self.ex = ex
@@ -54,28 +53,30 @@ class TemperatureHumidityProvider:
         self.end = False
         self.t.start()
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __del__(self):
         """
-        Initialisation du TemperatureHumidityProvider
+        Nettoyage du 'TemperatureHumidityProvider'
         """
         print('...')
 
-    @Debug.call_log
+    @Debug.log_class_func
     def close(self):
         """
-        Fin propre : arrêt timer si en attente et pas de relance si en cours d'exécution,
-        grâce à condition d'arrêt
+        Fin propre du 'TemperatureHumidityProvider' : arrêt timer si en attente et pas de relance
+        si en cours d'exécution, grâce à condition d'arrêt
         """
-
         # On signale l'arrêt
         self.end = True
 
         # On annule le timer
         self.t.cancel()
 
-    @Debug.call_log
+    @Debug.log_class_func
     def run(self):
+        """
+        Corps du timer : traitement exécuté périodiquement
+        """
         print("** Mesures de l'environnement **")
 
         val, ok = self.readRelativeHumidity()
@@ -96,8 +97,9 @@ class TemperatureHumidityProvider:
             self.t.start()
 
     def readRelativeHumidity(self):
-        """Lecture de l'humidité relative depuis le BME280 et mise à jour des compteurs de BDD"""
-
+        """
+        Lecture de l'humidité relative depuis le BME280 et mise à jour des compteurs de BDD
+        """
         val = 0.0
         ok = False
         ts = datetime.datetime.now()
@@ -112,7 +114,7 @@ class TemperatureHumidityProvider:
             print('DBG_ENV: RH', '{:.2f}'.format(val))
 
         except Exception as e:
-            Debug.log_except(e, fileName)
+            Debug.log_exc(e, this_file)
             self.ex.pool.incrementCountEnvRelativeHumidityNbReadFailed()
 
         else:
@@ -137,8 +139,9 @@ class TemperatureHumidityProvider:
         return val, ok
 
     def readTemperature(self):
-        """Lecture de la température depuis le BME280 et mise à jour des compteurs de BDD"""
-
+        """
+        Lecture de la température depuis le BME280 et mise à jour des compteurs de BDD
+        """
         val = 0.0
         ok = False
         ts = datetime.datetime.now()
@@ -153,7 +156,7 @@ class TemperatureHumidityProvider:
             print('DBG_ENV: TEMP', '{:.2f}'.format(val))
 
         except Exception as e:
-            Debug.log_except(e, fileName)
+            Debug.log_exc(e, this_file)
             self.ex.pool.incrementCountEnvTemperatureNbReadFailed()
 
         else:
@@ -176,10 +179,11 @@ class TemperatureHumidityProvider:
                 self.ex.pool.updateTempInst(val, ts)
 
         return val, ok
-    
-    def readAirPressure(self):
-        """Lecture de la pression atmosphérique depuis le BME280 et mise à jour des compteurs de BDD"""
 
+    def readAirPressure(self):
+        """
+        Lecture de la pression atmosphérique depuis le BME280 et mise à jour des compteurs de BDD
+        """
         val = 0.0
         ok = False
         ts = datetime.datetime.now()
@@ -194,7 +198,7 @@ class TemperatureHumidityProvider:
             print('DBG_ENV: PA', '{:.2f}'.format(val))
 
         except Exception as e:
-            Debug.log_except(e, fileName)
+            Debug.log_exc(e, this_file)
             self.ex.pool.incrementCountEnvAirPressureNbReadFailed()
 
         else:
@@ -211,26 +215,38 @@ class TemperatureHumidityProvider:
 
     @property
     def humidity(self):
-        """Je suis une @propriété Python."""
-        print("TemperatureHumidityProvider.humidity@get")
+        """
+        Je suis une @propriété Python.
+        """
+        print("@TemperatureHumidityProvider.humidity")
         return self.__humidity
 
     @property
     def temperature(self):
-        """Je suis une @propriété Python."""
-        print("TemperatureHumidityProvider.temperature@get")
+        """
+        Je suis une @propriété Python.
+        """
+        print("@TemperatureHumidityProvider.temperature")
         return self.__temperature
 
     @property
     def pressure(self):
-        """Je suis une @propriété Python."""
-        print("TemperatureHumidityProvider.pressure@get")
+        """
+        Je suis une @propriété Python.
+        """
+        print("@TemperatureHumidityProvider.pressure")
         return self.__pressure
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __enter__(self):
-        print('...')
+        """
+        Entrée de zone, pour gestion de contextes
+        """
+        print("...")
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
+        """
+        Sortie de zone, pour gestion de contextes
+        """
+        print("...")

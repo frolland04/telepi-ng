@@ -8,10 +8,10 @@ import threading
 import lcd_lib
 
 # Sous-modules
-import Debug  # Besoin de mon décorateur 'call_log'
+import Debug  # Besoin de mon décorateur 'log_class_func'
 
-
-file = __file__.split('\\')[-1]
+# Pour le débogage
+this_file = __file__.split('\\')[-1]
 
 
 class RunningLcdOutput:
@@ -22,10 +22,10 @@ class RunningLcdOutput:
 
     TIMER_PERIOD_SECS = 4
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __init__(self):
         """
-        Initialisation du RunningLcdOutput : bibliothèque LCD/I2C, timer et données
+        Initialisation du 'RunningLcdOutput' : bibliothèque LCD/I2C, timer et données
         """
         # On initialise le LCD, selon le montage télépi
         # LCD 16X02 & PCF8574T I2C @=0x27 (5V)
@@ -45,17 +45,17 @@ class RunningLcdOutput:
         # Affiche l'item 0 au démarrage
         self.itemIndex = 0
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __del__(self):
         """
-        Nettoyage du RunningLcdOutput
+        Nettoyage du 'RunningLcdOutput'
         """
         print('...')
 
-    @Debug.call_log
+    @Debug.log_class_func
     def close(self):
         """
-        Fin propre : arrêt timer si en attente et pas de relance si en cours d'exécution,
+        Fin propre du 'RunningLcdOutput' : arrêt timer si en attente et pas de relance si en cours d'exécution,
         grâce à condition d'arrêt
         """
         # On signale l'arrêt
@@ -64,8 +64,11 @@ class RunningLcdOutput:
         # On annule le timer
         self.t.cancel()
 
-    @Debug.call_log
+    @Debug.log_class_func
     def run(self):
+        """
+        Corps du timer : traitement exécuté périodiquement
+        """
         print("** Affichage **")
 
         # On copie notre dictionnaire pour travailler sur un contenu stable
@@ -87,7 +90,7 @@ class RunningLcdOutput:
 
             # Affiche l'item à l'index 'self.itemIndex' => la clé et son contenu
             print('DBG_LCD:', self.itemIndex, items_dict, items_list, "->", item_ligne1, item_ligne2)
-            
+
             # On efface l'écran
             self.lcd.lcd_clear()
 
@@ -99,7 +102,7 @@ class RunningLcdOutput:
             # On programme l'item suivant pour le tour suivant
             self.itemIndex += 1
         else:
-            print(file + ":", 'La liste des éléments à afficher est vide.')
+            print(this_file + ":", 'La liste des éléments à afficher est vide.')
             self.itemIndex = 0
 
         if not self.end:
@@ -109,19 +112,30 @@ class RunningLcdOutput:
 
     @property
     def items(self):
-        """Je suis une @propriété Python."""
-        print("RunningLcdOutput.items@get")
+        """
+        Je suis une @propriété Python.
+        """
+        print("@RunningLcdOutput.items")
         return self.__items
 
     @items.setter
     def items(self, val):
-        print("RunningLcdOutput.items@set")
+        """
+        Je suis une @propriété Python.
+        """
+        print("RunningLcdOutput.items=")
         self.__items = val
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __enter__(self):
-        print('...')
+        """
+        Entrée de zone, pour gestion de contextes
+        """
+        print("...")
 
-    @Debug.call_log
+    @Debug.log_class_func
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
+        """
+        Sortie de zone, pour gestion de contextes
+        """
+        print("...")
