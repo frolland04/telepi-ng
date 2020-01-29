@@ -113,7 +113,7 @@ class RunningLcdOutput:
     @property
     def items(self):
         """
-        Je suis une @propriété Python.
+        Je suis une @propriété Python en lecture.
         """
         print("@RunningLcdOutput.items")
         return self.__items
@@ -121,7 +121,7 @@ class RunningLcdOutput:
     @items.setter
     def items(self, val):
         """
-        Je suis une @propriété Python.
+        Je suis une @propriété Python en écriture.
         """
         print("RunningLcdOutput.items=")
         self.__items = val
@@ -129,13 +129,15 @@ class RunningLcdOutput:
     @Debug.log_class_func
     def __enter__(self):
         """
-        Entrée de zone, pour gestion de contextes
+        Entrée de zone de portée, pour gestion de contextes
         """
         print("...")
+        return self
 
     @Debug.log_class_func
     def __exit__(self, exc_type, exc_val, exc_tb):
         """
-        Sortie de zone, pour gestion de contextes
+        Sortie de zone de portée, pour gestion de contextes
         """
         print("...")
+        return self

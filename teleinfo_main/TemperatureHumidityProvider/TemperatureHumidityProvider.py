@@ -216,7 +216,7 @@ class TemperatureHumidityProvider:
     @property
     def humidity(self):
         """
-        Je suis une @propriété Python.
+        Je suis une @propriété Python en lecture.
         """
         print("@TemperatureHumidityProvider.humidity")
         return self.__humidity
@@ -224,7 +224,7 @@ class TemperatureHumidityProvider:
     @property
     def temperature(self):
         """
-        Je suis une @propriété Python.
+        Je suis une @propriété Python en lecture.
         """
         print("@TemperatureHumidityProvider.temperature")
         return self.__temperature
@@ -232,7 +232,7 @@ class TemperatureHumidityProvider:
     @property
     def pressure(self):
         """
-        Je suis une @propriété Python.
+        Je suis une @propriété Python en lecture.
         """
         print("@TemperatureHumidityProvider.pressure")
         return self.__pressure
@@ -240,13 +240,15 @@ class TemperatureHumidityProvider:
     @Debug.log_class_func
     def __enter__(self):
         """
-        Entrée de zone, pour gestion de contextes
+        Entrée de zone de portée, pour gestion de contextes
         """
         print("...")
+        return self
 
     @Debug.log_class_func
     def __exit__(self, exc_type, exc_val, exc_tb):
         """
-        Sortie de zone, pour gestion de contextes
+        Sortie de zone de portée, pour gestion de contextes
         """
         print("...")
+        return self

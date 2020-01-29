@@ -127,13 +127,15 @@ class GpioLedController:
     @Debug.log_class_func
     def __enter__(self):
         """
-        Entrée de zone, pour gestion de contextes
+        Entrée de zone de portée, pour gestion de contextes
         """
         print("...")
+        return self
 
     @Debug.log_class_func
     def __exit__(self, exc_type, exc_val, exc_tb):
         """
-        Sortie de zone, pour gestion de contextes
+        Sortie de zone de portée, pour gestion de contextes
         """
         print("...")
+        return self

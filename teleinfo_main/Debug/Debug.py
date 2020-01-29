@@ -38,6 +38,21 @@ def log_class_func(f):
     return log
 
 
+def log_func(f):
+    """
+    Ceci est un décorateur de fonction pour afficher automatiquement un message à l'appel de cette fonction
+    """
+
+    def log(*args, **kwargs):
+        """
+        Cette fonction embarquée affiche le texte souhaité et appelle la fonction décorée
+        """
+        print("Debug: Appel de " + f.__name__ + '()')
+        return f(*args, **kwargs)
+
+    return log
+
+
 def log_exc(e, msg):
     """
     Petite fonction gentille pour afficher les caractéristiques d'une exception
