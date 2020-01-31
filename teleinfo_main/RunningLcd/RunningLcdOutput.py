@@ -8,7 +8,7 @@ import threading
 import lcd_lib
 
 # Sous-modules
-import Debug  # Besoin de mon décorateur 'log_class_func'
+import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
 
 # Pour le débogage
 this_file = __file__.split('\\')[-1]
@@ -44,6 +44,9 @@ class RunningLcdOutput:
 
         # Affiche l'item 0 au démarrage
         self.itemIndex = 0
+
+        # On veut déboguer les entrées/sorties de contexte d'exécution
+        self.ct = Debug.EnterExitLogger()
 
     @Debug.log_class_func
     def __del__(self):
@@ -132,6 +135,7 @@ class RunningLcdOutput:
         Entrée de zone de portée, pour gestion de contextes
         """
         print("...")
+        self.ct.__enter__()
         return self
 
     @Debug.log_class_func
@@ -140,4 +144,4 @@ class RunningLcdOutput:
         Sortie de zone de portée, pour gestion de contextes
         """
         print("...")
-        return self
+        return self.ct.__exit__(exc_type, exc_val, exc_tb)

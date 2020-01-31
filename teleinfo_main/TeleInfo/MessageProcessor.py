@@ -7,7 +7,7 @@ import threading
 import time
 
 # Sous-modules
-import Debug  # Besoin de mon décorateur 'log_class_func'
+import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
 
 # Pour le débogage
 this_file = __file__.split('\\')[-1]
@@ -68,6 +68,9 @@ class MessageProcessor(threading.Thread):
         threading.Thread.__init__(self)
         self.end = False
         self.start()
+
+        # On veut déboguer les entrées/sorties de contexte d'exécution
+        self.ct = Debug.EnterExitLogger()
 
     @Debug.log_class_func
     def __del__(self):
@@ -310,6 +313,7 @@ class MessageProcessor(threading.Thread):
         Entrée de zone de portée, pour gestion de contextes
         """
         print("...")
+        self.ct.__enter__()
         return self
 
     @Debug.log_class_func
@@ -318,4 +322,4 @@ class MessageProcessor(threading.Thread):
         Sortie de zone de portée, pour gestion de contextes
         """
         print("...")
-        return self
+        return self.ct.__exit__(exc_type, exc_val, exc_tb)

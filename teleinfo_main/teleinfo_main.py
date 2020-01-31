@@ -13,6 +13,8 @@ import TeleInfo
 import TemperatureHumidityProvider
 import RunningLcd
 import StatusLeds
+import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
+
 
 # ================================================================================
 # NAME: TELEINFO

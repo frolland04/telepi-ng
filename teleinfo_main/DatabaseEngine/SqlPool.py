@@ -46,6 +46,7 @@ class SqlPool:
         Entrée de zone, pour gestion de contextes
         """
         print('...')
+        return self
 
     @Debug.log_class_func
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -53,6 +54,7 @@ class SqlPool:
         Sortie de zone, pour gestion de contextes
         """
         print('...')
+        return False
 
     @Debug.log_class_func
     def notifyDatabaseConnected(self, context=''):

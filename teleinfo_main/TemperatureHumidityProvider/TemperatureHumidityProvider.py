@@ -15,7 +15,7 @@ import busio
 import adafruit_bme280
 
 # Sous-modules
-import Debug
+import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
 
 # Pour le débogage
 this_file = __file__.split('\\')[-1]
@@ -52,6 +52,9 @@ class TemperatureHumidityProvider:
         self.t = threading.Timer(self.TIMER_PERIOD_SECS, self.run)
         self.end = False
         self.t.start()
+
+        # On veut déboguer les entrées/sorties de contexte d'exécution
+        self.ct = Debug.EnterExitLogger()
 
     @Debug.log_class_func
     def __del__(self):
@@ -243,6 +246,7 @@ class TemperatureHumidityProvider:
         Entrée de zone de portée, pour gestion de contextes
         """
         print("...")
+        self.ct.__enter__()
         return self
 
     @Debug.log_class_func
@@ -251,4 +255,4 @@ class TemperatureHumidityProvider:
         Sortie de zone de portée, pour gestion de contextes
         """
         print("...")
-        return self
+        return self.ct.__exit__(exc_type, exc_val, exc_tb)

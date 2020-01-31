@@ -10,7 +10,7 @@ import time
 # sudo python3 -m pip install rpi.gpio
 
 # Sous-modules
-import Debug  # Besoin de mon décorateur "log_class_func"
+import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
 
 # Pour le débogage
 this_file = __file__.split('\\')[-1]
@@ -47,6 +47,9 @@ class GpioLedController:
         for led in self.leds:
             GPIO.setup(led, GPIO.OUT)
             GPIO.output(led, GPIO.LOW)
+
+        # On veut déboguer les entrées/sorties de contexte d'exécution
+        self.ct = Debug.EnterExitLogger()
 
     @Debug.log_class_func
     def __del__(self):
@@ -130,6 +133,7 @@ class GpioLedController:
         Entrée de zone de portée, pour gestion de contextes
         """
         print("...")
+        self.ct.__enter__()
         return self
 
     @Debug.log_class_func
@@ -138,4 +142,4 @@ class GpioLedController:
         Sortie de zone de portée, pour gestion de contextes
         """
         print("...")
-        return self
+        return self.ct.__exit__(exc_type, exc_val, exc_tb)

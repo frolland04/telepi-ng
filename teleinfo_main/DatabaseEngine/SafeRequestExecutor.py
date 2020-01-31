@@ -5,7 +5,7 @@ import mysql.connector as db  # Nécessite sur le système : python3, python3-my
 import threading
 
 # Sous-modules
-import Debug  # Besoin de mon décorateur "log_class_func"
+import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
 import DatabaseEngine
 
 # Pour le débogage
@@ -30,19 +30,26 @@ class SafeRequestExecutor:
         """
         print(this_file + ':', 'DATABASE_NAME=' + self.DATABASE_NAME)
 
+        # Connexion à la BDD
         self.connection = db.connect(host='localhost',
                                      user=self.USER_NAME,
                                      password=self.USER_PASSWORD,
                                      database=self.DATABASE_NAME)
         self.engine = self.connection.cursor()
+
+        # Verrou
         self.mutex = threading.RLock()
 
+        # Pool de requêtes prédéfinies fourni ou par défaut?
         if pool is not None:
             self.pool = pool
         else:
             self.pool = DatabaseEngine.SqlPool(self)
 
         self.pool.notifyDatabaseConnected(this_file)
+
+        # On veut déboguer les entrées/sorties de contexte d'exécution
+        self.ct = Debug.EnterExitLogger()
 
     @Debug.log_class_func
     def __del__(self):
@@ -102,15 +109,16 @@ class SafeRequestExecutor:
     @Debug.log_class_func
     def __enter__(self):
         """
-        Entrée de zone de portée, pour gestion de contextes
+        Entrée de zone de portée, pour gestion de contextes d'exécution
         """
         print("...")
+        self.ct.__enter__()
         return self
 
     @Debug.log_class_func
     def __exit__(self, exc_type, exc_val, exc_tb):
         """
-        Sortie de zone de portée, pour gestion de contextes
+        Sortie de zone de portée, pour gestion de contextes d'exécution
         """
         print("...")
-        return self
+        return self.ct.__exit__(exc_type, exc_val, exc_tb)
