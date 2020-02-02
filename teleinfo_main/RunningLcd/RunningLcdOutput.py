@@ -46,7 +46,7 @@ class RunningLcdOutput:
         self.itemIndex = 0
 
         # On veut déboguer les entrées/sorties de contexte d'exécution
-        self.ct = Debug.EnterExitLogger()
+        self.ct = Debug.EnterExitLogger('RunningLcdOutput')
 
     @Debug.log_class_func
     def __del__(self):
@@ -65,7 +65,7 @@ class RunningLcdOutput:
         self.end = True
 
         # On annule le timer
-        self.t.cancel()
+        # self.t.cancel() @todo: faire une fin propre qui annule le timer et affiche le message de fin.
 
     @Debug.log_class_func
     def run(self):
@@ -144,4 +144,5 @@ class RunningLcdOutput:
         Sortie de zone de portée, pour gestion de contextes
         """
         print("...")
+        self.close()
         return self.ct.__exit__(exc_type, exc_val, exc_tb)

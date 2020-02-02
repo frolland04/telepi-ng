@@ -59,7 +59,7 @@ class GpioLedController:
             GPIO.output(led, GPIO.LOW)
 
         # On veut déboguer les entrées/sorties de contexte d'exécution
-        self.ct = Debug.EnterExitLogger()
+        self.ct = Debug.EnterExitLogger('GpioLedController')
 
     @Debug.log_class_func
     def __del__(self):

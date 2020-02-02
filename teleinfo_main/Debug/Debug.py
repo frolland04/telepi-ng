@@ -14,11 +14,11 @@ def log_class_func(f):
         Cette fonction embarquée affiche le texte souhaité et appelle la fonction décorée
         """
         translations = {
-            '__init__': 'Initialisation',
-            '__del__': 'Nettoyage',
-            '__enter__': 'Entrée de zone',
-            '__exit__': 'Sortie de zone',
-            'close': 'Libération'
+            # '__init__': '[I]',
+            # '__del__': '[D]',
+            # '__enter__': '[E]',
+            # '__exit__': '[X]',
+            # 'close': '[C]'
         }
 
         # Note: 'args' est un tuple qui contient les arguments, pour une méthode de classe le premier c'est 'self'.
