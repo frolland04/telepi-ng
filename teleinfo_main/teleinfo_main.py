@@ -22,7 +22,8 @@ import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
 # DATE : 2017-12-23
 # COMMENT: Collecteur de trames Télé-Information ERDF et des caractéristiques
 # de l'environnement proche (température et humidité relative).
-# Historisation en BDD et affichage tournant sur LCD.
+# Historisation en BDD et affichage tournant sur LCD, ainsi que bargraph et leds
+# pour indiquer l'état du programme.
 # ================================================================================
 
 # Quelques informations
@@ -52,7 +53,7 @@ SYSEXIT_ERROR_PRE = -6
 SYSEXIT_ERROR_INT = -7
 
 # Afficheur 5 LEDs : chenillards puis LED bleue allumée
-# ----------------------------------------------------
+# -----------------------------------------------------
 
 try:
     leds = StatusLeds.GpioLedController()
@@ -243,6 +244,7 @@ print('[Final status on display.]')
 
 # LED rouge allumée, toute seule
 StatusLeds.SystemLeds.aborted(leds)
+leds.set_off(leds.bargraph_leds)
 print('[Final status on leds.]')
 
 # Arrêt de la collecte Téléinfo ERDF

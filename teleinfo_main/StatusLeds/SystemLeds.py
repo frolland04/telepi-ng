@@ -59,5 +59,5 @@ def aborted(si):
     """
     LED rouge allumée, seule
     """
-    si.set_off()
+    si.set_off(si.status_leds)
     si.set_on(si.status_leds, StatusLeds.GpioLedController.GPIO_ID_LED_RED)
