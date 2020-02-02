@@ -59,9 +59,7 @@ try:
 
     StatusLeds.SystemLeds.running_leds(leds)
     StatusLeds.SystemLeds.presence(leds)
-
     StatusLeds.BargraphLeds.running_leds(leds)
-    StatusLeds.BargraphLeds.indication(leds)
 
 except (BaseException, KeyboardInterrupt, SystemExit) as e:
     print("Affichage LED indisponible! Abandon.", e)
@@ -69,8 +67,6 @@ except (BaseException, KeyboardInterrupt, SystemExit) as e:
 
 else:
     print("Affichage LED OK.")
-
-sys.exit(1)
 
 # Démarrage de l'écran LCD
 # ------------------------
