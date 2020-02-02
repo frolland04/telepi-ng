@@ -7,6 +7,7 @@ __version__ = '2'
 # Importation des sous-modules du module
 from StatusLeds.GpioLedController import *
 from StatusLeds.SystemLeds import *
+from StatusLeds.BargraphLeds import *
 
 # On affiche simplement le nom du module, au moment de son chargement
 print('[' + __name__ + ']', 'author=\'' + __author__ + '\'', 'version=' + __version__)

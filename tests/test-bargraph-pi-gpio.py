@@ -16,37 +16,36 @@ GPIO.setmode(GPIO.BCM)
 
 # Paramétrage des sorties
 for gpio_id in leds:
-    GPIO.setup( gpio_id, GPIO.OUT )
-    GPIO.output( gpio_id, GPIO.LOW )
+    GPIO.setup(gpio_id, GPIO.OUT)
+    GPIO.output(gpio_id, GPIO.LOW)
 
 try:
 
-   while True:
+    while True:
 
-      # On commence au début de la liste des leds
-      i = 0
+        # On commence au début de la liste des leds
+        i = 0
 
-      while i < len(leds):
+        while i < len(leds):
+            print(i)
 
-         print(i)
+            # On allume
+            GPIO.output(leds[i], GPIO.HIGH)
 
-         # On allume
-         GPIO.output( leds[i], GPIO.HIGH )
+            # On attend un dixième de seconde
+            time.sleep(0.1)
 
-         # On attend un dixième de seconde
-         time.sleep( 0.1 )
+            # On éteint
+            GPIO.output(leds[i], GPIO.LOW)
 
-         # On éteint
-         GPIO.output( leds[i], GPIO.LOW )
+            # On attend encore un dixième de seconde et on continue
+            time.sleep(0.1)
 
-         # On attend encore un dixième de seconde et on continue
-         time.sleep( 0.1 )
-
-         # Led suivante
-         i = i+1
+            # Led suivante
+            i = i + 1
 
 except:
-      print ("stopping")
+    print("stopping")
 
 # Libération des ressources du module
 # (et éteint tout)

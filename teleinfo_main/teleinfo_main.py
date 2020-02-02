@@ -51,17 +51,26 @@ SYSEXIT_ERROR_THP = -5
 SYSEXIT_ERROR_PRE = -6
 SYSEXIT_ERROR_INT = -7
 
-# Afficheur 5 LEDs : chenillard puis LED bleue allumée
+# Afficheur 5 LEDs : chenillards puis LED bleue allumée
 # ----------------------------------------------------
 
 try:
     leds = StatusLeds.GpioLedController()
-    leds.running_leds()
+
+    StatusLeds.SystemLeds.running_leds(leds)
     StatusLeds.SystemLeds.presence(leds)
 
+    StatusLeds.BargraphLeds.running_leds(leds)
+    StatusLeds.BargraphLeds.indication(leds)
+
 except (BaseException, KeyboardInterrupt, SystemExit) as e:
-    print("Afficheur 5 LED indisponible!", e)
+    print("Affichage LED indisponible! Abandon.", e)
     sys.exit(SYSEXIT_ERROR_LEDS)
+
+else:
+    print("Affichage LED OK.")
+
+sys.exit(1)
 
 # Démarrage de l'écran LCD
 # ------------------------
