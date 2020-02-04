@@ -202,7 +202,7 @@ try:
             edis_intensite = int(mesure['IINST'])
             edis_ok = mesure['OK']
 
-            # Depuis la BDD pour quelques informations
+            # Depuis la BDD pour quelques informations :
             # notamment des compteurs sur l'activité et l'empreinte mémoire de la BDD
             db_rows = dex.pool.getDatabaseHistoRowNb()
             db_heapmax = dex.pool.getDatabaseGlobalHeapMax()
@@ -262,6 +262,8 @@ try:
         print('STOP?', stop)
     # ------------------------------------------ FIN DE LA BOUCLE PRINCIPALE -------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
+    # Lorsqu'on quitte la boucle, c'est quand même une anomalie
+    sys.exit(SYSEXIT_ERROR_INT)
 
 # ------------------- Bloc de terminaison propre  ------------------
 # ------------------------------------------------------------------
