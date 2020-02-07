@@ -259,17 +259,18 @@ try:
             dex.pool.notifySystemFatalCondition()
             stop = True
 
-        print('STOP?', stop)
+        print('Has mainloop to STOP ?', stop)
     # ------------------------------------------ FIN DE LA BOUCLE PRINCIPALE -------------------------------------------
     # ------------------------------------------------------------------------------------------------------------------
     # Lorsqu'on quitte la boucle, c'est quand même une anomalie
+    print('Main loop has terminated.')
     sys.exit(SYSEXIT_ERROR_INT)
 
 # ------------------- Bloc de terminaison propre  ------------------
 # ------------------------------------------------------------------
 except (Exception, KeyboardInterrupt, SystemExit) as e:
     # C'est la séquence de fin!
-    print('STOP!', e)
+    print('STOP! Doing cleanup sequence, then exit.', e)
 
     try:
         # Arrêt des mesures de l'environnement
