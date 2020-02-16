@@ -1,5 +1,5 @@
 [Unit]
-Description=TeleInfo ERDF Data Collection Service
+Description=This is the main application service, that does everything.
 After=multi-user.target
 
 [Service]
