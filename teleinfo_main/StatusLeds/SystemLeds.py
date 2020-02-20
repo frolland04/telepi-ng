@@ -10,7 +10,7 @@ Quelques fonctions pour indiquer facilement l'état du système en utilisant les
 """
 
 
-@Debug.log_class_func
+@Debug.log_func
 def running_leds(si):
     """
     Chenillard sur les leds de statut, à la fin toutes les leds sont éteintes

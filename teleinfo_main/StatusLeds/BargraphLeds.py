@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-# *** Dépendances ***
+# *** Sous-modules ***
 import StatusLeds
 import Debug  # Besoin de mon décorateur "log_func"
 
@@ -10,7 +10,7 @@ Quelques fonctions pour manipuler facilement les leds du bargraph
 """
 
 
-@Debug.log_class_func
+@Debug.log_func
 def running_leds(si):
     """
     Chenillard sur les leds du bargraph, à la fin toutes les leds sont éteintes

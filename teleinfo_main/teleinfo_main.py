@@ -13,6 +13,7 @@ import TeleInfo
 import TemperatureHumidityProvider
 import RunningLcd
 import StatusLeds
+import SystemInfoProvider
 import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
 
 
@@ -51,6 +52,28 @@ SYSEXIT_ERROR_MPR = -4
 SYSEXIT_ERROR_THP = -5
 SYSEXIT_ERROR_PRE = -6
 SYSEXIT_ERROR_INT = -7
+
+# Le nom du service de l'application
+TELEINFO_SERVICE_UNIT_NAME = 'teleinfo.service'
+
+# Les messages d'erreur tournants sur le LCD
+LCD_MSG_ERROR_DATABASE = {'ERREUR': 'BDD',         'Initialisation': 'impossible'}
+LCD_MSG_ERROR_TELEINFO = {'ERREUR': 'TELEINFO',    'Initialisation': 'impossible'}
+LCD_MSG_ERROR_BME280   = {'ERREUR': 'BME280',      'Initialisation': 'impossible'}
+LCD_MSG_ERROR_PREP     = {'ERREUR': 'PREPARATION', 'Initialisation': 'impossible'}
+
+# Les clés de messages normaux envoyés au LCD
+LCD_MSG_HDR_TAR  = '*****  TARIF   *****'
+LCD_MSG_HDR_IIPA = '* IINST(A),PAPP(W) *'
+LCD_MSG_HDR_TH   = '* TEMP.(C),HUM.(%) *'
+LCD_MSG_HDR_PATM = '* PRESSION ATMOSP. *'
+LCD_MSG_HDR_HOR  = '****  HORLOGE   ****'
+LCD_MSG_HDR_REST  = '***  RESTART NB  ***'
+LCD_MSG_HDR_SVUP = '*  SERVICE UPTIME  *'
+LCD_MSG_HDR_TEL  = '*DECODAGE TELEINFOR*'
+LCD_MSG_HDR_HIST = '***  HISTORIQUE ****'
+LCD_MSG_HDR_TBL  = '* MEM. / MAX. (MB) *'
+# xxxxxxxxxxxxxx = '12345678901234567890'
 
 try:
     # ---------------------------------------------
@@ -103,7 +126,7 @@ try:
 
     except (Exception, KeyboardInterrupt, SystemExit) as e:
         print("Base de données indisponible! Abandon.", e)
-        lcd.items = {'ERREUR': 'BDD', 'Initialisation': 'impossible'}
+        lcd.items = LCD_MSG_ERROR_DATABASE
         StatusLeds.SystemLeds.initialization_failed(leds)
         sys.exit(SYSEXIT_ERROR_DBE)
 
@@ -119,7 +142,7 @@ try:
 
     except (Exception, KeyboardInterrupt, SystemExit) as e:
         print("Connexion TELEINFO indisponible! Abandon.", e)
-        lcd.items = {'ERREUR': 'TELEINFO', 'Initialisation': 'impossible'}
+        lcd.items = LCD_MSG_ERROR_TELEINFO
         StatusLeds.SystemLeds.initialization_failed(leds)
         sys.exit(SYSEXIT_ERROR_MPR)
 
@@ -135,7 +158,7 @@ try:
 
     except (Exception, KeyboardInterrupt, SystemExit) as e:
         print("Connexion BME280 indisponible! Abandon.", e)
-        lcd.items = {'ERREUR': 'BME280', 'Initialisation': 'impossible'}
+        lcd.items = LCD_MSG_ERROR_BME280
         StatusLeds.SystemLeds.initialization_failed(leds)
         sys.exit(SYSEXIT_ERROR_THP)
 
@@ -167,7 +190,7 @@ try:
 
     except (Exception, KeyboardInterrupt, SystemExit) as e:
         print("Erreur pendant la préparation de la boucle principale!", e)
-        lcd.items = {'ERREUR': 'PREPARATION', 'Initialisation': 'impossible'}
+        lcd.items = LCD_MSG_ERROR_PREP
         StatusLeds.SystemLeds.initialization_failed(leds)
         sys.exit(SYSEXIT_ERROR_PRE)
 
@@ -215,23 +238,29 @@ try:
 
             # Affichage des données de Téléinformation
             if edis_ok:
-                disp['TARIF:'] = '  ' + edis_bareme
-                disp['IINST(A),PAPP(W)'] = '{:05d}  {:05d}'.format(edis_intensite, edis_puissance)
+                disp[LCD_MSG_HDR_TAR]  = edis_bareme
+                disp[LCD_MSG_HDR_IIPA] = '{:5d}  {:5d}'.format(edis_intensite, edis_puissance)
             else:
-                disp['TARIF:'] = '  ' + '???'
-                disp['IINST(A),PAPP(W)'] = '?????  ?????'
+                disp[LCD_MSG_HDR_TAR]  = '????'
+                disp[LCD_MSG_HDR_IIPA] = '?????  ?????'
 
             # Affichage des données d'environnement
-            disp['TEMP.(C),HUM.(%)'] = '{:05.1f}  {:05.1f}'.format(env_temp, env_hum)
-            disp['PRESSION ATMOS.'] = '{:06.2f} (hPa)'.format(env_atm)
+            disp[LCD_MSG_HDR_TH]   = '{:5.1f}  {:5.1f}'.format(env_temp, env_hum)
+            disp[LCD_MSG_HDR_PATM] = '{:6.2f} (hPa)'.format(env_atm)
 
             # Affichage de divers éléments
-            disp['HORLOGE:'] = sys_clock.strftime('%d/%m/%Y %H:%M')
+            disp[LCD_MSG_HDR_HOR] = sys_clock.strftime('%d/%m/%Y %H:%M')
+
+            restarted_nb = SystemInfoProvider.SystemInformation.get_service_restart_count(TELEINFO_SERVICE_UNIT_NAME)
+            disp[LCD_MSG_HDR_REST] = str(restarted_nb)
+
+            elapsed = SystemInfoProvider.SystemInformation.get_service_latest_restart_elapsed_time(TELEINFO_SERVICE_UNIT_NAME)
+            disp[LCD_MSG_HDR_SVUP] = str(elapsed.days) + 'j ' + str(elapsed.seconds) + 's'
 
             # Affichage des statistiques et des données remontées par la BDD
-            disp['TELEINFO:'] = '{:010d} MESS.'.format(db_recvmsgs)
-            disp['HISTO:'] = '{:010d} MESS.'.format(db_rows)
-            disp['MEM. / MAX.(MB):'] = '{:06.2f} / {:06.2f}'.format(db_tbspace, db_heapmax)
+            disp[LCD_MSG_HDR_TEL]  = '{:,d} MESS.'.format(db_recvmsgs)  # en entier + séparateur des milliers
+            disp[LCD_MSG_HDR_HIST] = '{:,d} LIGNES'.format(db_rows)
+            disp[LCD_MSG_HDR_TBL]  = '{:6.2f}  /  {:6.2f}'.format(db_tbspace, db_heapmax)
 
             # ------------------------------------------
             # Envoyer les données pour stockage à la BDD

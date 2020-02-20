@@ -40,7 +40,9 @@ class RunningLcdOutput:
         self.t.start()
 
         # Les éléments à afficher
-        self.__items = {'Initialisation': '...', 'Patientez': '...'}
+        # xxxxxxxxxxx = '12345678901234567890'
+        self.__items = {'** Initialisation **': '...',
+                        '** Patientez, svp **': '...'}
 
         # Affiche l'item 0 au démarrage
         self.itemIndex = 0
@@ -88,19 +90,23 @@ class RunningLcdOutput:
                 self.itemIndex = 0
 
             # On récupère les données à afficher
-            item_ligne1 = items_list[self.itemIndex]
-            item_ligne2 = items_dict[item_ligne1]
+            header      = items_list[self.itemIndex]
+            information = items_dict[header]
+            information = '{: ^20}'.format(information)  # centré dans une zone 20 espaces
+            footer      = str(self.itemIndex + 1) + ' / ' + str(len(items_list))
 
             # Affiche l'item à l'index 'self.itemIndex' => la clé et son contenu
-            print('DBG_LCD:', self.itemIndex, items_dict, items_list, "->", item_ligne1, item_ligne2)
+            print('DBG_LCD:', self.itemIndex, items_dict, items_list, "->", header, information, footer)
 
             # On efface l'écran
             self.lcd.lcd_clear()
 
             # On affiche des caractères sur chaque ligne
-            # Sur la ligne 1, la clé, et sur la ligne 2 l'élément associé
-            self.lcd.lcd_display_string(item_ligne1, 1)
-            self.lcd.lcd_display_string(item_ligne2, 2)
+            # Sur la ligne 1, la clé, et sur la ligne 2 l'élément associé. La ligne 3 reste vide et la 4
+            # servira d'indice de progression.
+            self.lcd.lcd_display_string(header, 1)
+            self.lcd.lcd_display_string(information, 2)
+            self.lcd.lcd_display_string(footer, 4)
 
             # On programme l'item suivant pour le tour suivant
             self.itemIndex += 1
