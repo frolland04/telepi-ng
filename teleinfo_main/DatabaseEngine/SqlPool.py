@@ -86,7 +86,7 @@ class SqlPool:
             context
         )
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountRecvMsg(self, ts=0):
         """Incrémente le nombre de messages reçus (bons ou mauvais)
         et horodatage du dernier message reçu"""
@@ -98,28 +98,28 @@ class SqlPool:
             ts
         )
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountRecvMsgOk(self):
         """
         Incrémente le nombre de messages reçus bons
         """
         self.ex.execute(""" UPDATE T_COUNTERS set RecvMsgNbOK = RecvMsgNbOK + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def getCountRecvMsgOk(self):
         """
         Récupère le nombre de messages reçus bons
         """
         return self.ex.execute_request_for_simple_value(""" SELECT RecvMsgNbOK FROM T_COUNTERS """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountRecvMsgBad(self):
         """
         Incrémente le nombre de messages reçus mauvais
         """
         self.ex.execute(""" UPDATE T_COUNTERS set RecvMsgNbBad = RecvMsgNbBad + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def notifyUnsupportedLineTagReceived(self, message):
         """
         Place dans le journal de debug la ligne inconnue
@@ -132,7 +132,7 @@ class SqlPool:
             message
         )
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def notifyBadLineReceived(self, message):
         """
         Place dans le journal de debug la ligne reçue malformée
@@ -145,7 +145,7 @@ class SqlPool:
             message
         )
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountRecvMsgDataLineNbTotal(self, cpt):
         """
         Incrémente le nombre de lignes traitées (bonnes ou mauvaises)
@@ -153,7 +153,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set RecvMsgDataLineNbTotal = RecvMsgDataLineNbTotal + %s """, cpt)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountRecvMsgDataLineNbOk(self, cpt):
         """
         Incrémente le nombre de lignes correctes
@@ -161,7 +161,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set RecvMsgDataLineNbOK = RecvMsgDataLineNbOK + %s """, cpt)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountRecvMsgDataLineNbUnsupported(self, cpt):
         """
         Incrémente le nombre de lignes non reconnues
@@ -169,7 +169,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set RecvMsgDataLineNbUnsupp = RecvMsgDataLineNbUnsupp + %s """, cpt)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountRecvMsgDataLineNbBad(self, cpt):
         """
         Incrémente le nombre de lignes incorrectes
@@ -177,7 +177,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set RecvMsgDataLineNbBad = RecvMsgDataLineNbBad + %s """, cpt)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def updateTeleinfoInst(self, tags):
         """
         Mise à jour du jeu des valeurs téléinfo instantanées
@@ -198,7 +198,7 @@ class SqlPool:
             TS = '{TS}' """.format_map(tags)
         )
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def updateTeleinfoHisto(self, tags):
         """
         Insertion d'une nouvelle valeur téléinfo instantanée dans l'historique
@@ -217,7 +217,7 @@ class SqlPool:
             TS = '{TS}' on duplicate key UPDATE TS = 'TS' """.format_map(tags)
         )
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvRelativeHumidityNbReadTotal(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement
@@ -225,7 +225,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvRelativeHumidityNbReadTotal = EnvRelativeHumidityNbReadTotal + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvRelativeHumidityNbReadOk(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement qui sont un succès
@@ -233,7 +233,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvRelativeHumidityNbReadOk = EnvRelativeHumidityNbReadOk + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvRelativeHumidityNbReadFailed(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement qui sont en échec
@@ -241,7 +241,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvRelativeHumidityNbReadFailed = EnvRelativeHumidityNbReadFailed + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvRelativeHumidityNbReadInvalid(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement qui sont hors des bornes acceptables
@@ -249,7 +249,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvRelativeHumidityNbReadInvalid = EnvRelativeHumidityNbReadInvalid + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def setCountEnvRelativeHumidityReadLastTs(self, ts):
         """
         Renseigne le moment de la dernière lecture des données de l'environnement
@@ -257,7 +257,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvRelativeHumidityReadLastTs = %s """, ts)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvTemperatureNbReadTotal(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement
@@ -265,7 +265,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvTemperatureNbReadTotal = EnvTemperatureNbReadTotal + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvTemperatureNbReadOk(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement qui sont un succès
@@ -273,7 +273,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvTemperatureNbReadOk = EnvTemperatureNbReadOk + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvTemperatureNbReadFailed(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement qui sont en échec
@@ -281,7 +281,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvTemperatureNbReadFailed = EnvTemperatureNbReadFailed + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvTemperatureNbReadInvalid(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement qui sont hors des bornes acceptables
@@ -289,7 +289,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvTemperatureNbReadInvalid = EnvTemperatureNbReadInvalid + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def setCountEnvTemperatureReadLastTs(self, ts):
         """
         Renseigne le moment de la dernière lecture des données de l'environnement
@@ -297,7 +297,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvTemperatureReadLastTs = %s """, ts)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvAirPressureNbReadTotal(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement
@@ -305,7 +305,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvAirPressureNbReadTotal = EnvAirPressureNbReadTotal + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvAirPressureNbReadOk(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement qui sont un succès
@@ -313,7 +313,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvAirPressureNbReadOk = EnvAirPressureNbReadOk + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvAirPressureNbReadFailed(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement qui sont en échec
@@ -321,7 +321,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvAirPressureNbReadFailed = EnvAirPressureNbReadFailed + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def incrementCountEnvAirPressureNbReadInvalid(self):
         """
         Incrémente le nombre total de lectures des données de l'environnement qui sont hors des bornes acceptables
@@ -329,7 +329,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvAirPressureNbReadInvalid = EnvAirPressureNbReadInvalid + 1 """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def setCountEnvAirPressureReadLastTs(self, ts):
         """
         Renseigne le moment de la dernière lecture des données de l'environnement
@@ -337,14 +337,14 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_COUNTERS set EnvAirPressureReadLastTs = %s """, ts)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def getDatabaseHistoRowNb(self):
         """
         Requête la BDD sur son occupation
         """
         return self.ex.execute_request_for_simple_value(""" select count(*) from T_HISTO """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def getDatabaseHistoTablespace(self):
         """
         Requête la BDD sur son occupation
@@ -353,7 +353,7 @@ class SqlPool:
             """ SELECT round(((data_length + index_length) / 1024 / 1024), 2) FROM information_schema.TABLES
                 WHERE table_schema = 'D_TELEINFO' AND table_name = 'T_HISTO' """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def getDatabaseGlobalHeapMax(self):
         """
         Requête la BDD sur son occupation
@@ -361,7 +361,7 @@ class SqlPool:
         return self.ex.execute_request_for_simple_value(
             """ select round(((@@max_heap_table_size) / 1024 / 1024), 2) """)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def updateRhInst(self, val, ts):
         """
         Mise à jour de la valeur d'humidité instantanée
@@ -369,7 +369,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_RH_INST set RH = {:f}, TS = '{:s}' """.format(round(val), str(ts)))
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def updateTempInst(self, val, ts):
         """
         Mise à jour de la valeur de température instantanée
@@ -377,7 +377,7 @@ class SqlPool:
         self.ex.execute(
             """ UPDATE T_TEMP_INST set TEMP = {:f}, TS = '{:s}' """.format(val, str(ts)))
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def updatePaInst(self, val, ts):
         """
         Mise à jour de la valeur de pression atmosphérique instantanée

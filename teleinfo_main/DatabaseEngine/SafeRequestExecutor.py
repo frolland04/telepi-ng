@@ -75,7 +75,7 @@ class SafeRequestExecutor:
         self.pool.notifyDatabaseClosing(this_file)
         self.connection.close()
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def execute(self, sql, v=None):
         """
         Exécution d'une requête sur le moteur de base de données, avec garantie qu'une seule s'exécute à la fois
@@ -99,7 +99,7 @@ class SafeRequestExecutor:
 
                 self.engine.execute(sql, a)
 
-    @Debug.log_class_func
+    # @Debug.log_class_func # -- disabled !
     def execute_request_for_simple_value(self, sql):
         """
         Exécute une requête avec résultat simple, et le retourne

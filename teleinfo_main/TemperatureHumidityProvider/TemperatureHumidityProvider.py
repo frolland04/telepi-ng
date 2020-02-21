@@ -25,7 +25,7 @@ def dbg_msg(*args):
     """
     Hook to print (or not) debugging messages for this Python file.
     """
-    print('[DBG]', *args)
+    # print('[DBG]', *args) # -- disabled !
 
 
 class TemperatureHumidityProvider:
