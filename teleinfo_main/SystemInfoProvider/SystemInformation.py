@@ -23,7 +23,7 @@ def dbg_msg(*args):
     """
     Hook to print (or not) debugging messages for this Python file.
     """
-    dbg_msg('[DBG]', *args)
+    print('[DBG]', *args)
 
 
 @Debug.log_func
