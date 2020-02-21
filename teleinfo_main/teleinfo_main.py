@@ -254,7 +254,7 @@ try:
             restarted_nb = SystemInfoProvider.SystemInformation.get_service_restart_count(TELEINFO_SERVICE_UNIT_NAME)
             disp[LCD_MSG_HDR_REST] = str(restarted_nb)
 
-            elapsed = SystemInfoProvider.SystemInformation.get_service_latest_restart_elapsed_time(TELEINFO_SERVICE_UNIT_NAME)
+            elapsed = SystemInfoProvider.SystemInformation.get_process_start_elapsed_time(TELEINFO_SERVICE_UNIT_NAME)
             disp[LCD_MSG_HDR_SVUP] = str(elapsed.days) + 'j ' + str(elapsed.seconds) + 's'
 
             # Affichage des statistiques et des données remontées par la BDD
