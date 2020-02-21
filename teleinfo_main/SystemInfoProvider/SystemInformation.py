@@ -8,7 +8,7 @@ import time
 import subprocess
 import os
 import sys
-import psutil
+import psutil  # -- besoin de 'sudo python3 -m pip install psutil'
 
 # *** Sous-modules ***
 import Debug  # Besoin de mon décorateur "log_func"

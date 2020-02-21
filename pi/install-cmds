@@ -6,3 +6,4 @@ sudo python3 -m pip install pip --upgrade
 sudo python3 -m pip install setuptools --upgrade
 sudo python3 -m pip install rpi.gpio
 sudo python3 -m pip install adafruit-circuitpython-bme280
+sudo python3 -m pip install psutil
