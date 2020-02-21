@@ -15,11 +15,16 @@ def indication(si, minv=0, maxv=10, v=5):
     print('=>', v, maxv, len(leds), s, nb)
 
     active_leds = ()
+    inactive_leds = ()
 
     for i in range(nb):
         active_leds += (leds[i],)
 
-    print(active_leds, len(active_leds))
+    for j in range(nb, len(leds)):
+        inactive_leds += (leds[j],)
+
+    print('ON: ', active_leds, len(active_leds))
+    print('OFF:', inactive_leds, len(inactive_leds))
 
 
 if __name__ == "__main__":

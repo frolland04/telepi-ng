@@ -34,12 +34,22 @@ def indication(si, minv=0, maxv=10, v=5):
     nb = v / s  # -- nombre de pas du bargraph à activer
     nb = round(min(nb, len(si.bargraph_leds)))
     dbg_msg('BARGRAPH_INFO:', v, maxv, len(si.bargraph_leds), s, nb)
-    active_leds = ()
 
+    # On allume une partie des leds
+    active_leds = ()
     for i in range(nb):
         active_leds += (si.bargraph_leds[i],)
 
-    dbg_msg(active_leds, len(active_leds))
+    dbg_msg('ON: ', active_leds, len(active_leds))
+    si.set_on(active_leds)
+
+    # On éteint une autre partie des leds
+    inactive_leds = ()
+    for j in range(nb, len(leds)):
+        inactive_leds += (si.bargraph_leds[j],)
+    
+    dbg_msg('OFF:', inactive_leds, len(inactive_leds))
+    si.set_off(inactive_leds)
 
 
 # Pour essayer les fonctions de ce fichier Python.
