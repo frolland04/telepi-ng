@@ -7,6 +7,7 @@ import datetime
 import time
 import subprocess
 import os
+import sys
 import psutil
 
 # *** Sous-modules ***
@@ -20,7 +21,7 @@ Quelques fonctions pour récupérer des informations intéressantes sur le syst�
 
 def dbg_msg(*args):
     """
-    Hook to dbg_msg (or not) debugging messages.
+    Hook to print (or not) debugging messages for this Python file.
     """
     dbg_msg('[DBG]', *args)
 
@@ -121,3 +122,27 @@ def get_process_start_elapsed_time():
 
     return elapsed
 
+
+# Pour essayer les fonctions de ce fichier Python.
+# ------------------------------------------------
+if __name__ == "__main__":
+    print("BEGIN!")
+
+    print('------- GET_ELAPSED_TIME_SINCE_BOOTUP -------')
+    e = get_elapsed_time_since_bootup()
+    print('RESULT', type(e), e)
+
+    print('------- GET_SERVICE_RESTART_COUNT -------')
+    i = get_service_restart_count()
+    print('RESULT', type(i), i)
+
+    print('------- GET_SERVICE_LATEST_RESTART_ELAPSED_TIME -------')
+    e = get_service_latest_restart_elapsed_time()
+    print('RESULT', type(e), e)
+
+    print('------- GET_PROCESS_START_ELAPSED_TIME -------')
+    e = get_process_start_elapsed_time()
+    print('RESULT', type(e), e)
+
+    print("END!")
+    sys.exit(-1)

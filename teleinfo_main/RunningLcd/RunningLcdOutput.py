@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 
+
 # Dépendances
 import threading
 
@@ -13,6 +14,13 @@ import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
 # Pour le débogage
 this_file = __file__.split('\\')[-1]
 
+
+def dbg_msg(*args):
+    """
+    Hook to print (or not) debugging messages for this Python file.
+    """
+    # print('[DBG]', *args) # -- disabled!
+    
 
 class RunningLcdOutput:
     """
@@ -74,7 +82,7 @@ class RunningLcdOutput:
         """
         Corps du timer : traitement exécuté périodiquement
         """
-        print("** Affichage **")
+        dbg_msg("** Affichage **")
 
         # On copie notre dictionnaire pour travailler sur un contenu stable
         # (Il pourrait être modifié pendant ce temps)
@@ -96,7 +104,7 @@ class RunningLcdOutput:
             footer      = str(self.itemIndex + 1) + ' / ' + str(len(items_list))
 
             # Affiche l'item à l'index 'self.itemIndex' => la clé et son contenu
-            print('DBG_LCD:', self.itemIndex, items_dict, items_list, "->", header, information, footer)
+            dbg_msg('MESSAGES_LCD:', self.itemIndex, items_dict, items_list, "->", header, information, footer)
 
             # On efface l'écran
             self.lcd.lcd_clear()
@@ -111,7 +119,7 @@ class RunningLcdOutput:
             # On programme l'item suivant pour le tour suivant
             self.itemIndex += 1
         else:
-            print(this_file + ":", 'La liste des éléments à afficher est vide.')
+            dbg_msg(this_file + ":", 'La liste des éléments à afficher est vide.')
             self.itemIndex = 0
 
         if not self.end:

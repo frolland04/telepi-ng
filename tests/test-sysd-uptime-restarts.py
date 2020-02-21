@@ -29,7 +29,7 @@ sp_cmd_systemd_exec_last_tm = ['/bin/systemctl', 'show', sysd_service_name, '-p'
 
 def dbg_msg(*args):
     """
-    Hook to print (or not) debugging messages.
+    Hook to print (or not) debugging messages for this Python file.
     """
     print('[DBG]', *args)
     

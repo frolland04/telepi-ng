@@ -1,10 +1,10 @@
 # -*- coding: UTF-8 -*-
 
+
 # Dépendances
 import serial  # Besoin de 'apt-get install python-serial' ou 'python -m pip install pyserial'
 import datetime
 import threading
-import time
 
 # Sous-modules
 import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
@@ -13,6 +13,13 @@ import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
 this_file = __file__.split('\\')[-1]
 
 
+def dbg_msg(*args):
+    """
+    Hook to print (or not) debugging messages for this Python file.
+    """
+    # print('[DBG]', *args) # -- disabled!
+    
+    
 class MessageProcessor(threading.Thread):
     """
     Classe de collecte TéléInformation ERDF par le port série.
@@ -129,7 +136,7 @@ class MessageProcessor(threading.Thread):
                 fin_msg = True
 
         ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print('DBG_MSG:', '>', msg, '<', ts)
+        dbg_msg('TELEINFO_MESSAGE:', '>', msg, '<', ts)
 
         # Incrémente le nombre de messages reçus (bons ou mauvais)
         # et horodatage du dernier message reçu
@@ -162,7 +169,7 @@ class MessageProcessor(threading.Thread):
         # Recalage pour être le code d'un caractère affichable
         s = (s & 0x3F) + 0x20
 
-        # print('Le checksum devrait être', chr(s), 'qui est le code 0x', s)
+        # dbg_msg('Le checksum devrait être', chr(s), 'qui est le code 0x', s) # -- trop verbeux!
         return chr(s)
 
     # =========================================================================
@@ -180,7 +187,7 @@ class MessageProcessor(threading.Thread):
                 # Pour les autres on met la valeur telle que reçue
                 dictionnaire[etiquette] = valeur
 
-            # print('Nouvelle valeur de', etiquette, '=', dictionnaire[etiquette])
+            # dbg_msg('Nouvelle valeur de', etiquette, '=', dictionnaire[etiquette]) # -- trop verbeux!
 
     # =========================================================================
     # Lecture et analyse d'un message Téléinfo ERDF
@@ -241,7 +248,7 @@ class MessageProcessor(threading.Thread):
                     self.ex.pool.notifyUnsupportedLineTagReceived(dbg)
 
                 else:
-                    # print('ligne OK')
+                    # dbg_msg('ligne OK') # -- trop verbeux!
                     cpt_good += 1
 
                     # Analyse de la ligne et répercussion dans la liste de valeurs
@@ -274,7 +281,7 @@ class MessageProcessor(threading.Thread):
             self.ex.pool.incrementCountRecvMsgDataLineNbBad(cpt_badline)
 
         if cpt_good == i:
-            print('**** message OK ****')
+            dbg_msg('**** message OK ****')
             ret = True
 
             # On ajoute la date/heure de collecte aux valeurs du dictionnaire
@@ -284,7 +291,7 @@ class MessageProcessor(threading.Thread):
             self.__tags['OK'] = True
 
             # On montre les tags
-            print(self.__tags)
+            dbg_msg(self.__tags)
 
             # Jeu unique de valeurs instantanées
             self.ex.pool.updateTeleinfoInst(self.__tags)

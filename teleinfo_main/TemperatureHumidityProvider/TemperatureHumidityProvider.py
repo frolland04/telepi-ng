@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 
+
 # Dépendances
 import threading
 import datetime
@@ -10,7 +11,6 @@ import datetime
 # sudo pip3 install adafruit-circuitpython-bme280
 
 import board
-import digitalio
 import busio
 import adafruit_bme280
 
@@ -19,6 +19,13 @@ import Debug  # Besoin de mon décorateur "log_class_func" & "EnterExitLogger"
 
 # Pour le débogage
 this_file = __file__.split('\\')[-1]
+
+
+def dbg_msg(*args):
+    """
+    Hook to print (or not) debugging messages for this Python file.
+    """
+    print('[DBG]', *args)
 
 
 class TemperatureHumidityProvider:
@@ -80,7 +87,7 @@ class TemperatureHumidityProvider:
         """
         Corps du timer : traitement exécuté périodiquement
         """
-        print("** Mesures de l'environnement **")
+        dbg_msg("** Mesures de l'environnement **")
 
         val, ok = self.readRelativeHumidity()
         if ok:
@@ -114,7 +121,7 @@ class TemperatureHumidityProvider:
         try:
             # Lecture depuis le BME280, avec une décimale conservée
             val = round(self.BME280_I2C.humidity, 1)
-            print('DBG_ENV: RH', '{:.2f}'.format(val))
+            dbg_msg('MESURE_ENV: RH', '{:.2f}'.format(val))
 
         except Exception as e:
             Debug.log_exc(e, this_file)
@@ -156,7 +163,7 @@ class TemperatureHumidityProvider:
         try:
             # Lecture depuis le BME280, avec une décimale conservée
             val = round(self.BME280_I2C.temperature, 1)
-            print('DBG_ENV: TEMP', '{:.2f}'.format(val))
+            dbg_msg('MESURE_ENV: TEMP', '{:.2f}'.format(val))
 
         except Exception as e:
             Debug.log_exc(e, this_file)
@@ -198,7 +205,7 @@ class TemperatureHumidityProvider:
         try:
             # Lecture depuis le BME280, avec deux décimales conservées
             val = round(self.BME280_I2C.pressure, 2)
-            print('DBG_ENV: PA', '{:.2f}'.format(val))
+            dbg_msg('MESURE_ENV: PA', '{:.2f}'.format(val))
 
         except Exception as e:
             Debug.log_exc(e, this_file)

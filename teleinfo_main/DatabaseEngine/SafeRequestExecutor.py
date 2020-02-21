@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 
+
 # Dépendances
 import mysql.connector as db  # Nécessite sur le système : python3, python3-mysql.connector
 import threading
@@ -10,6 +11,13 @@ import DatabaseEngine
 
 # Pour le débogage
 this_file = __file__.split('\\')[-1]
+
+
+def dbg_msg(*args):
+    """
+    Hook to print (or not) debugging messages for this Python file.
+    """
+    # print('[DBG]', *args) # -- disabled!
 
 
 class SafeRequestExecutor:
@@ -76,17 +84,17 @@ class SafeRequestExecutor:
         # en entrée et sortie du bloc, même sur exception
         with self.mutex:
             sql = ' '.join(sql.split())
-            print("Execute: <" + sql + ">", "(", v, ")")
+            dbg_msg("Execute: <" + sql + ">", "(", v, ")")
 
             if v is None:
-                print("(Pas d'argument à la requête)")
+                dbg_msg("(Pas d'argument à la requête)")
                 self.engine.execute(sql)
             else:
                 if type(v) == list:
-                    print("(La requête a des arguments, c'est une liste)")
+                    dbg_msg("(La requête a des arguments, c'est une liste)")
                     a = v
                 else:
-                    print("(La requête a des arguments, ce n'est pas une liste)")
+                    dbg_msg("(La requête a des arguments, ce n'est pas une liste)")
                     a = [v]
 
                 self.engine.execute(sql, a)
