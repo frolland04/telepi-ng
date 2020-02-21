@@ -276,6 +276,14 @@ try:
                 # Historique des valeurs échantillonnées toutes les 20s
                 dex.pool.updateTeleinfoHisto(mesure)
 
+            # --------------------------------------
+            # Envoyer les données au bargraph 10xLED
+            # --------------------------------------
+
+            # Puissance remontée par la Téléinformation
+            if edis_ok:
+                StatusLeds.BargraphLeds.indication(leds, 0, 11000, edis_puissance)
+
             # ------------------------------
             # On se reverra dans 30 secondes
             # ------------------------------

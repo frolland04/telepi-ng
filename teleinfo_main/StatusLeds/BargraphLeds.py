@@ -2,8 +2,15 @@
 # -*- coding: UTF-8 -*-
 
 # *** Sous-modules ***
-import StatusLeds
 import Debug  # Besoin de mon décorateur "log_func"
+
+
+def dbg_msg(*args):
+    """
+    Hook to print (or not) debugging messages for this Python file.
+    """
+    print('[DBG]', *args)
+
 
 """
 Quelques fonctions pour manipuler facilement les leds du bargraph
@@ -19,8 +26,42 @@ def running_leds(si):
 
 
 @Debug.log_func
-def indication(si, min=0, max=10, v=0):
+def indication(si, minv=0, maxv=10, v=5):
     """
     Indication de la mesure, allumage des leds proportionnellement à la mesure
     """
-    si.set_off(si.bargraph_leds)
+    s  = (maxv - minv) / len(si.bargraph_leds)  # -- valeur associée à un pas du bargraph
+    nb = v / s  # -- nombre de pas du bargraph à activer
+    nb = round(min(nb, len(si.bargraph_leds)))
+    dbg_msg('BARGRAPH_INFO:', v, maxv, len(si.bargraph_leds), s, nb)
+    active_leds = ()
+
+    for i in range(nb):
+        active_leds += (si.bargraph_leds[i],)
+
+    dbg_msg(active_leds, len(active_leds))
+
+
+# Pour essayer les fonctions de ce fichier Python.
+# ------------------------------------------------
+
+if __name__ == "__main__":
+    print('COUCOU!')
+
+    indication(None, 0, 11000, 400)
+
+    indication(None, 0, 11000, 850)
+
+    indication(None, 0, 11000, 1120)
+
+    indication(None, 0, 11000, 3500)
+
+    indication(None, 0, 11000, 7500)
+
+    indication(None, 0, 11000, 9000)
+
+    indication(None, 0, 11000, 10400)
+
+    indication(None, 0, 11000, 14850)
+
+    print('ByeBye!')

@@ -125,6 +125,7 @@ def get_process_start_elapsed_time():
 
 # Pour essayer les fonctions de ce fichier Python.
 # ------------------------------------------------
+
 if __name__ == "__main__":
     print("BEGIN!")
 
