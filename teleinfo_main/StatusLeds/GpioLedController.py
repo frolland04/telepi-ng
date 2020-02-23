@@ -36,9 +36,9 @@ class GpioLedController:
     status_leds = (GPIO_ID_LED_BLUE, GPIO_ID_LED_GREEN, GPIO_ID_LED_YELLOW, GPIO_ID_LED_RED, GPIO_ID_LED_WHITE)
 
     # Identités des GPIOs pour les sorties qui correspondent au bargraph (10 leds colorées)
-    # également dans l'ordre d'apparition
-    bargraph_leds = (18, 23, 24, 17, 27, 22, 5, 6, 13, 19)
-
+    # également dans l'ordre d'apparition. La 18 est la dernière LED rouge.
+    bargraph_leds = (19, 13, 6, 5, 22, 27, 17, 24, 23, 18)
+    
     # Temporisation de maintien des leds
     LED_HOLDON_TIMER_SECS = 0.4
 

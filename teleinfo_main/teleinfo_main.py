@@ -260,7 +260,7 @@ try:
             # Affichage des statistiques et des données remontées par la BDD
             disp[LCD_MSG_HDR_TEL]  = '{:,d} MESS.'.format(db_recvmsgs)  # en entier + séparateur des milliers
             disp[LCD_MSG_HDR_HIST] = '{:,d} LIGNES'.format(db_rows)
-            disp[LCD_MSG_HDR_TBL]  = '{:6.2f}   {:6.2f}'.format(db_tbspace, db_heapmax)
+            disp[LCD_MSG_HDR_TBL]  = '{:6.2f}    {:6.2f}'.format(db_tbspace, db_heapmax)
 
             # ------------------------------------------
             # Envoyer les données pour stockage à la BDD
