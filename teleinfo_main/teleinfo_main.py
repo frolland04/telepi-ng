@@ -71,7 +71,7 @@ LCD_MSG_HDR_HOR  = '****  HORLOGE   ****'
 LCD_MSG_HDR_REST  = '***  RESTART NB  ***'
 LCD_MSG_HDR_SVUP = '*  SERVICE UPTIME  *'
 LCD_MSG_HDR_TEL  = '*DECODAGE TELEINFOR*'
-LCD_MSG_HDR_HIST = '***  HISTORIQUE ****'
+LCD_MSG_HDR_HIST = '**** HISTORIQUE ****'
 LCD_MSG_HDR_TBL  = '* MEM. / MAX. (MB) *'
 # xxxxxxxxxxxxxx = '12345678901234567890'
 
@@ -260,7 +260,7 @@ try:
             # Affichage des statistiques et des données remontées par la BDD
             disp[LCD_MSG_HDR_TEL]  = '{:,d} MESS.'.format(db_recvmsgs)  # en entier + séparateur des milliers
             disp[LCD_MSG_HDR_HIST] = '{:,d} LIGNES'.format(db_rows)
-            disp[LCD_MSG_HDR_TBL]  = '{:6.2f}  /  {:6.2f}'.format(db_tbspace, db_heapmax)
+            disp[LCD_MSG_HDR_TBL]  = '{:6.2f}   {:6.2f}'.format(db_tbspace, db_heapmax)
 
             # ------------------------------------------
             # Envoyer les données pour stockage à la BDD
