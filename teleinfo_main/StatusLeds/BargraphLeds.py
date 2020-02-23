@@ -43,9 +43,9 @@ def indication(si, minv=0, maxv=10, v=5):
     dbg_msg('ON: ', active_leds, len(active_leds))
     si.set_on(active_leds)
 
-    # On éteint une autre partie des leds
+    # On éteint l'autre partie des leds
     inactive_leds = ()
-    for j in range(nb, len(leds)):
+    for j in range(nb, len(si.bargraph_leds)):
         inactive_leds += (si.bargraph_leds[j],)
     
     dbg_msg('OFF:', inactive_leds, len(inactive_leds))
