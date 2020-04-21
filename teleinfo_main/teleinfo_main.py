@@ -46,33 +46,38 @@ print("**** Bonjour tout le monde ! ****")
 
 # Les codes de retour en cas de problème
 SYSEXIT_ERROR_LEDS = -1
-SYSEXIT_ERROR_LCD = -2
-SYSEXIT_ERROR_DBE = -3
-SYSEXIT_ERROR_MPR = -4
-SYSEXIT_ERROR_THP = -5
-SYSEXIT_ERROR_PRE = -6
-SYSEXIT_ERROR_INT = -7
+SYSEXIT_ERROR_LCD  = -2
+SYSEXIT_ERROR_DBE  = -3
+SYSEXIT_ERROR_MPR  = -4
+SYSEXIT_ERROR_THP  = -5
+SYSEXIT_ERROR_PRE  = -6
+SYSEXIT_ERROR_INT  = -7
+SYSEXIT_ERROR_TEST = -8
+
 
 # Le nom du service de l'application
 TELEINFO_SERVICE_UNIT_NAME = 'teleinfo.service'
 
 # Les messages d'erreur tournants sur le LCD
-LCD_MSG_ERROR_DATABASE = {'ERREUR': 'BDD',         'Initialisation': 'impossible'}
-LCD_MSG_ERROR_TELEINFO = {'ERREUR': 'TELEINFO',    'Initialisation': 'impossible'}
-LCD_MSG_ERROR_BME280   = {'ERREUR': 'BME280',      'Initialisation': 'impossible'}
-LCD_MSG_ERROR_PREP     = {'ERREUR': 'PREPARATION', 'Initialisation': 'impossible'}
+LCD_PAGE_ERROR_TEST     = ('ERREUR', 'TEST',        'Initialisation', 'impossible')
+LCD_PAGE_ERROR_DATABASE = ('ERREUR', 'BDD',         'Initialisation', 'impossible')
+LCD_PAGE_ERROR_TELEINFO = ('ERREUR', 'TELEINFO',    'Initialisation', 'impossible')
+LCD_PAGE_ERROR_BME280   = ('ERREUR', 'BME280',      'Initialisation', 'impossible')
+LCD_PAGE_ERROR_PREP     = ('ERREUR', 'PREPARATION', 'Initialisation', 'impossible')
 
-# Les clés de messages normaux envoyés au LCD
+# Les bannières des messages envoyés au LCD
 LCD_MSG_HDR_TAR  = '*****  TARIF   *****'
 LCD_MSG_HDR_IIPA = '* IINST(A),PAPP(W) *'
 LCD_MSG_HDR_TH   = '* TEMP.(C),HUM.(%) *'
 LCD_MSG_HDR_PATM = '* PRESSION ATMOSP. *'
 LCD_MSG_HDR_HOR  = '****  HORLOGE   ****'
-LCD_MSG_HDR_REST  = '***  RESTART NB  ***'
-LCD_MSG_HDR_SVUP = '*  SERVICE UPTIME  *'
+LCD_MSG_HDR_REST = '***  RESTART NB  ***'
+LCD_MSG_HDR_SVUP = '** SERVICE UPTIME **'
+LCD_MSG_HDR_SSUP = '** SYSTEM UPTIME  **'
 LCD_MSG_HDR_TEL  = '*DECODAGE TELEINFOR*'
 LCD_MSG_HDR_HIST = '**** HISTORIQUE ****'
-LCD_MSG_HDR_TBL  = '* MEM. / MAX. (MB) *'
+LCD_MSG_HDR_DBTB = '***** MEM.(MB) *****'
+LCD_MSG_HDR_DBHP = '***** MAX.(MB) *****'
 # xxxxxxxxxxxxxx = '12345678901234567890'
 
 try:
@@ -117,6 +122,24 @@ try:
     else:
         print("[Affichage LCD OK.]")
 
+    # ------------------ Initialisation -------------------
+    # Provoque un échec volontaire (uniquement pour tester)
+    # -----------------------------------------------------
+
+    try:
+        # raise Exception  # à commenter pour éviter l'échec!
+        print(...)
+
+    except (Exception, KeyboardInterrupt, SystemExit) as e:
+        print("Echec volontaire! Abandon.", e)
+        lcd.clear()
+        lcd.set_page(0, LCD_PAGE_ERROR_TEST)
+        StatusLeds.SystemLeds.initialization_failed(leds)
+        sys.exit(SYSEXIT_ERROR_TEST)
+
+    else:
+        print("[Test d'échec volontaire non utilisé pour cette fois.]")
+
     # ------------------ Initialisation -----------------
     # Tentative de connexion à la base de données MariaDB
     # ---------------------------------------------------
@@ -126,7 +149,8 @@ try:
 
     except (Exception, KeyboardInterrupt, SystemExit) as e:
         print("Base de données indisponible! Abandon.", e)
-        lcd.items = LCD_MSG_ERROR_DATABASE
+        lcd.clear()
+        lcd.set_page(0, LCD_PAGE_ERROR_DATABASE)
         StatusLeds.SystemLeds.initialization_failed(leds)
         sys.exit(SYSEXIT_ERROR_DBE)
 
@@ -142,7 +166,8 @@ try:
 
     except (Exception, KeyboardInterrupt, SystemExit) as e:
         print("Connexion TELEINFO indisponible! Abandon.", e)
-        lcd.items = LCD_MSG_ERROR_TELEINFO
+        lcd.clear()
+        lcd.set_page(0, LCD_PAGE_ERROR_TELEINFO)
         StatusLeds.SystemLeds.initialization_failed(leds)
         sys.exit(SYSEXIT_ERROR_MPR)
 
@@ -158,7 +183,8 @@ try:
 
     except (Exception, KeyboardInterrupt, SystemExit) as e:
         print("Connexion BME280 indisponible! Abandon.", e)
-        lcd.items = LCD_MSG_ERROR_BME280
+        lcd.clear()
+        lcd.set_page(0, LCD_PAGE_ERROR_BME280)
         StatusLeds.SystemLeds.initialization_failed(leds)
         sys.exit(SYSEXIT_ERROR_THP)
 
@@ -180,17 +206,16 @@ try:
         # et de l'approvisionnement des premières valeurs
         time.sleep(30)
 
-        # Récupère une référence au contenu affiché sur le LCD
-        # et efface l'écran
-        disp = lcd.items
-        disp.clear()
+        # On efface l'écran
+        lcd.clear()
 
         # Récupère une référence aux valeurs remontées par la collecte ERDF
         tags = ti.tags
 
     except (Exception, KeyboardInterrupt, SystemExit) as e:
         print("Erreur pendant la préparation de la boucle principale!", e)
-        lcd.items = LCD_MSG_ERROR_PREP
+        lcd.clear()
+        lcd.set_page(0, LCD_PAGE_ERROR_PREP)
         StatusLeds.SystemLeds.initialization_failed(leds)
         sys.exit(SYSEXIT_ERROR_PRE)
 
@@ -235,32 +260,49 @@ try:
             # -------------------------------------
             # Envoyer les données à l'affichage LCD
             # -------------------------------------
+            info_edis = '{:2d}  {:7d}'.format(edis_intensite, edis_puissance)
+            info_atm  = '{:6.2f} (hPa)'.format(env_atm)
+            info_th   = '{:4.1f}  {:4.1f}'.format(env_temp, env_hum)
+            info_dbtb = '{:6.2f}'.format(db_tbspace)
+            info_dbhp = '{:6.2f}'.format(db_heapmax)
+            info_sclk = sys_clock.strftime('%d/%m/%Y %H:%M')
 
-            # Affichage des données de Téléinformation
+            print('*' + info_edis + '*')
+            print('*' + info_atm + '*')
+            print('*' + info_th + '*')
+            print('*' + info_dbtb + '*')
+            print('*' + info_dbhp + '*')
+            print('*' + info_sclk + '*')
+
+            # Affichage des données de Téléinformation (page 0)
             if edis_ok:
-                disp[LCD_MSG_HDR_TAR]  = edis_bareme
-                disp[LCD_MSG_HDR_IIPA] = '{:5d}  {:5d}'.format(edis_intensite, edis_puissance)
+                lcd.set_page(0, (LCD_MSG_HDR_IIPA, info_edis,
+                                 LCD_MSG_HDR_TAR, edis_bareme))
             else:
-                disp[LCD_MSG_HDR_TAR]  = '????'
-                disp[LCD_MSG_HDR_IIPA] = '?????  ?????'
+                lcd.set_page(0, (LCD_MSG_HDR_IIPA, '--   --',
+                                 LCD_MSG_HDR_TAR, '--'))
 
-            # Affichage des données d'environnement
-            disp[LCD_MSG_HDR_TH]   = '{:5.1f}  {:5.1f}'.format(env_temp, env_hum)
-            disp[LCD_MSG_HDR_PATM] = '{:6.2f} (hPa)'.format(env_atm)
+            # Affichage des données d'environnement (page 1)
+            lcd.set_page(1, (LCD_MSG_HDR_PATM, info_atm,
+                             LCD_MSG_HDR_TH, info_th))
 
-            # Affichage de divers éléments
-            disp[LCD_MSG_HDR_HOR] = sys_clock.strftime('%d/%m/%Y %H:%M')
+            # Affichage de divers éléments (pages 2 et 3)
+            # ("Rappel format {:,d} -> en entier + séparateur des milliers")
+            lcd.set_page(2, (LCD_MSG_HDR_HOR, info_sclk))
+            lcd.set_page(3, (LCD_MSG_HDR_TEL, '{:,d}'.format(db_recvmsgs), 'messages'))
 
+            # Données de redémarrage du service (pages 4 et 5)
             restarted_nb = SystemInfoProvider.SystemInformation.get_service_restart_count(TELEINFO_SERVICE_UNIT_NAME)
-            disp[LCD_MSG_HDR_REST] = str(restarted_nb)
-
             elapsed = SystemInfoProvider.SystemInformation.get_process_start_elapsed_time()
-            disp[LCD_MSG_HDR_SVUP] = str(elapsed.days) + 'j ' + str(elapsed.seconds) + 's'
+            uptime = SystemInfoProvider.SystemInformation.get_elapsed_time_since_bootup()
 
-            # Affichage des statistiques et des données remontées par la BDD
-            disp[LCD_MSG_HDR_TEL]  = '{:,d} MESS.'.format(db_recvmsgs)  # en entier + séparateur des milliers
-            disp[LCD_MSG_HDR_HIST] = '{:,d} LIGNES'.format(db_rows)
-            disp[LCD_MSG_HDR_TBL]  = '{:6.2f}    {:6.2f}'.format(db_tbspace, db_heapmax)
+            lcd.set_page(4, (LCD_MSG_HDR_SVUP, str(elapsed.days) + 'j ' + str(elapsed.seconds) + 's',
+                             LCD_MSG_HDR_REST, str(restarted_nb)))
+            lcd.set_page(5, (LCD_MSG_HDR_SSUP, str(uptime.days) + 'j ' + str(uptime.seconds) + 's'))
+
+            # Affichage des statistiques et des données remontées par la BDD (page 6 et 7)
+            lcd.set_page(6, (LCD_MSG_HDR_DBTB, info_dbtb, LCD_MSG_HDR_DBHP, info_dbhp))
+            lcd.set_page(7, (LCD_MSG_HDR_HIST, '{:,d}'.format(db_rows), 'lignes'))
 
             # ------------------------------------------
             # Envoyer les données pour stockage à la BDD
@@ -332,8 +374,8 @@ except (Exception, KeyboardInterrupt, SystemExit) as e:
 
     try:
         # Message final sur l'écran LCD
-        lcd.items.clear()
-        lcd.items['STOP!'] = 'PROGRAMME INTERROMPU'
+        lcd.clear()
+        lcd.set_page(0, ('******* STOP *******', 'PROGRAMME INTERROMPU'))
         print('[Final status set on LCD.]')
 
         # Libération de l'écran LCD
