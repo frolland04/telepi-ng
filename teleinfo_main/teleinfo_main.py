@@ -128,7 +128,7 @@ try:
 
     try:
         # raise Exception  # à commenter pour éviter l'échec!
-        print(...)
+        print('(...)')
 
     except (Exception, KeyboardInterrupt, SystemExit) as e:
         print("Echec volontaire! Abandon.", e)
