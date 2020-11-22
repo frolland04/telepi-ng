@@ -1,0 +1,11 @@
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+ap_scan=1
+country=FR
+
+network={
+    ssid="Wififi04"
+    scan_ssid=1
+    psk="LaBelleVueDeDauphin!04"
+    key_mgmt=WPA-PSK
+}
