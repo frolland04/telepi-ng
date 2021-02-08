@@ -1,3 +1,0 @@
-sudo mysql -u root < misc/db-create-user-and-database.sql
-sudo systemctl --no-pager enable teleinfo.service
-sudo systemctl --no-pager start teleinfo.service
